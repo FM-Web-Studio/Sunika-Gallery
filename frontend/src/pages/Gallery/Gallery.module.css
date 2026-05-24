@@ -83,7 +83,9 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: var(--spacing-xl);
+  /* More generous spacing — paintings need room to breathe on the wall */
+  column-gap: var(--spacing-2xl);
+  row-gap: var(--spacing-3xl);
 }
 
 .empty {
@@ -92,12 +94,21 @@
   padding: var(--spacing-3xl) 0;
 }
 
-/* Mobile: nav sits at the bottom, stick the bar at the very top instead */
+/* Mobile: nav sits at the bottom, stick the bar at the very top instead.
+   Move the filter FAB to the left so it doesn't collide with the Settings
+   button that is fixed at the top-right corner. */
 @media (max-width: 768px) {
-  .filterBar { top: var(--spacing-sm); }
+  .filterBar {
+    top: var(--spacing-sm);
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 480px) {
   .page { padding: var(--spacing-2xl) var(--spacing-md); }
-  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--spacing-md); }
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    column-gap: var(--spacing-lg);
+    row-gap: var(--spacing-2xl);
+  }
 }

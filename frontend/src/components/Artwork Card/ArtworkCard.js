@@ -84,6 +84,7 @@ const ArtworkCard = ({ artwork, onOpen }) => {
             readOnly={false}
             myRating={myRating}
             onRate={handleRate}
+            showCount={false}
           />
         </div>
       </div>
