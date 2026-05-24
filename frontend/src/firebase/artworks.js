@@ -52,6 +52,7 @@ export const createArtwork = async (data, imageFile) => {
     order:       data.order ?? Date.now(),
     ratingSum:   0,
     ratingCount: 0,
+    likeCount:   0,
     createdAt:   serverTimestamp(),
     updatedAt:   serverTimestamp(),
   });

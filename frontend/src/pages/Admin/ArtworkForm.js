@@ -55,19 +55,26 @@ const ArtworkForm = ({ initial, onSubmit, onCancel, submitting }) => {
         <input type="text" className={styles.input} value={form.title} onChange={update('title')} />
       </label>
 
-      <div className={styles.grid}>
-        <label className={styles.field}>
-          <span className={styles.label}>Category</span>
-          <select className={styles.input} value={form.category} onChange={update('category')}>
-            {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
-        </label>
-
-        <label className={styles.field}>
-          <span className={styles.label}>Price ({CURRENCY_SYMBOL})</span>
-          <input type="number" min="0" step="1" className={styles.input} value={form.price} onChange={update('price')} />
-        </label>
+      <div className={styles.field}>
+        <span className={styles.label}>Category</span>
+        <div className={styles.pills}>
+          {CATEGORIES.map((c) => (
+            <button
+              key={c}
+              type="button"
+              className={`${styles.pill} ${form.category === c ? styles.pillActive : ''}`}
+              onClick={() => setForm(f => ({ ...f, category: c }))}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
       </div>
+
+      <label className={styles.field}>
+        <span className={styles.label}>Price ({CURRENCY_SYMBOL})</span>
+        <input type="number" min="0" step="1" className={styles.input} value={form.price} onChange={update('price')} />
+      </label>
 
       <label className={styles.field}>
         <span className={styles.label}>Dimensions</span>

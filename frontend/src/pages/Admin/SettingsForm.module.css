@@ -22,8 +22,7 @@
   color: var(--secondary-text-color);
 }
 
-.input,
-.select {
+.input {
   width: 100%;
   box-sizing: border-box;
   padding: 0.55rem 0.75rem;
@@ -35,8 +34,7 @@
   font-family: inherit;
 }
 
-.input:focus,
-.select:focus { outline: none; border-color: var(--accent-1); }
+.input:focus { outline: none; border-color: var(--accent-1); }
 
 .socialsHeader {
   display: flex;
@@ -56,11 +54,49 @@
   cursor: pointer;
 }
 
-.socialRow {
-  display: grid;
-  grid-template-columns: 110px 1fr 1.4fr auto;
-  gap: var(--spacing-sm);
+.socialCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  background: var(--background-2);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.socialTypeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
   align-items: center;
+}
+
+.typePill {
+  padding: 0.3rem 0.7rem;
+  background: var(--background-1);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  color: var(--secondary-text-color);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.typePill:hover { border-color: var(--accent-1); color: var(--primary-text-color); }
+
+.typePillActive {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+  color: #fff;
+  font-weight: 600;
+}
+
+.socialInputs {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: var(--spacing-sm);
 }
 
 .removeSocial {
@@ -73,6 +109,7 @@
   font-size: 1.1rem;
   line-height: 1;
   cursor: pointer;
+  margin-left: auto;
 }
 
 .actions {
@@ -98,5 +135,5 @@
 
 @media (max-width: 560px) {
   .grid { grid-template-columns: 1fr; }
-  .socialRow { grid-template-columns: 1fr 1fr; }
+  .socialInputs { grid-template-columns: 1fr; }
 }

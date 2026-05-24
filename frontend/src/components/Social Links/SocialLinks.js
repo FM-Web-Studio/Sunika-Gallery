@@ -1,6 +1,5 @@
 import React from 'react';
-import { FaInstagram, FaFacebookF, FaWhatsapp, FaTiktok, FaEnvelope, FaLink } from 'react-icons/fa';
-import { DEFAULT_SETTINGS } from '../../firebase';
+import { FaInstagram, FaFacebookF, FaWhatsapp, FaTiktok, FaEnvelope, FaLinkedinIn, FaLink } from 'react-icons/fa';
 import styles from './SocialLinks.module.css';
 
 const ICONS = {
@@ -8,10 +7,11 @@ const ICONS = {
   facebook:  FaFacebookF,
   whatsapp:  FaWhatsapp,
   tiktok:    FaTiktok,
+  linkedin:  FaLinkedinIn,
   email:     FaEnvelope,
 };
 
-const SocialLinks = ({ socials = DEFAULT_SETTINGS.socials }) => (
+const SocialLinks = ({ socials = [] }) => (
   <div className={styles.links}>
     {socials.map(({ type, label, href }) => {
       const Icon = ICONS[type] || FaLink;

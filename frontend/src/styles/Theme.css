@@ -1,4 +1,6 @@
 :root {
+    color-scheme: light;
+
     /* ─── GENERAL SETTINGS ──────────────────────────────────────────────────── */
     /* Font Sizes - Responsive Typography */
     --font-size-xs: 0.875rem;     /* 14px */
@@ -177,6 +179,8 @@
 /* ─── THEME OVERRIDES ───────────────────────────────────────────────────────── */
 
 [data-theme="dark"] {
+    color-scheme: dark;
+
     --primary-text-color: var(--primary-text-color-dark);
     --secondary-text-color: var(--secondary-text-color-dark);
     --tertiary-text-color: var(--tertiary-text-color-dark);

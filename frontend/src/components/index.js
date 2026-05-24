@@ -9,6 +9,7 @@ export { default as ProtectedImage }   from './Protected Image';
 export { default as StarRating }       from './Star Rating';
 export { default as ArtworkCard }      from './Artwork Card';
 export { default as CategoryFilter }   from './Category Filter';
+export { default as FilterPanel }      from './Filter Panel/FilterPanel';
 export { default as ArtworkLightbox }  from './Artwork Lightbox';
 export { default as SocialLinks }      from './Social Links';
 export { default as ContactForm }      from './Contact Form';

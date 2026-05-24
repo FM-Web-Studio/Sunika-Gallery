@@ -88,6 +88,36 @@
 
 .textarea { resize: vertical; }
 
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.pill {
+  padding: 0.4rem 0.9rem;
+  background: var(--background-2);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  color: var(--secondary-text-color);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.pill:hover { border-color: var(--accent-1); color: var(--primary-text-color); }
+
+.pillActive {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+  color: #fff;
+  font-weight: 600;
+}
+
+.pillActive:hover { color: #fff; }
+
 .checkboxField {
   display: flex;
   align-items: center;
@@ -95,6 +125,15 @@
   font-size: var(--font-size-sm);
   color: var(--secondary-text-color);
   cursor: pointer;
+}
+
+.checkboxField input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--accent-1);
+  cursor: pointer;
+  flex-shrink: 0;
+  border: 1px solid var(--border-color);
 }
 
 .error {

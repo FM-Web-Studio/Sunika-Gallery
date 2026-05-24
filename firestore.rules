@@ -21,14 +21,21 @@ service cloud.firestore {
       // Owner has full control.
       allow create, delete: if isAdmin();
       allow update: if isAdmin()
-        // OR an anonymous visitor casting a single rating: only the two
-        // aggregate fields may change, count +1 and sum +1..5.
+        // Anonymous rating: only ratingSum/ratingCount change, count +1, sum +1..5.
         || (
           request.resource.data.diff(resource.data).affectedKeys()
             .hasOnly(['ratingSum', 'ratingCount'])
           && request.resource.data.ratingCount == resource.data.ratingCount + 1
           && request.resource.data.ratingSum >= resource.data.ratingSum + 1
           && request.resource.data.ratingSum <= resource.data.ratingSum + 5
+        )
+        // Anonymous like toggle: only likeCount changes by exactly ±1, stays >= 0.
+        || (
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['likeCount'])
+          && (request.resource.data.likeCount == resource.data.likeCount + 1
+              || request.resource.data.likeCount == resource.data.likeCount - 1)
+          && request.resource.data.likeCount >= 0
         );
     }
 

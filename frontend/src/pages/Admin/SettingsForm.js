@@ -55,27 +55,34 @@ const SettingsForm = ({ initial, onSubmit, onCancel, submitting }) => {
       </div>
 
       {form.socials.map((s, i) => (
-        <div key={i} className={styles.socialRow}>
-          <select
-            className={styles.select}
-            value={s.type}
-            onChange={(e) => updateSocial(i, 'type', e.target.value)}
-          >
-            {SOCIAL_TYPES.map((t) => <option key={t} value={t}>{labelFor(t)}</option>)}
-          </select>
-          <input
-            className={styles.input}
-            placeholder="Label"
-            value={s.label ?? ''}
-            onChange={(e) => updateSocial(i, 'label', e.target.value)}
-          />
-          <input
-            className={styles.input}
-            placeholder="https://… or mailto:…"
-            value={s.href ?? ''}
-            onChange={(e) => updateSocial(i, 'href', e.target.value)}
-          />
-          <button type="button" className={styles.removeSocial} onClick={() => removeSocial(i)} aria-label="Remove">×</button>
+        <div key={i} className={styles.socialCard}>
+          <div className={styles.socialTypeRow}>
+            {SOCIAL_TYPES.map((t) => (
+              <button
+                key={t}
+                type="button"
+                className={`${styles.typePill} ${s.type === t ? styles.typePillActive : ''}`}
+                onClick={() => updateSocial(i, 'type', t)}
+              >
+                {labelFor(t)}
+              </button>
+            ))}
+            <button type="button" className={styles.removeSocial} onClick={() => removeSocial(i)} aria-label="Remove">×</button>
+          </div>
+          <div className={styles.socialInputs}>
+            <input
+              className={styles.input}
+              placeholder="Label"
+              value={s.label ?? ''}
+              onChange={(e) => updateSocial(i, 'label', e.target.value)}
+            />
+            <input
+              className={styles.input}
+              placeholder="https://… or mailto:…"
+              value={s.href ?? ''}
+              onChange={(e) => updateSocial(i, 'href', e.target.value)}
+            />
+          </div>
         </div>
       ))}
 

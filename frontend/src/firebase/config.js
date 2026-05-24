@@ -31,16 +31,11 @@ export const formatPrice = (price) => {
 // Used to seed gallery_settings/contact and as a fallback if that doc is missing.
 // The live values are stored in Firestore and editable from the admin panel.
 // `type` maps to an icon in SocialLinks (instagram, facebook, whatsapp, tiktok, email).
-export const SOCIAL_TYPES = ['instagram', 'facebook', 'whatsapp', 'tiktok', 'email'];
+export const SOCIAL_TYPES = ['instagram', 'facebook', 'whatsapp', 'tiktok', 'linkedin', 'email'];
 
 export const DEFAULT_SETTINGS = {
-  email: 'hello@example.com',
+  email: '',
   phone: '',
   location: '',
-  socials: [
-    { type: 'instagram', label: 'Instagram', href: 'https://instagram.com/your-handle' },
-    { type: 'facebook',  label: 'Facebook',  href: 'https://facebook.com/your-page' },
-    { type: 'whatsapp',  label: 'WhatsApp',  href: 'https://wa.me/27000000000' },
-    { type: 'email',     label: 'Email',     href: 'mailto:hello@example.com' },
-  ],
+  socials: [],
 };
