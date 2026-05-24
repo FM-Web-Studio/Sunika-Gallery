@@ -23,17 +23,7 @@ service firebase.storage {
       allow delete: if isAdmin();
     }
 
-    // Portfolio files (project images + profile photo) live under portfolio/.
-    // Public read, owner-only write (max 15 MB, images).
-    match /portfolio/{allPaths=**} {
-      allow read: if true;
-      allow write: if isAdmin()
-                   && request.resource.size < 15 * 1024 * 1024
-                   && request.resource.contentType.matches('image/.*');
-      allow delete: if isAdmin();
-    }
-
-    // Default deny
+    // Default deny (the portfolio app governs its own paths)
     match /{allPaths=**} { allow read, write: if false; }
   }
 }

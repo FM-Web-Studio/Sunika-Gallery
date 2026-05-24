@@ -1,57 +1,41 @@
-// Static configuration shared across the portfolio data layer.
+// Static configuration shared across the data layer.
 
-// This project's Firestore + Storage are shared with the Sunika gallery app.
-// Portfolio resources live in their own collections / Storage folder.
+// This project's Firestore + Storage are shared with the Sunika-Portfolio app,
+// so every gallery resource is namespaced to avoid collisions.
 export const COLLECTIONS = {
-  projects:   'portfolio_projects',
-  education:  'education',
-  experience: 'experience',
-  portfolio:  'portfolio',          // single-doc settings (see PORTFOLIO_DOCS)
-  messages:   'portfolio_messages',
+  artworks: 'gallery_artworks',
+  messages: 'gallery_messages',
+  settings: 'gallery_settings',
 };
+export const SETTINGS_DOC = 'contact';        // doc id inside gallery_settings
+export const STORAGE_PREFIX = 'gallery';       // Storage folder for all gallery files
 
-// Document ids inside the `portfolio` collection.
-export const PORTFOLIO_DOCS = {
-  personal:  'personal',
-  contact:   'contact',
-  interests: 'interests',
-  skills:    'skills',
-  socials:   'socials',
-};
+export const CATEGORIES = ['Paintings', 'Drawings', 'Artistic Mix'];
 
-// Storage folder for all portfolio files (projects/, profile/).
-export const STORAGE_PREFIX = 'portfolio';
+export const CURRENCY_SYMBOL = process.env.REACT_APP_CURRENCY_SYMBOL || 'R';
 
 // Comma-separated allowlist of admin Google account emails (client-side UX gate).
-// Real enforcement lives in firestore.rules / storage.rules (managed separately).
+// The real enforcement lives in firestore.rules / storage.rules.
 export const ADMIN_EMAILS = (process.env.REACT_APP_ADMIN_EMAILS || '')
   .split(',')
-  .map((s) => s.trim().toLowerCase())
+  .map(s => s.trim().toLowerCase())
   .filter(Boolean);
 
-// Known social platform keys → used to pick an icon in SocialLinks.
-export const SOCIAL_KEYS = ['instagram', 'linkedin', 'facebook', 'behance', 'dribbble', 'tiktok', 'whatsapp', 'email'];
-
-// ── Defaults ─────────────────────────────────────────────────────────────────
-// Used as fallbacks when a portfolio doc is missing, and to seed admin forms.
-export const DEFAULT_PERSONAL = {
-  name:     '',
-  title:    '',
-  bio:      '',
-  photoUrl: '',
-  email:    '',
-  location: '',
-  phone:    '',
+export const formatPrice = (price) => {
+  const n = Number(price);
+  if (!price || Number.isNaN(n) || n === 0) return 'Price on request';
+  return `${CURRENCY_SYMBOL}${n.toLocaleString()}`;
 };
 
-export const DEFAULT_CONTACT = {
-  email:    '',
-  phone:    '',
+// ── Default site contact details ────────────────────────────────────────────
+// Used to seed gallery_settings/contact and as a fallback if that doc is missing.
+// The live values are stored in Firestore and editable from the admin panel.
+// `type` maps to an icon in SocialLinks (instagram, facebook, whatsapp, tiktok, email).
+export const SOCIAL_TYPES = ['instagram', 'facebook', 'whatsapp', 'tiktok', 'linkedin', 'email'];
+
+export const DEFAULT_SETTINGS = {
+  email: '',
+  phone: '',
   location: '',
+  socials: [],
 };
-
-export const DEFAULT_INTERESTS = { items: [] };
-
-export const DEFAULT_SKILLS = { categories: [] };    // [{ name, items: [] }]
-
-export const DEFAULT_SOCIALS = { platforms: [] };    // [{ key, platform, url }]

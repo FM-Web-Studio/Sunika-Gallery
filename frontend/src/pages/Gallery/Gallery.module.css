@@ -1,0 +1,114 @@
+.page {
+  padding: var(--spacing-3xl) var(--spacing-xl) var(--spacing-2xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.heading { margin: 0 0 var(--spacing-xs); }
+
+.subtitle {
+  margin: 0;
+  color: var(--tertiary-text-color);
+  font-size: var(--font-size-md);
+}
+
+/* ── Sticky filter bar — transparent container, frosted button ────────────── */
+.filterBar {
+  position: sticky;
+  top: 80px; /* clears the floating desktop nav capsule */
+  z-index: var(--z-sticky);
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-lg);
+  /* Transparent — content scrolls freely underneath */
+  pointer-events: none; /* pass clicks through the empty space */
+}
+
+.filterFab {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 0.55rem 1.1rem;
+  background: var(--frosted-background);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--border-color-hover);
+  border-radius: var(--radius-full);
+  color: var(--secondary-text-color);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: border-color var(--transition-fast), color var(--transition-fast),
+              box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.filterFab:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.filterFabActive {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+  color: #fff;
+}
+
+.filterFabActive:hover { opacity: 0.88; color: #fff; transform: translateY(-1px); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--accent-1);
+  border-radius: var(--radius-full);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0 0.2rem;
+}
+
+/* ── Grid ─────────────────────────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  /* More generous spacing — paintings need room to breathe on the wall */
+  column-gap: var(--spacing-2xl);
+  row-gap: var(--spacing-3xl);
+}
+
+.empty {
+  text-align: center;
+  color: var(--tertiary-text-color);
+  padding: var(--spacing-3xl) 0;
+}
+
+/* Mobile: nav sits at the bottom, stick the bar at the very top instead.
+   Move the filter FAB to the left so it doesn't collide with the Settings
+   button that is fixed at the top-right corner. */
+@media (max-width: 768px) {
+  .filterBar {
+    top: var(--spacing-sm);
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .page { padding: var(--spacing-2xl) var(--spacing-md); }
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    column-gap: var(--spacing-lg);
+    row-gap: var(--spacing-2xl);
+  }
+}
