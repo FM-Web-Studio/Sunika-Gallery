@@ -1,0 +1,58 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Admin allowlist ───────────────────────────────────────────────────
+    // Keep this list in sync with REACT_APP_ADMIN_EMAILS and storage.rules.
+    function isAdmin() {
+      return request.auth != null
+             && request.auth.token.email_verified == true
+             && request.auth.token.email in [
+               'francoismeiring0203@gmail.com',
+               'lombardsunika@gmail.com'
+             ];
+    }
+
+    // ── Gallery artworks ──────────────────────────────────────────────────
+    match /gallery_artworks/{artworkId} {
+      allow read: if true;
+
+      // Owner has full control.
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin()
+        // OR an anonymous visitor casting a single rating: only the two
+        // aggregate fields may change, count +1 and sum +1..5.
+        || (
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['ratingSum', 'ratingCount'])
+          && request.resource.data.ratingCount == resource.data.ratingCount + 1
+          && request.resource.data.ratingSum >= resource.data.ratingSum + 1
+          && request.resource.data.ratingSum <= resource.data.ratingSum + 5
+        );
+    }
+
+    // ── Gallery contact messages ──────────────────────────────────────────
+    // Visitors may submit; only the owner may read/manage entries.
+    match /gallery_messages/{doc} {
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'message', 'createdAt'])
+                    && request.resource.data.name is string
+                    && request.resource.data.email is string
+                    && request.resource.data.message is string
+                    && request.resource.data.message.size() <= 5000;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ── Gallery site settings (socials + contact details) ─────────────────
+    match /gallery_settings/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Note: the Sunika-Portfolio app's own collections are governed by their
+    // own rules; this file only declares gallery_* paths plus the default deny.
+
+    // Default deny
+    match /{document=**} { allow read, write: if false; }
+  }
+}
