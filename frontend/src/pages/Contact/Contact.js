@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 import { ContactForm, SocialLinks } from '../../components';
-import { subscribeSiteSettings, DEFAULT_SETTINGS } from '../../firebase';
+import { subscribeContact, subscribeSocials, DEFAULT_CONTACT } from '../../firebase';
 import styles from './Contact.module.css';
 
 const Contact = () => {
-  const [settings, setSettings] = useState(DEFAULT_SETTINGS);
+  const [contact, setContact] = useState(DEFAULT_CONTACT);
+  const [socials, setSocials] = useState([]);
 
-  useEffect(() => subscribeSiteSettings(setSettings, () => {}), []);
+  useEffect(() => {
+    const unsubs = [
+      subscribeContact(setContact, () => {}),
+      subscribeSocials((d) => setSocials(d.platforms), () => {}),
+    ];
+    return () => unsubs.forEach((u) => u && u());
+  }, []);
 
   return (
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.heading}>Get in touch</h1>
         <p className={styles.subtitle}>
-          Interested in a piece or a commission? Send a message or reach out on socials.
+          Interested in working together or have a question? Send a message or reach out on socials.
         </p>
       </header>
 
@@ -25,25 +32,25 @@ const Contact = () => {
 
         <aside className={styles.socialSection}>
           <h2 className={styles.socialHeading}>Find me online</h2>
-          <SocialLinks socials={settings.socials} />
+          <SocialLinks socials={socials} />
 
           <ul className={styles.details}>
-            {settings.email && (
+            {contact.email && (
               <li>
                 <FaEnvelope aria-hidden="true" />
-                <a href={`mailto:${settings.email}`}>{settings.email}</a>
+                <a href={`mailto:${contact.email}`}>{contact.email}</a>
               </li>
             )}
-            {settings.phone && (
+            {contact.phone && (
               <li>
                 <FaPhone aria-hidden="true" />
-                <a href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>
+                <a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a>
               </li>
             )}
-            {settings.location && (
+            {contact.location && (
               <li>
                 <FaMapMarkerAlt aria-hidden="true" />
-                <span>{settings.location}</span>
+                <span>{contact.location}</span>
               </li>
             )}
           </ul>

@@ -1,13 +1,14 @@
 import React, { Suspense, useCallback, useMemo, useTransition, useEffect } from 'react';
 import { Routes, Route, useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { NotFound, Loading, Gallery, Contact, Admin } from './pages';
+import { NotFound, Loading, Home, Projects, Contact, Admin } from './pages';
 import { NavigationBar, Settings, ToastProvider } from './components';
 import { useTheme, useAnimations } from './hooks';
 import styles from './App.module.css';
 
 const NAVIGATION_PAGES = [
-  { label: 'Gallery', to: '/'        },
-  { label: 'Contact', to: '/contact' },
+  { label: 'Home',     to: '/'         },
+  { label: 'Projects', to: '/projects' },
+  { label: 'Contact',  to: '/contact'  },
 ];
 
 const ScrollToTop = () => {
@@ -55,7 +56,8 @@ const AppContent = () => (
     <Routes>
       <Route path="/admin" element={<Admin />} />
       <Route path="/" element={<AppLayout />}>
-        <Route index              element={<Gallery />} />
+        <Route index             element={<Home />} />
+        <Route path="projects"   element={<Projects />} />
         <Route path="contact"    element={<Contact />} />
         <Route path="loading"    element={<Loading />} />
         <Route path="*"          element={<NotFound />} />

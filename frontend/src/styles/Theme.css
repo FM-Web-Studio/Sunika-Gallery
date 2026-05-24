@@ -307,21 +307,3 @@ body, #root {
         container-type: inline-size;
     }
 }
-
-
-/* ==================== PRINT PROTECTION ==================== */
-@media print {
-    /* Block printing entirely — artwork must not be reproducible via print-to-PDF */
-    body > * {
-        display: none !important;
-    }
-
-    body::before {
-        content: "Printing is not permitted for this content.";
-        display: block !important;
-        font-size: 1.25rem;
-        text-align: center;
-        margin-top: 4rem;
-        color: #000;
-    }
-}
