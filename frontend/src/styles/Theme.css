@@ -1,0 +1,286 @@
+:root {
+    /* ─── GENERAL SETTINGS ──────────────────────────────────────────────────── */
+    --font-size-xs: 0.875rem;
+    --font-size-sm: 0.9375rem;
+    --font-size-base: 1rem;
+    --font-size-md: 1.125rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 1.875rem;
+    --font-size-3xl: 2.25rem;
+    --font-size-4xl: 3rem;
+
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
+    --spacing-4xl: 5rem;
+    --spacing-5xl: 6rem;
+    --spacing-6xl: 8rem;
+
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-full: 9999px;
+
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+    --transition-slow: 350ms ease;
+
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.09), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+
+    --z-base: 1;
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+
+    /* ─── COLOR PALETTE ─────────────────────────────────────────────────────── */
+
+    /* Text: Light Mode (deep plum -> warm purple-grey) */
+    --primary-text-color-light:   #2d1b2e;
+    --secondary-text-color-light: #6b4c7a;
+    --tertiary-text-color-light:  #9b7cac;
+    --disabled-color-light:       #c9b8d8;
+
+    /* Text: Dark Mode (lavender-white -> muted) */
+    --primary-text-color-dark:   #fdf0ff;
+    --secondary-text-color-dark: #d4b8f0;
+    --tertiary-text-color-dark:  #a888cc;
+    --disabled-color-dark:       #5a4070;
+
+    /* Status Colors */
+    --error-color:   #e63946;
+    --warning-color: #f4a261;
+    --success-color: #2dc653;
+    --info-color:    #4895ef;
+
+    /* Status Backgrounds: Light */
+    --success-background-color-light: #e8faee;
+    --warning-background-color-light: #fef3e2;
+    --error-background-color-light:   #fde8ea;
+    --info-background-color-light:    #e3f0ff;
+
+    /* Status Backgrounds: Dark */
+    --success-background-color-dark: #0a2814;
+    --warning-background-color-dark: #271608;
+    --error-background-color-dark:   #280a0d;
+    --info-background-color-dark:    #091830;
+
+    /* Accent: Coral & Teal (Light) */
+    --accent-1-light:     #f25f5c;
+    --accent-2-light:     #50c9c3;
+    --accent-3-light:     #c059c0;
+    --accent-hover-light: #e04a47;
+
+    /* Accent: Coral & Cyan (Dark) */
+    --accent-1-dark:     #ff8080;
+    --accent-2-dark:     #6ed8d3;
+    --accent-3-dark:     #d97dd9;
+    --accent-hover-dark: #ff6060;
+
+    /* Accent RGB (for rgba() animated blobs) */
+    --accent-1-rgb-light: 242, 95, 92;
+    --accent-2-rgb-light: 80, 201, 195;
+    --accent-3-rgb-light: 192, 89, 192;
+
+    --accent-1-rgb-dark: 255, 128, 128;
+    --accent-2-rgb-dark: 110, 216, 211;
+    --accent-3-rgb-dark: 217, 125, 217;
+
+    /* Paint/ink decorative color (replaces leaf-color) */
+    --paint-color-light: #f25f5c;
+    --paint-color-dark:  #ff8080;
+    --paint-color: var(--paint-color-light);
+
+    /* Accent Backgrounds: Light */
+    --accent-1-background-light: #fff0ef;
+    --accent-2-background-light: #e8faf9;
+    --accent-3-background-light: #f8eaf8;
+
+    /* Accent Backgrounds: Dark */
+    --accent-1-background-dark: #1e0808;
+    --accent-2-background-dark: #081e1d;
+    --accent-3-background-dark: #1e0820;
+
+    /* Backgrounds: Light (warm art-paper whites) */
+    --background-0-light: #fffcf7;
+    --background-1-light: #fff9f4;
+    --background-2-light: #fef3ec;
+    --background-3-light: #fde8df;
+    --background-4-light: #fbd8ca;
+    --frosted-background-light: rgba(255, 252, 247, 0.86);
+    --border-color-light:       #f0ddd8;
+    --border-color-hover-light: #e8c4bb;
+
+    /* Backgrounds: Dark (studio-night plum) */
+    --background-0-dark: #0f0b16;
+    --background-1-dark: #17122a;
+    --background-2-dark: #201835;
+    --background-3-dark: #2a2040;
+    --background-4-dark: #36294e;
+    --frosted-background-dark: rgba(15, 11, 22, 0.90);
+    --border-color-dark:       #3d2f55;
+    --border-color-hover-dark: #5a4470;
+
+    /* Applied Colors (Default: Light) */
+    --primary-text-color: var(--primary-text-color-light);
+    --secondary-text-color: var(--secondary-text-color-light);
+    --tertiary-text-color: var(--tertiary-text-color-light);
+    --disabled-color: var(--disabled-color-light);
+
+    --background-0: var(--background-0-light);
+    --background-1: var(--background-1-light);
+    --background-2: var(--background-2-light);
+    --background-3: var(--background-3-light);
+    --background-4: var(--background-4-light);
+    --frosted-background: var(--frosted-background-light);
+    --border-color: var(--border-color-light);
+    --border-color-hover: var(--border-color-hover-light);
+
+    --accent-1: var(--accent-1-light);
+    --accent-2: var(--accent-2-light);
+    --accent-3: var(--accent-3-light);
+    --accent-hover: var(--accent-hover-light);
+
+    --accent-1-rgb: var(--accent-1-rgb-light);
+    --accent-2-rgb: var(--accent-2-rgb-light);
+    --accent-3-rgb: var(--accent-3-rgb-light);
+
+    --accent-1-background: var(--accent-1-background-light);
+    --accent-2-background: var(--accent-2-background-light);
+    --accent-3-background: var(--accent-3-background-light);
+
+    --success-background-color: var(--success-background-color-light);
+    --warning-background-color: var(--warning-background-color-light);
+    --error-background-color:   var(--error-background-color-light);
+    --info-background-color:    var(--info-background-color-light);
+}
+
+
+/* ─── THEME OVERRIDES ───────────────────────────────────────────────────────── */
+
+[data-theme="dark"] {
+    --primary-text-color: var(--primary-text-color-dark);
+    --secondary-text-color: var(--secondary-text-color-dark);
+    --tertiary-text-color: var(--tertiary-text-color-dark);
+    --disabled-color: var(--disabled-color-dark);
+
+    --background-0: var(--background-0-dark);
+    --background-1: var(--background-1-dark);
+    --background-2: var(--background-2-dark);
+    --background-3: var(--background-3-dark);
+    --background-4: var(--background-4-dark);
+    --frosted-background: var(--frosted-background-dark);
+    --border-color: var(--border-color-dark);
+    --border-color-hover: var(--border-color-hover-dark);
+
+    --accent-1: var(--accent-1-dark);
+    --accent-2: var(--accent-2-dark);
+    --accent-3: var(--accent-3-dark);
+    --accent-hover: var(--accent-hover-dark);
+
+    --accent-1-rgb: var(--accent-1-rgb-dark);
+    --accent-2-rgb: var(--accent-2-rgb-dark);
+    --accent-3-rgb: var(--accent-3-rgb-dark);
+
+    --accent-1-background: var(--accent-1-background-dark);
+    --accent-2-background: var(--accent-2-background-dark);
+    --accent-3-background: var(--accent-3-background-dark);
+
+    --success-background-color: var(--success-background-color-dark);
+    --warning-background-color: var(--warning-background-color-dark);
+    --error-background-color:   var(--error-background-color-dark);
+    --info-background-color:    var(--info-background-color-dark);
+
+    --paint-color: var(--paint-color-dark);
+
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.6);
+}
+
+
+/* ─── PAGE & BODY ───────────────────────────────────────────────────────────── */
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+html, body, #root {
+    min-height: 100%;
+    margin: 0;
+    background:
+        radial-gradient(ellipse 90% 60% at 15% 0%,  rgba(var(--accent-1-rgb), 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 70% at 85% 100%, rgba(var(--accent-2-rgb), 0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 50% 50%,  rgba(var(--accent-3-rgb), 0.06) 0%, transparent 55%),
+        linear-gradient(
+            155deg,
+            var(--background-0) 0%,
+            var(--background-1) 45%,
+            var(--background-2) 100%
+        );
+    background-attachment: fixed;
+    transition: background var(--transition-slow);
+}
+
+html { overflow-y: auto; }
+body, #root { overflow: visible; }
+
+
+/* ─── RESPONSIVE BREAKPOINTS ────────────────────────────────────────────────── */
+
+@media (min-width: 576px) {
+    :root { --font-size-3xl: 2.5rem; --font-size-4xl: 3.5rem; }
+}
+@media (min-width: 768px) {
+    :root { --font-size-3xl: 2.75rem; --font-size-4xl: 4rem; --spacing-3xl: 5rem; }
+}
+@media (min-width: 992px) {
+    :root { --font-size-3xl: 3rem; --font-size-4xl: 4.5rem; --spacing-3xl: 6rem; }
+}
+@media (min-width: 1200px) {
+    :root { --font-size-4xl: 5rem; }
+}
+
+
+/* ─── REDUCED MOTION ────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+[data-no-animations="true"] * {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+}
+
+
+/* ─── PRINT ─────────────────────────────────────────────────────────────────── */
+@media print {
+    :root { --background-1: #ffffff; --background-2: #ffffff; --primary-text-color: #000000; }
+    body { background: white !important; }
+    [data-print-hide="true"] { display: none !important; }
+}

@@ -1,0 +1,47 @@
+/* App layout — structural positioning only.
+ * Colors, backgrounds, and visual effects live in styles/Components.css. */
+
+.app {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.navigationBar {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: var(--z-sticky);
+  pointer-events: none;
+}
+
+.navigationBar > * {
+  pointer-events: auto;
+}
+
+.themeSwitch {
+  position: fixed;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: calc(var(--z-sticky) + 1);
+}
+
+.pageContent {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  animation: pageEnter 0.22s ease-out both;
+}
+
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+@media (max-width: 480px) {
+  .navigationBar { top: var(--spacing-xs); left: var(--spacing-xs); }
+  .themeSwitch   { top: var(--spacing-xs); right: var(--spacing-xs); }
+}

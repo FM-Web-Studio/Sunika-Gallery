@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+scripts/node_modules/
+
+# Build output
+frontend/build/
+
+# Environment secrets
+.env
+.env.local
+.env.*.local
+frontend/.env.local
+frontend/.env.*.local
+
+# Firebase service account keys — keep these out of git at all costs
+*serviceAccount*.json
+*service-account*.json
+*service_account*.json
+*ServiceAccount*.json
+firebase-adminsdk*.json
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Claude memory
+.claude/
+
+# Misc
+npm-debug.log*
+yarn-debug.log*
