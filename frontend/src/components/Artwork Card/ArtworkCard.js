@@ -51,11 +51,17 @@ const ArtworkCard = ({ artwork, onOpen }) => {
     }
   };
 
+  const handleCardKey = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen?.(artwork); }
+  };
+
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       className={styles.card}
       onClick={() => onOpen?.(artwork)}
+      onKeyDown={handleCardKey}
       aria-label={`View ${title || 'artwork'}`}
     >
       <div className={styles.imageWrap}>
@@ -88,7 +94,7 @@ const ArtworkCard = ({ artwork, onOpen }) => {
           />
         </div>
       </div>
-    </button>
+    </div>
   );
 };
 

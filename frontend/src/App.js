@@ -1,14 +1,11 @@
-import React, { Suspense, useCallback, useMemo, useTransition, useEffect } from 'react';
-import { Routes, Route, useNavigate, Outlet, useLocation } from 'react-router-dom';
+import React, { Suspense, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { Routes, Route, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { FiGrid, FiMail } from 'react-icons/fi';
 import { NotFound, Loading, Gallery, Contact, Admin } from './pages';
-import { NavigationBar, Settings, ToastProvider } from './components';
+import { Settings, ToastProvider } from './components';
 import { useTheme, useAnimations } from './hooks';
 import styles from './App.module.css';
-
-const NAVIGATION_PAGES = [
-  { label: 'Gallery', to: '/'        },
-  { label: 'Contact', to: '/contact' },
-];
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -16,29 +13,44 @@ const ScrollToTop = () => {
   return null;
 };
 
+// Navigates between Gallery and Contact — always shows the *other* page.
+const PageNavBubble = () => {
+  const navigate     = useNavigate();
+  const { pathname } = useLocation();
+  const toContact    = pathname === '/';
+  const Icon         = toContact ? FiMail : FiGrid;
+  const label        = toContact ? 'Go to Contact' : 'Go to Gallery';
+
+  return (
+    <button
+      type="button"
+      className={styles.navBubble}
+      onClick={() => navigate(toContact ? '/contact' : '/')}
+      aria-label={label}
+      title={label}
+    >
+      <Icon />
+    </button>
+  );
+};
+
+// Single portal anchor — both buttons share one fixed position so they
+// are always perfectly aligned regardless of screen size.
+const FloatingControls = ({ theme, toggleTheme }) => createPortal(
+  <div className={styles.floatingControls}>
+    <PageNavBubble />
+    <Settings theme={theme} toggleTheme={toggleTheme} />
+  </div>,
+  document.body
+);
+
 const AppLayout = () => {
-  const navigate  = useNavigate();
-  const location  = useLocation();
+  const location = useLocation();
   const { theme, toggleTheme } = useTheme();
-  const [, startTransition] = useTransition();
-
-  const handleNavigate = useCallback((to) => {
-    if (to) startTransition(() => navigate(to));
-  }, [navigate, startTransition]);
-
-  const navigationLinks = useMemo(() => NAVIGATION_PAGES.map(p => ({ ...p })), []);
 
   return (
     <div className={styles.app}>
-      <NavigationBar
-        links={navigationLinks}
-        onNavigate={handleNavigate}
-        className={styles.navigationBar}
-      />
-
-      <div className={styles.themeSwitch}>
-        <Settings theme={theme} toggleTheme={toggleTheme} />
-      </div>
+      <FloatingControls theme={theme} toggleTheme={toggleTheme} />
 
       <div key={location.pathname} className={styles.pageContent}>
         <Suspense fallback={<Loading />}>
@@ -55,10 +67,10 @@ const AppContent = () => (
     <Routes>
       <Route path="/admin" element={<Admin />} />
       <Route path="/" element={<AppLayout />}>
-        <Route index              element={<Gallery />} />
-        <Route path="contact"    element={<Contact />} />
-        <Route path="loading"    element={<Loading />} />
-        <Route path="*"          element={<NotFound />} />
+        <Route index           element={<Gallery />} />
+        <Route path="contact"  element={<Contact />} />
+        <Route path="loading"  element={<Loading />} />
+        <Route path="*"        element={<NotFound />} />
       </Route>
     </Routes>
   </>

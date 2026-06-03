@@ -21,21 +21,20 @@ const Modal = ({ open, onClose, children, title, size = 'md' }) => {
   useEffect(() => {
     if (!open) return;
 
-    // Remember the element that opened the modal so focus can be restored.
     previousFocusRef.current = document.activeElement;
 
-    // Compensate for scrollbar disappearing so the backdrop doesn't shift.
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    // Save position before locking — overflow:hidden can reset scrollY on some
+    // browsers (notably iOS Safari). Restoring in cleanup puts the user back
+    // exactly where they were.
+    const scrollY = window.scrollY;
     document.body.style.overflow = 'hidden';
-    document.body.style.paddingRight = `${scrollbarWidth}px`;
 
-    // Move focus into the dialog after it has painted.
     const raf = requestAnimationFrame(() => dialogRef.current?.focus());
 
     return () => {
       cancelAnimationFrame(raf);
       document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
+      window.scrollTo(0, scrollY);
       previousFocusRef.current?.focus();
     };
   }, [open]);

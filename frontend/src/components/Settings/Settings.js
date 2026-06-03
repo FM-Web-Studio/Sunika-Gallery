@@ -7,21 +7,19 @@ import { useAnimations } from '../../hooks';
 
 import styles from "./Settings.module.css";
 
-// ─── BUBBLE CONFIGURATION ──────────────────────────────────────────────────────────
-// tx / ty: translation from trigger center (px) when open.
-// Designed for a top-right fixed anchor → bubbles fan down-left.
+// tx / ty: translation from trigger centre (px) when open.
+// Anchor is top-right → bubbles fan down-left.
 const BUBBLES = [
-  { id: 'theme',      label: 'Theme',  tx: -88, ty: 62,  delay: '0s'     },
-  { id: 'animations', label: 'Motion', tx: -22, ty: 90,  delay: '0.06s'  },
+  { id: 'theme',      label: 'Theme',  tx: -88, ty: 62,  delay: '0s'    },
+  { id: 'animations', label: 'Motion', tx: -22, ty: 90,  delay: '0.06s' },
 ];
 
-// ─── TRIGGER BUTTON ───────────────────────────────────────────────────────────────
-// Circular glass cog button with cursor-following glow when closed.
+// ─── TRIGGER ──────────────────────────────────────────────────────────────────
 
 const TriggerButton = ({ isOpen, onClick, size }) => {
   const ref = useRef(null);
-  const [glowPos, setGlowPos]   = useState({ x: 50, y: 50 });
-  const [hovered, setHovered]   = useState(false);
+  const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
+  const [hovered, setHovered] = useState(false);
 
   const handleMouseMove = useCallback((e) => {
     const r = ref.current?.getBoundingClientRect();
@@ -42,7 +40,6 @@ const TriggerButton = ({ isOpen, onClick, size }) => {
       style={{
         width:  size,
         height: size,
-        // CSS custom properties consumed by the ::before glow layer
         '--glow-x':    `${glowPos.x}%`,
         '--glow-y':    `${glowPos.y}%`,
         '--glow-show': (!isOpen && hovered) ? '1' : '0',
@@ -59,8 +56,7 @@ const TriggerButton = ({ isOpen, onClick, size }) => {
   );
 };
 
-// ─── SETTING BUBBLES ───────────────────────────────────────────────────────────────
-// Self-contained bubbles — each owns its state and applies its action directly.
+// ─── BUBBLES ──────────────────────────────────────────────────────────────────
 
 const ThemeBubble = ({ cfg, isOpen, theme, toggleTheme }) => {
   const isDark = theme === 'dark';
@@ -110,8 +106,10 @@ const AnimationsBubble = ({ cfg, isOpen }) => {
   );
 };
 
-// ─── SETTINGS ROOT ───────────────────────────────────────────────────────────────
-// Portalled to <body> — avoids the App wrapper's stacking context (position:fixed + z-index).
+// ─── SETTINGS ROOT ────────────────────────────────────────────────────────────
+// Renders inline (no self-portal) — FloatingControls in App.js handles the
+// portal and fixed positioning so both buttons share one anchor point.
+// Only the backdrop portals to <body> to sit in the root stacking context.
 
 const Settings = ({ theme, toggleTheme, cogSize = 52, className = '' }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -120,46 +118,35 @@ const Settings = ({ theme, toggleTheme, cogSize = 52, className = '' }) => {
   const toggle = () => setMenuOpen(prev => !prev);
   const close  = useCallback(() => setMenuOpen(false), []);
 
-  // ─── CLOSE HANDLERS ───────────────────────────────────────────────────────
-
-  // Close when clicking outside the container
   useEffect(() => {
     if (!menuOpen) return;
     const handler = (e) => {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
-        close();
-      }
+      if (containerRef.current && !containerRef.current.contains(e.target)) close();
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, [menuOpen, close]);
 
-  // Close on Escape key
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') close(); };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
   }, [close]);
 
-  // ─── RENDER ───────────────────────────────────────────────────────────────
-  // Backdrop is a sibling of the container (not a child) — direct z-index comparison:
-  // container (z:1050) > backdrop (z:1040) > page content.
-
   const [themeCfg, animCfg] = BUBBLES;
 
-  return createPortal(
+  return (
     <>
-      {menuOpen && (
-        <div className={styles.backdrop} onClick={close} aria-hidden="true" />
+      {menuOpen && createPortal(
+        <div className={styles.backdrop} onClick={close} aria-hidden="true" />,
+        document.body
       )}
       <div className={`${styles.container} ${className}`} ref={containerRef}>
-        {/* Bubbles rendered before trigger so trigger sits on top in DOM order */}
         <ThemeBubble      cfg={themeCfg} isOpen={menuOpen} theme={theme} toggleTheme={toggleTheme} />
         <AnimationsBubble cfg={animCfg}  isOpen={menuOpen} />
         <TriggerButton isOpen={menuOpen} onClick={toggle} size={cogSize} />
       </div>
-    </>,
-    document.body
+    </>
   );
 };
 

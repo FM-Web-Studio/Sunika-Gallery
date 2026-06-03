@@ -12,12 +12,11 @@
   positioned relative to the trigger's centre point.
   overflow: visible lets bubbles extend outside the box.
 */
+/* Container is intentionally not positioned — FloatingControls in App.js
+   provides the fixed anchor. overflow: visible lets bubbles extend outside. */
 .container {
-  position: fixed;
-  top: 16px;
-  right: 20px;
-  /* Sit above the backdrop (--z-modal-backdrop: 1040) */
-  z-index: var(--z-modal);
+  position: relative;
+  flex-shrink: 0;
 }
 
 

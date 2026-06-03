@@ -31,10 +31,12 @@ const FilterPanel = ({
     if (!open) return;
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
+    const scrollY = window.scrollY;
     document.body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
+      window.scrollTo(0, scrollY);
     };
   }, [open, onClose]);
 

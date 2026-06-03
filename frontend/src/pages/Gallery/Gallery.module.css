@@ -17,16 +17,15 @@
   font-size: var(--font-size-md);
 }
 
-/* ── Sticky filter bar — transparent container, frosted button ────────────── */
+/* ── Sticky filter bar — left-aligned on all screen sizes ────────────────── */
 .filterBar {
   position: sticky;
-  top: 80px; /* clears the floating desktop nav capsule */
+  top: var(--spacing-sm);
   z-index: var(--z-sticky);
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin-bottom: var(--spacing-lg);
-  /* Transparent — content scrolls freely underneath */
-  pointer-events: none; /* pass clicks through the empty space */
+  pointer-events: none;
 }
 
 .filterFab {
@@ -94,18 +93,9 @@
   padding: var(--spacing-3xl) 0;
 }
 
-/* Mobile: nav sits at the bottom, stick the bar at the very top instead.
-   Move the filter FAB to the left so it doesn't collide with the Settings
-   button that is fixed at the top-right corner. */
-@media (max-width: 768px) {
-  .filterBar {
-    top: var(--spacing-sm);
-    justify-content: flex-start;
-  }
-}
-
 @media (max-width: 480px) {
-  .page { padding: var(--spacing-2xl) var(--spacing-md); }
+  /* Extra top padding clears the 64px floating controls area on small screens */
+  .page { padding: var(--spacing-4xl) var(--spacing-md) var(--spacing-2xl); }
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     column-gap: var(--spacing-lg);
