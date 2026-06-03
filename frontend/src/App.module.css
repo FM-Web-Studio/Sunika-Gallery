@@ -21,47 +21,37 @@
   gap: 10px;
 }
 
-/* ── Nav bubble — visual style only, no positioning ──────────────────────── */
-/* Inherits position from .floatingControls flex row. Reset global button
-   defaults that would otherwise override our pill dimensions. */
+/* ── Nav pill — LightWaveButton with size + shape overrides only ─────────── */
+/* All visual effects (wave fill, border, hover glow) come from LightWaveButton. */
 .navBubble {
-  /* Reset globals */
-  padding: 0 !important;
-  /* Dimensions */
-  width: 52px;
-  height: 52px;
+  height: 52px !important;
+  border-radius: var(--radius-full) !important;
+  padding: 0 18px !important;
+}
+
+.navLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.navArrow {
+  font-size: 1rem;
   flex-shrink: 0;
-  border-radius: 50%;
-  /* Glass surface — matches the Settings trigger */
-  border: 1px solid var(--border-color-hover);
-  background: var(--frosted-background);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  /* Icon */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: var(--accent-1);
-  /* Interaction */
-  cursor: pointer;
-  outline: none;
-  transition:
-    border-color 0.28s ease,
-    box-shadow   0.28s ease,
-    transform    0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.navBubble:hover {
-  border-color: var(--accent-1);
-  transform: scale(1.07);
-  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
+/* Arrow nudges in its travel direction on hover */
+.navBubbleForward:hover .navArrow { transform: translateX(3px); }
+.navBubbleBack:hover    .navArrow { transform: translateX(-3px); }
 
-.navBubble:focus-visible {
-  outline: 2px solid var(--accent-1);
-  outline-offset: 3px;
+/* ── Mobile: collapse to icon-only below 380px ───────────────────────────── */
+@media (max-width: 380px) {
+  .navBubble { padding: 0 14px !important; }
+  .navLabel  { display: none; }
+  .navArrow  { font-size: 1.1rem; }
 }
 
 /* ── Page content ─────────────────────────────────────────────────────────── */

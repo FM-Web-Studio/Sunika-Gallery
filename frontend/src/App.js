@@ -1,9 +1,9 @@
 import React, { Suspense, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Routes, Route, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { FiGrid, FiMail } from 'react-icons/fi';
+import { FiArrowRight, FiArrowLeft } from 'react-icons/fi';
 import { NotFound, Loading, Gallery, Contact, Admin } from './pages';
-import { Settings, ToastProvider } from './components';
+import { Settings, ToastProvider, LightWaveButton } from './components';
 import { useTheme, useAnimations } from './hooks';
 import styles from './App.module.css';
 
@@ -13,24 +13,24 @@ const ScrollToTop = () => {
   return null;
 };
 
-// Navigates between Gallery and Contact — always shows the *other* page.
+// Pill that shows where you'll land — arrow direction mirrors navigation intent.
 const PageNavBubble = () => {
   const navigate     = useNavigate();
   const { pathname } = useLocation();
   const toContact    = pathname === '/';
-  const Icon         = toContact ? FiMail : FiGrid;
-  const label        = toContact ? 'Go to Contact' : 'Go to Gallery';
+  const label        = toContact ? 'Contact' : 'Gallery';
+  const ariaLabel    = toContact ? 'Go to Contact' : 'Go to Gallery';
 
   return (
-    <button
-      type="button"
-      className={styles.navBubble}
+    <LightWaveButton
+      className={`${styles.navBubble} ${toContact ? styles.navBubbleForward : styles.navBubbleBack}`}
       onClick={() => navigate(toContact ? '/contact' : '/')}
-      aria-label={label}
-      title={label}
+      aria-label={ariaLabel}
     >
-      <Icon />
-    </button>
+      {!toContact && <FiArrowLeft className={styles.navArrow} aria-hidden="true" />}
+      <span className={styles.navLabel}>{label}</span>
+      {toContact  && <FiArrowRight className={styles.navArrow} aria-hidden="true" />}
+    </LightWaveButton>
   );
 };
 
