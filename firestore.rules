@@ -56,8 +56,39 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // Note: the Sunika-Portfolio app's own collections are governed by their
-    // own rules; this file only declares gallery_* paths plus the default deny.
+    // ── Portfolio: projects ───────────────────────────────────────────────
+    match /portfolio_projects/{id} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ── Portfolio: education & experience timelines ───────────────────────
+    match /education/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /experience/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── Portfolio: singleton settings docs (personal, contact, interests,
+    //    skills, socials) ─────────────────────────────────────────────────
+    match /portfolio/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── Portfolio: contact-form messages ──────────────────────────────────
+    // Visitors may submit; only an admin may read/manage entries.
+    match /portfolio_messages/{doc} {
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'message', 'createdAt'])
+                    && request.resource.data.name is string
+                    && request.resource.data.email is string
+                    && request.resource.data.message is string
+                    && request.resource.data.message.size() <= 5000;
+      allow read, update, delete: if isAdmin();
+    }
 
     // Default deny
     match /{document=**} { allow read, write: if false; }
