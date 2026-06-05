@@ -12,11 +12,11 @@ export const STORAGE_PREFIX = 'gallery';       // Storage folder for all gallery
 
 export const CATEGORIES = ['Paintings', 'Drawings', 'Artistic Mix'];
 
-export const CURRENCY_SYMBOL = process.env.REACT_APP_CURRENCY_SYMBOL || 'R';
+export const CURRENCY_SYMBOL = import.meta.env.VITE_CURRENCY_SYMBOL || 'R';
 
 // Comma-separated allowlist of admin Google account emails (client-side UX gate).
 // The real enforcement lives in firestore.rules / storage.rules.
-export const ADMIN_EMAILS = (process.env.REACT_APP_ADMIN_EMAILS || '')
+export const ADMIN_EMAILS = (import.meta.env.ADMIN_EMAILS || '')
   .split(',')
   .map(s => s.trim().toLowerCase())
   .filter(Boolean);
