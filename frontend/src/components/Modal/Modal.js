@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useCallback } from 'react';
+import ReactDOM from 'react-dom';
 import styles from './Modal.module.css';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
@@ -79,7 +80,7 @@ const Modal = ({ open, onClose, children, title, size = 'md' }) => {
 
   if (!open) return null;
 
-  return (
+  return ReactDOM.createPortal(
     /* Backdrop — dims and blurs the page */
     <div className={styles.backdrop} onClick={handleBackdropClick}>
       {/* Dialog — glass panel */}
@@ -124,7 +125,8 @@ const Modal = ({ open, onClose, children, title, size = 'md' }) => {
           {children}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 
