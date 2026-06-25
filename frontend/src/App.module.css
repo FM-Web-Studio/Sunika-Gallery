@@ -14,7 +14,7 @@
   position: fixed;
   top: 16px;
   right: 20px;
-  z-index: var(--z-fixed);
+  z-index: var(--z-modal);
   display: flex;
   flex-direction: row;
   align-items: center;
