@@ -30,7 +30,7 @@
   /* Fill the viewport and sit above all page content. */
   position: fixed;
   inset: 0;
-  z-index: var(--z-modal-backdrop);
+  z-index: var(--z-dialog-backdrop);
 
   /* Center the dialog on-screen, offset from top to clear the settings wheel. */
   display: flex;
@@ -61,7 +61,7 @@
   width: 100%;
   max-width: 580px;
   max-height: min(85dvh, 85vh);
-  z-index: var(--z-modal);
+  z-index: var(--z-dialog);
 
   display: flex;
   flex-direction: column;
