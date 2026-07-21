@@ -1,9 +1,15 @@
 :root {
     color-scheme: light;
 
-    /* ─── GENERAL SETTINGS ──────────────────────────────────────────────────── */
+    /* ─── TYPOGRAPHY ────────────────────────────────────────────────────────── */
+    /* Quiet-luxury pairing: Inter carries the UI/body, Instrument Sans the display. */
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+        'Helvetica Neue', sans-serif;
+    --font-display: 'Instrument Sans', 'Inter', -apple-system, BlinkMacSystemFont,
+        'Segoe UI', sans-serif;
+
     /* Font Sizes - Responsive Typography */
-    --font-size-xs: 0.875rem;     /* 14px */
+    --font-size-xs: 0.8125rem;    /* 13px */
     --font-size-sm: 0.9375rem;    /* 15px */
     --font-size-base: 1rem;       /* 16px */
     --font-size-md: 1.125rem;     /* 18px */
@@ -25,23 +31,26 @@
     --spacing-5xl: 6rem;          /* 96px */
     --spacing-6xl: 8rem;          /* 128px */
 
-    /* Border Radius */
-    --radius-sm: 0.375rem;        /* 6px */
-    --radius-md: 0.5rem;          /* 8px */
-    --radius-lg: 0.75rem;         /* 12px */
-    --radius-xl: 1rem;            /* 16px */
+    /* Border Radius — tightened for a calmer, more restrained (quiet-luxury) grid */
+    --radius-sm: 0.25rem;         /* 4px */
+    --radius-md: 0.4375rem;       /* 7px */
+    --radius-lg: 0.625rem;        /* 10px */
+    --radius-xl: 0.875rem;        /* 14px */
     --radius-full: 9999px;
 
-    /* Transitions */
-    --transition-fast: 150ms ease;
-    --transition-base: 250ms ease;
-    --transition-slow: 350ms ease;
+    /* Transitions & premium easings */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-fast: 160ms var(--ease-out);
+    --transition-base: 280ms var(--ease-out);
+    --transition-slow: 480ms var(--ease-out);
 
-    /* Shadows — soft, gallery-like elevation */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-    --shadow-lg: 0 12px 28px -6px rgba(0, 0, 0, 0.12), 0 4px 8px -2px rgba(0, 0, 0, 0.06);
-    --shadow-xl: 0 24px 48px -12px rgba(0, 0, 0, 0.16), 0 8px 16px -4px rgba(0, 0, 0, 0.08);
+    /* Shadows — soft, quiet, gallery-like elevation (less spread than before) */
+    --shadow-sm: 0 1px 2px 0 rgba(41, 37, 30, 0.05);
+    --shadow-md: 0 2px 8px -2px rgba(41, 37, 30, 0.08), 0 1px 3px -1px rgba(41, 37, 30, 0.05);
+    --shadow-lg: 0 8px 24px -8px rgba(41, 37, 30, 0.14), 0 3px 8px -3px rgba(41, 37, 30, 0.07);
+    --shadow-xl: 0 20px 48px -16px rgba(41, 37, 30, 0.20), 0 6px 16px -6px rgba(41, 37, 30, 0.10);
 
     /* Z-Index Scale */
     --z-base: 1;
@@ -50,101 +59,98 @@
     --z-fixed: 1030;
     --z-modal-backdrop: 1040;
     --z-modal: 1050;
-    /* App dialogs (image lightbox, etc.) sit ABOVE the fixed floating controls
-       (settings cog + nav pill at --z-modal) so their backdrop dims the cog and
-       the close button is always clickable. */
     --z-dialog-backdrop: 1055;
     --z-dialog: 1056;
     --z-popover: 1060;
     --z-tooltip: 1070;
 
-    /* ─── COLOR PALETTE — GALLERY NEUTRAL ───────────────────────────────────── */
+    /* ─── COLOR PALETTE — QUIET LUXURY / WARM GALLERY NEUTRAL ────────────────── */
 
-    /* — Text: Light Mode (near-black → soft gray) — */
-    --primary-text-color-light: #1a1a1a;         /* Near-black */
-    --secondary-text-color-light: #4a4a4a;       /* Soft charcoal */
-    --tertiary-text-color-light: #6b6b6b;        /* Muted gray */
-    --disabled-color-light: #a8a8a3;             /* Light gray */
+    /* — Text: Light Mode (warm near-black → soft taupe-gray) — */
+    --primary-text-color-light: #211d18;
+    --secondary-text-color-light: #5c574e;
+    --tertiary-text-color-light: #877f70;
+    --disabled-color-light: #b4ad9f;
 
-    /* — Text: Dark Mode (off-white → gray) — */
-    --primary-text-color-dark: #f0f0f0;          /* Off-white */
-    --secondary-text-color-dark: #c4c4c4;        /* Light gray */
-    --tertiary-text-color-dark: #9a9a9a;         /* Muted gray */
-    --disabled-color-dark: #5a5a5a;              /* Dim gray */
+    /* — Text: Dark Mode (warm off-white → gray) — */
+    --primary-text-color-dark: #f2efe8;
+    --secondary-text-color-dark: #c6c0b4;
+    --tertiary-text-color-dark: #948d7e;
+    --disabled-color-dark: #5c564c;
 
     /* — Status Colors — */
-    --error-color: #c0392b;
-    --warning-color: #d68910;
-    --success-color: #4a8b3a;
+    --error-color: #b0402f;
+    --warning-color: #c07d19;
+    --success-color: #5d7f3a;
     --info-color: #5a7d9a;
 
     /* — Sold badge — */
-    --sold-color-light: #b03434;                 /* Deep red — "sold" marker */
-    --sold-color-dark:  #e06464;
+    --sold-color-light: #a5402e;
+    --sold-color-dark:  #d97b68;
     --sold-color: var(--sold-color-light);
 
     /* — Status Backgrounds: Light Mode — */
-    --success-background-color-light: #eef5ec;
-    --warning-background-color-light: #fdf4e3;
-    --error-background-color-light: #faecea;
+    --success-background-color-light: #eef3e8;
+    --warning-background-color-light: #f8f0e0;
+    --error-background-color-light: #f7e9e5;
     --info-background-color-light: #ecf1f5;
 
     /* — Status Backgrounds: Dark Mode — */
-    --success-background-color-dark: #15201a;
+    --success-background-color-dark: #1a2015;
     --warning-background-color-dark: #211a0d;
-    --error-background-color-dark: #211210;
+    --error-background-color-dark: #221310;
     --info-background-color-dark: #121a21;
 
-    /* — Accent: Muted Taupe (Light Mode) — */
-    --accent-1-light: #8a7355;        /* Muted taupe — primary action */
-    --accent-2-light: #a68b68;        /* Lighter taupe — highlight */
-    --accent-3-light: #6b5a42;        /* Deep taupe — pressed / deep */
-    --accent-hover-light: #6b5a42;    /* Deep taupe — hover state */
+    /* — Accent: Muted Taupe / Bronze (Light Mode) — */
+    --accent-1-light: #8a7355;
+    --accent-2-light: #a68b68;
+    --accent-3-light: #6b5a42;
+    --accent-hover-light: #6b5a42;
 
     /* — Accent: Warm Sand (Dark Mode) — */
-    --accent-1-dark: #b49b78;         /* Warm sand — primary on dark */
-    --accent-2-dark: #c9b391;         /* Light sand — highlights */
-    --accent-3-dark: #8a7355;         /* Taupe — mid tone */
-    --accent-hover-dark: #c9b391;     /* Light sand — hover brightness */
+    --accent-1-dark: #bfa47d;
+    --accent-2-dark: #d4bd97;
+    --accent-3-dark: #93795a;
+    --accent-hover-dark: #d4bd97;
 
     /* — Accent RGB (for rgba() usage) — */
     --accent-1-rgb-light: 138, 115, 85;
     --accent-2-rgb-light: 166, 139, 104;
     --accent-3-rgb-light: 107, 90, 66;
 
-    --accent-1-rgb-dark: 180, 155, 120;
-    --accent-2-rgb-dark: 201, 179, 145;
-    --accent-3-rgb-dark: 138, 115, 85;
+    --accent-1-rgb-dark: 191, 164, 125;
+    --accent-2-rgb-dark: 212, 189, 151;
+    --accent-3-rgb-dark: 147, 121, 90;
 
     /* — Accent Backgrounds: Light Mode — */
-    --accent-1-background-light: #f4f1ea;
-    --accent-2-background-light: #ebe5d9;
-    --accent-3-background-light: #ddd3c2;
+    --accent-1-background-light: #f2ede3;
+    --accent-2-background-light: #e9e1d2;
+    --accent-3-background-light: #ddd2bf;
 
     /* — Accent Backgrounds: Dark Mode — */
-    --accent-1-background-dark: #201d16;
-    --accent-2-background-dark: #2a261d;
-    --accent-3-background-dark: #353026;
+    --accent-1-background-dark: #211d16;
+    --accent-2-background-dark: #2b261d;
+    --accent-3-background-dark: #363026;
 
-    /* — Backgrounds: Light Mode (off-white gallery walls) — */
-    --background-0-light: #fafaf8;               /* Off-white — page canvas */
-    --background-1-light: #ffffff;               /* Pure white — primary surface */
-    --background-2-light: #f4f4f1;               /* Faint gray — elevated surface */
-    --background-3-light: #ededE9;               /* Light gray */
-    --background-4-light: #e5e5e0;               /* Gray — dividers, subtle cards */
-    --frosted-background-light: rgba(255, 255, 255, 0.82);
-    --border-color-light: #e5e5e0;               /* Soft gray border */
-    --border-color-hover-light: #d0d0ca;         /* Mid gray border hover */
+    /* — Backgrounds: Light Mode (warm paper / linen gallery walls) — */
+    --background-0-light: #f6f3ec;               /* Warm paper — page canvas */
+    --background-1-light: #fdfbf6;               /* Soft white — primary surface */
+    --background-2-light: #efebe1;               /* Faint linen — elevated surface */
+    --background-3-light: #e7e2d5;               /* Light sand */
+    --background-4-light: #ddd7c8;               /* Sand — dividers, subtle cards */
+    --frosted-background-light: rgba(253, 251, 246, 0.78);
+    --border-color-light: #e5dfd2;               /* Soft warm border */
+    --border-color-hover-light: #cdc5b4;         /* Mid warm border hover */
 
-    /* — Backgrounds: Dark Mode (dark gallery walls) — */
-    --background-0-dark: #121212;                /* Near-black — page canvas */
-    --background-1-dark: #1a1a1a;                /* Charcoal — primary surface */
-    --background-2-dark: #1e1e1e;                /* Elevated surface */
-    --background-3-dark: #262626;                /* Raised surface */
-    --background-4-dark: #2e2e2e;                /* High-elevation card */
-    --frosted-background-dark: rgba(26, 26, 26, 0.86);
-    --border-color-dark: #2e2e2e;                /* Subtle dark border */
-    --border-color-hover-dark: #3d3d3d;          /* Slightly visible */
+    /* — Backgrounds: Dark Mode (warm dark gallery walls) — */
+    --background-0-dark: #14120f;                /* Warm near-black — page canvas */
+    --background-1-dark: #1b1815;                /* Warm charcoal — primary surface */
+    --background-2-dark: #211d19;                /* Elevated surface */
+    --background-3-dark: #29241f;                /* Raised surface */
+    --background-4-dark: #322c25;                /* High-elevation card */
+    --frosted-background-dark: rgba(27, 24, 21, 0.80);
+    --border-color-dark: #2d2823;                /* Subtle warm dark border */
+    --border-color-hover-dark: #423b31;          /* Slightly visible */
 
     /* — Applied Colors (Default: Light Mode) — */
     --primary-text-color: var(--primary-text-color-light);
@@ -222,16 +228,18 @@
 
     /* Deeper shadows for dark surfaces */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 12px 28px -6px rgba(0, 0, 0, 0.6), 0 4px 8px -2px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 24px 48px -12px rgba(0, 0, 0, 0.7), 0 8px 16px -4px rgba(0, 0, 0, 0.6);
+    --shadow-md: 0 2px 8px -2px rgba(0, 0, 0, 0.5), 0 1px 3px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 24px -8px rgba(0, 0, 0, 0.6), 0 3px 8px -3px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 48px -16px rgba(0, 0, 0, 0.72), 0 6px 16px -6px rgba(0, 0, 0, 0.55);
 }
 
 
 /* ─── PAGE & BODY ───────────────────────────────────────────────────────────── */
+/* Native smooth-scroll is OFF — Lenis owns inertial scrolling (see useSmoothScroll).
+   When Lenis is inactive (reduced motion) the browser default applies. */
 html {
-    scroll-behavior: smooth;
     overflow-x: hidden;
+    scroll-behavior: auto;
 }
 
 body {
@@ -253,6 +261,48 @@ html {
 
 body, #root {
     overflow: visible;
+}
+
+
+/* ─── LENIS SMOOTH SCROLL ───────────────────────────────────────────────────── */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+    pointer-events: none;
+}
+
+
+/* ─── SCROLL-REVEAL ─────────────────────────────────────────────────────────── */
+/* Elements marked [data-reveal] fade + rise as they enter the viewport.
+   useReveal adds .is-revealed via IntersectionObserver. Stagger via --reveal-delay. */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+        opacity 0.8s var(--ease-out-expo),
+        transform 0.9s var(--ease-out-expo);
+    transition-delay: var(--reveal-delay, 0s);
+    will-change: opacity, transform;
+}
+
+[data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
 }
 
 
@@ -296,6 +346,10 @@ body, #root {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
+    [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }
 
 /* Manual animation override */
@@ -303,6 +357,11 @@ body, #root {
     transition: none !important;
     animation: none !important;
     scroll-behavior: auto !important;
+}
+
+[data-no-animations="true"] [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 

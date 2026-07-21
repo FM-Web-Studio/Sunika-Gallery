@@ -1,61 +1,56 @@
 .card {
   display: flex;
   flex-direction: column;
-  text-align: center;
+  text-align: left;
   background: transparent;
   border: none;
   border-radius: 0;
-  overflow: hidden;
   padding: 0;
   cursor: pointer;
-  /* Prevents the grid item from growing beyond its track (fixes title overflow) */
   min-width: 0;
-  transition: transform var(--transition-base);
 }
 
-.card:hover {
-  transform: translateY(-7px);
-  /* Lift the hovered card above its neighbours so its shadow reads correctly */
-  z-index: 1;
-}
-
-/* ── Framed painting ──────────────────────────────────────────────────────── */
+/* ── Framed painting — refined, quiet mat + hairline frame ─────────────────── */
 .imageWrap {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
 
-  /* Frame: thick border in the theme's primary text colour
-     (near-black on light walls, off-white on dark walls) */
-  border: 10px solid var(--primary-text-color);
-
-  /* Mat: narrow reveal of the surface colour between frame and image */
-  padding: 6px;
-  background: var(--background-2);
-
-  /* Border + padding included in the 100% width so card fits its grid track */
+  /* Soft mat surrounds the image; a single hairline frame contains it. */
+  padding: 12px;
+  background: var(--background-1);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
   box-sizing: border-box;
 
-  /* Drop-shadow — painting hanging on a lit gallery wall */
+  /* Quiet, layered elevation — a piece resting on a lit wall. */
   box-shadow:
-    0 2px 6px  rgba(0, 0, 0, 0.12),
-    0 10px 28px rgba(0, 0, 0, 0.24),
-    0 24px 60px rgba(0, 0, 0, 0.14);
+    0 1px 2px rgba(41, 37, 30, 0.06),
+    0 12px 30px -12px rgba(41, 37, 30, 0.22);
 
-  transition: box-shadow var(--transition-base);
+  transition:
+    box-shadow var(--transition-base),
+    transform var(--transition-base),
+    border-color var(--transition-base);
 }
 
-.card:hover .imageWrap {
+/* Lift only the framed piece on hover — the caption stays anchored, so it
+   reads like the artwork rising off the wall (and never fights the reveal). */
+.card:hover .imageWrap,
+.card:focus-visible .imageWrap {
+  transform: translateY(-6px);
+  border-color: var(--border-color-hover);
   box-shadow:
-    0 6px 14px  rgba(0, 0, 0, 0.18),
-    0 18px 45px rgba(0, 0, 0, 0.32),
-    0 36px 90px rgba(0, 0, 0, 0.20);
+    0 4px 10px rgba(41, 37, 30, 0.10),
+    0 26px 50px -16px rgba(41, 37, 30, 0.30);
 }
 
 .image {
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  border-radius: 1px;
 }
 
 .image img {
@@ -63,58 +58,62 @@
 }
 
 .card:hover .image img {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
 /* ── Overlaid badges ─────────────────────────────────────────────────────── */
 .soldBadge {
   position: absolute;
-  top: var(--spacing-sm);
-  right: var(--spacing-sm);
-  background: var(--sold-color);
-  color: #fff;
-  font-size: var(--font-size-xs);
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background: var(--primary-text-color);
+  color: var(--background-1);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 4px 10px;
+  padding: 4px 11px;
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-sm);
 }
 
 .likeBtn {
   position: absolute;
-  bottom: var(--spacing-sm);
-  right: var(--spacing-sm);
+  bottom: var(--spacing-md);
+  right: var(--spacing-md);
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 0.3rem 0.6rem;
+  gap: 5px;
+  padding: 0.32rem 0.62rem;
   background: var(--frosted-background);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   color: var(--secondary-text-color);
   font-size: 0.85rem;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .likeBtn:hover {
-  border-color: #e06464;
-  color: #e06464;
-  transform: scale(1.06);
+  border-color: var(--sold-color);
+  color: var(--sold-color);
+  transform: scale(1.05);
 }
 
 .likeBtnActive {
-  background: rgba(224, 100, 100, 0.15);
-  border-color: #e06464;
-  color: #e06464;
+  background: var(--error-background-color);
+  border-color: var(--sold-color);
+  color: var(--sold-color);
 }
 
 .likeCount {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 600;
 }
 
@@ -122,19 +121,21 @@
 .body {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: var(--spacing-sm) 0 0;
+  align-items: flex-start;
+  gap: 4px;
+  padding: var(--spacing-md) 2px 0;
   min-width: 0;
+  width: 100%;
 }
 
 .title {
   margin: 0;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  font-style: italic;
+  font-family: var(--font-display);
+  font-size: var(--font-size-base);
+  font-weight: 600;
   color: var(--primary-text-color);
-  line-height: 1.35;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   overflow-wrap: break-word;
   word-break: break-word;
   width: 100%;
@@ -142,9 +143,10 @@
 
 .price {
   margin: 0;
-  font-size: var(--font-size-xs);
-  color: var(--secondary-text-color);
-  letter-spacing: 0.02em;
+  font-size: var(--font-size-sm);
+  color: var(--accent-1);
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .date {
@@ -153,10 +155,13 @@
   color: var(--tertiary-text-color);
 }
 
-/* ── Mobile: thinner frame on small screens ──────────────────────────────── */
+/* Star rating sits just under the label with a little air. */
+.body > div { margin-top: 2px; }
+
 @media (max-width: 480px) {
   .imageWrap {
-    border-width: 6px;
-    padding: 4px;
+    padding: 7px;
   }
+  .body { padding-top: var(--spacing-sm); }
+  .title { font-size: var(--font-size-sm); }
 }

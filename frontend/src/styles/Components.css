@@ -2,8 +2,7 @@
 
 body {
     font-size: var(--font-size-base);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: var(--font-body);
     color: var(--primary-text-color);
     line-height: 1.6;
     transition: color var(--transition-base), background-color var(--transition-base);
@@ -11,24 +10,27 @@ body {
 
 
 /* ─── TYPOGRAPHY ─────────────────────────────────────────────────────────── */
+/* Quiet luxury: headings are ink-on-paper (primary text), the taupe accent is
+   reserved for interaction — so it reads as restraint, not decoration. */
 
-h1, h2, h3 {
-    color: var(--accent-1);
+h1, h2, h3, h4, h5 {
+    font-family: var(--font-display);
+    color: var(--primary-text-color);
 }
 
 h1 {
     font-size: clamp(var(--font-size-2xl), 5vw, var(--font-size-4xl));
-    font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -0.034em;
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
     margin: var(--spacing-sm) 0 var(--spacing-md) 0;
 }
 
 h2 {
     font-size: clamp(var(--font-size-xl), 3.5vw, var(--font-size-3xl));
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.024em;
+    font-weight: 600;
+    line-height: 1.14;
+    letter-spacing: -0.022em;
     margin: var(--spacing-md) 0 var(--spacing-sm) 0;
 }
 
@@ -44,7 +46,7 @@ h4 {
     font-size: var(--font-size-md);
     font-weight: 600;
     line-height: 1.4;
-    color: var(--accent-2);
+    color: var(--secondary-text-color);
     letter-spacing: -0.005em;
     margin: var(--spacing-sm) 0;
 }
@@ -53,7 +55,7 @@ h5 {
     font-size: var(--font-size-base);
     font-weight: 600;
     line-height: 1.5;
-    color: var(--accent-3);
+    color: var(--secondary-text-color);
     margin: var(--spacing-sm) 0;
 }
 
@@ -417,13 +419,13 @@ select {
     appearance: none;
     padding-right: calc(var(--spacing-xl) + var(--spacing-sm));
     min-height: 42px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23b8651c' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238a7355' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
     background-position: right var(--spacing-md) center;
     background-repeat: no-repeat;
 }
 
 [data-theme="dark"] select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23e89542' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23bfa47d' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
 }
 
 select:focus option:checked {

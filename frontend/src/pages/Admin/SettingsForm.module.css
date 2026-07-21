@@ -1,7 +1,32 @@
 .form {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-md);
+}
+
+.sectionHead { display: flex; flex-direction: column; gap: 2px; }
+
+.sectionTitle {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+}
+
+.sectionHint {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--tertiary-text-color);
+}
+
+.divider {
+  height: 1px;
+  background: var(--border-color);
 }
 
 .grid {
@@ -14,126 +39,207 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
+  min-width: 0;
 }
 
 .label {
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--secondary-text-color);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--tertiary-text-color);
 }
 
-.input {
+/* ── Inputs & dropdown ─────────────────────────────────────────────────────── */
+.input,
+.select {
   width: 100%;
   box-sizing: border-box;
-  padding: 0.55rem 0.75rem;
-  background: var(--background-1);
+  height: 2.75rem;
+  padding: 0 0.85rem;
+  background-color: var(--background-1);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   color: var(--primary-text-color);
   font-size: var(--font-size-sm);
   font-family: inherit;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.input:focus { outline: none; border-color: var(--accent-1); }
-
-.socialsHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: var(--spacing-sm);
+.input:hover:not(:disabled),
+.select:hover:not(:disabled) {
+  border-color: var(--border-color-hover);
+  background-color: var(--background-1);
+  box-shadow: none;
 }
 
-.addSocial {
-  background: var(--accent-1-background);
-  color: var(--accent-1);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
-  padding: 0.3rem 0.8rem;
-  font-size: var(--font-size-xs);
-  font-weight: 600;
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--accent-1);
+  background-color: var(--background-1);
+  box-shadow: 0 0 0 3px rgba(var(--accent-1-rgb), 0.14);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Keep the global taupe dropdown arrow but size the control to match inputs.
+   background-color (not shorthand) preserves the arrow background-image. */
+.select {
+  min-height: 0;
+  padding-right: 2.2rem;
   cursor: pointer;
+}
+
+/* ── Social link cards ─────────────────────────────────────────────────────── */
+.socialList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.emptySocials {
+  margin: 0;
+  padding: var(--spacing-lg);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--tertiary-text-color);
+  background: var(--background-2);
+  border: 1px dashed var(--border-color-hover);
+  border-radius: var(--radius-md);
 }
 
 .socialCard {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-sm);
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
   background: var(--background-2);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
 }
 
-.socialTypeRow {
+.cardHead {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-xs);
-  align-items: center;
-}
-
-.typePill {
-  padding: 0.3rem 0.7rem;
-  background: var(--background-1);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
-  color: var(--secondary-text-color);
-  font-size: var(--font-size-xs);
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.typePill:hover { border-color: var(--accent-1); color: var(--primary-text-color); }
-
-.typePillActive {
-  background: var(--accent-1);
-  border-color: var(--accent-1);
-  color: #fff;
-  font-weight: 600;
-}
-
-.socialInputs {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
+  align-items: flex-end;
   gap: var(--spacing-sm);
 }
 
-.removeSocial {
-  background: transparent;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  color: var(--error-color);
-  width: 32px;
-  height: 32px;
-  font-size: 1.1rem;
-  line-height: 1;
-  cursor: pointer;
-  margin-left: auto;
+.socialIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  background: var(--accent-1-background);
+  color: var(--accent-1);
+  border-radius: var(--radius-md);
 }
 
+.socialIcon svg { width: 1.2rem; height: 1.2rem; }
+
+.headField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  flex: 1;
+  min-width: 0;
+}
+
+/* Clear, obviously-red delete button — icon always visible. */
+.removeSocial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  padding: 0;
+  background: var(--error-background-color);
+  border: 1px solid var(--error-color);
+  border-radius: var(--radius-md);
+  color: var(--error-color);
+  cursor: pointer;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.removeSocial svg { width: 1.15rem; height: 1.15rem; }
+
+.removeSocial:hover:not(:disabled) {
+  background: var(--error-color);
+  border-color: var(--error-color);
+  color: #fff;
+  box-shadow: none;
+}
+
+/* ── Add link ──────────────────────────────────────────────────────────────── */
+.addSocial {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  background: var(--accent-1-background);
+  color: var(--accent-1);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: background-color var(--transition-fast);
+}
+
+.addSocial:hover:not(:disabled) { background: var(--accent-2-background); color: var(--accent-1); box-shadow: none; }
+.addSocial svg { width: 15px; height: 15px; }
+
+/* ── Actions ───────────────────────────────────────────────────────────────── */
 .actions {
   display: flex;
   justify-content: flex-end;
   gap: var(--spacing-sm);
-  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-color);
 }
 
 .cancel,
 .submit {
-  padding: 0.65rem 1.4rem;
+  padding: 0.7rem 1.5rem;
   border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
   font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
   border: 1px solid transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+              color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.cancel { background: transparent; border-color: var(--border-color); color: var(--secondary-text-color); }
-.submit { background: var(--accent-1); color: #fff; }
-.submit:disabled, .cancel:disabled { opacity: 0.6; cursor: not-allowed; }
+.cancel svg,
+.submit svg { width: 1rem; height: 1rem; flex-shrink: 0; }
+
+/* Cancel — clearly red */
+.cancel { background: var(--error-color); border-color: var(--error-color); color: #fff; }
+.cancel:hover:not(:disabled) { background: var(--error-color); border-color: var(--error-color); color: #fff; transform: translateY(-1px); box-shadow: var(--shadow-md); opacity: 0.92; }
+
+/* Save — clearly green */
+.submit { background: var(--success-color); border-color: var(--success-color); color: #fff; }
+.submit:hover:not(:disabled) { background: var(--success-color); border-color: var(--success-color); color: #fff; transform: translateY(-1px); box-shadow: var(--shadow-md); opacity: 0.92; }
+
+.submit:disabled, .cancel:disabled { opacity: 0.5; cursor: not-allowed; }
 
 @media (max-width: 560px) {
   .grid { grid-template-columns: 1fr; }
-  .socialInputs { grid-template-columns: 1fr; }
 }

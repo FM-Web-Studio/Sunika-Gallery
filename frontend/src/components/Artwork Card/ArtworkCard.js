@@ -11,7 +11,7 @@ const formatAdded = (ts) => {
   return ts.toDate().toLocaleDateString('en-ZA', { month: 'short', year: 'numeric' });
 };
 
-const ArtworkCard = ({ artwork, onOpen }) => {
+const ArtworkCard = ({ artwork, onOpen, index = 0 }) => {
   const { showToast } = useToast();
   const { title, price, sold, imageUrl, ratingCount = 0, likeCount = 0, createdAt } = artwork;
   const avg      = averageRating(artwork);
@@ -63,6 +63,8 @@ const ArtworkCard = ({ artwork, onOpen }) => {
       onClick={() => onOpen?.(artwork)}
       onKeyDown={handleCardKey}
       aria-label={`View ${title || 'artwork'}`}
+      data-reveal
+      style={{ '--reveal-delay': `${Math.min(index, 10) * 0.05}s` }}
     >
       <div className={styles.imageWrap}>
         <ProtectedImage src={imageUrl} alt={title} className={styles.image} />

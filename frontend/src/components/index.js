@@ -10,5 +10,8 @@ export { default as ArtworkCard }      from './Artwork Card';
 export { default as CategoryFilter }   from './Category Filter';
 export { default as FilterPanel }      from './Filter Panel/FilterPanel';
 export { default as ArtworkLightbox }  from './Artwork Lightbox';
+export { default as KebabMenu }        from './Kebab Menu';
+export { default as BotanicalBackground } from './Botanical Background';
+export { default as ContactPopup }     from './Contact Popup';
 export { default as SocialLinks }      from './Social Links';
 export { default as ContactForm }      from './Contact Form';

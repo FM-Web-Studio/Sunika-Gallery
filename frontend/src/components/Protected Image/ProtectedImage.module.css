@@ -30,6 +30,19 @@
   user-select: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;
+  /* Gentle fade-in once the image has decoded, so it arrives softly during
+     fast scrolling instead of snapping in. */
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out, ease);
+}
+
+.image.loaded {
+  opacity: 1;
+}
+
+[data-no-animations="true"] .image {
+  opacity: 1;
+  transition: none;
 }
 
 .overlay {

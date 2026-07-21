@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { FiSliders } from 'react-icons/fi';
 import { ArtworkCard, FilterPanel, ArtworkLightbox } from '../../components';
 import { subscribeArtworks, CATEGORIES, averageRating } from '../../firebase';
+import { useReveal } from '../../hooks';
 import Loading from '../Loading';
 import styles from './Gallery.module.css';
 
@@ -56,6 +57,9 @@ const Gallery = () => {
     return sorted;
   }, [artworks, activeCategory, status, sort]);
 
+  // Re-run the scroll-reveal observer whenever the visible set changes.
+  useReveal([loading, filtered.length, activeCategory, status, sort]);
+
   const selectedLive = selected
     ? artworks.find(a => a.id === selected.id) || selected
     : null;
@@ -74,33 +78,51 @@ const Gallery = () => {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <h1 className={styles.heading}>Gallery</h1>
-        <p className={styles.subtitle}>A collection of original works.</p>
+      <header className={styles.header} data-reveal>
+        <span className={styles.overline}>Sunika · Original Works</span>
+        <h1 className={styles.heading}>The Gallery</h1>
+        <p className={styles.subtitle}>
+          A curated collection of original paintings, drawings and artistic mixes —
+          each one available to view and to own.
+        </p>
       </header>
 
-      <div className={styles.filterBar}>
+      <div className={styles.toolbar} data-reveal>
+        <div className={styles.chips} role="tablist" aria-label="Filter by category">
+          {CATEGORY_FILTERS.map((cat) => (
+            <button
+              key={cat}
+              role="tab"
+              aria-selected={activeCategory === cat}
+              className={`${styles.chip} ${activeCategory === cat ? styles.chipActive : ''}`}
+              onClick={() => setActiveCategory(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
         <button
-          className={`${styles.filterFab} ${activeFilterCount > 0 ? styles.filterFabActive : ''}`}
+          className={`${styles.filterBtn} ${activeFilterCount > 0 ? styles.filterBtnActive : ''}`}
           onClick={() => setFilterOpen(true)}
           aria-label="Open filters"
         >
           <FiSliders aria-hidden="true" />
-          Filters
-          {activeFilterCount > 0 && (
-            <span className={styles.badge}>{activeFilterCount}</span>
-          )}
+          <span>Filters</span>
+          {activeFilterCount > 0 && <span className={styles.badge}>{activeFilterCount}</span>}
         </button>
       </div>
 
       {error && <p className={styles.empty}>Something went wrong loading the gallery.</p>}
       {!error && filtered.length === 0 && <p className={styles.empty}>No pieces match this filter.</p>}
 
-      <div className={styles.grid}>
-        {filtered.map((artwork) => (
-          <ArtworkCard key={artwork.id} artwork={artwork} onOpen={setSelected} />
-        ))}
-      </div>
+      {filtered.length > 0 && (
+        <div className={styles.grid}>
+          {filtered.map((artwork, i) => (
+            <ArtworkCard key={artwork.id} artwork={artwork} index={i} onOpen={setSelected} />
+          ))}
+        </div>
+      )}
 
       <FilterPanel
         open={filterOpen}

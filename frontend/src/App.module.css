@@ -8,50 +8,92 @@
   flex-direction: column;
 }
 
-/* ── Floating controls — single fixed anchor for nav bubble + settings cog ── */
-/* z-modal (1050) keeps both buttons above the settings backdrop (z-modal-backdrop: 1040). */
-.floatingControls {
+/* ── Settings dock — cog, top-right ──────────────────────────────────────── */
+/* z-modal (1050) keeps it above the settings backdrop (z-modal-backdrop: 1040). */
+.settingsDock {
   position: fixed;
   top: 16px;
   right: 20px;
   z-index: var(--z-modal);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
 }
 
-/* ── Nav pill — LightWaveButton with size + shape overrides only ─────────── */
-/* All visual effects (wave fill, border, hover glow) come from LightWaveButton. */
-.navBubble {
-  height: 52px !important;
-  border-radius: var(--radius-full) !important;
-  padding: 0 18px !important;
+/* ── Nav dock — page toggle, bottom-centre (clear of the top toolbar) ─────── */
+.navDock {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-modal);
+}
+
+/* Clean quiet-luxury pill — frosted surface, hint + label, directional arrow. */
+.navPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  height: 54px;
+  padding: 0 1.35rem;
+  border-radius: var(--radius-full);
+  background: var(--frosted-background);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--border-color-hover);
+  color: var(--primary-text-color);
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition:
+    transform var(--transition-base),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-base),
+    color var(--transition-fast);
+}
+
+.navPill:hover:not(:disabled) {
+  background: var(--frosted-background);
+  transform: translateY(-3px);
+  border-color: var(--accent-1);
+  color: var(--primary-text-color);
+  box-shadow: var(--shadow-xl);
+}
+
+.navText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.navHint {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tertiary-text-color);
 }
 
 .navLabel {
-  font-size: var(--font-size-sm);
+  font-family: var(--font-display);
+  font-size: var(--font-size-base);
   font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
   white-space: nowrap;
 }
 
 .navArrow {
-  font-size: 1rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
-  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: var(--accent-1);
+  transition: transform 0.22s var(--ease-spring);
 }
 
 /* Arrow nudges in its travel direction on hover */
-.navBubbleForward:hover .navArrow { transform: translateX(3px); }
-.navBubbleBack:hover    .navArrow { transform: translateX(-3px); }
+.navForward:hover .navArrow { transform: translateX(4px); }
+.navBack:hover    .navArrow { transform: translateX(-4px); }
 
-/* ── Mobile: collapse to icon-only below 380px ───────────────────────────── */
-@media (max-width: 380px) {
-  .navBubble { padding: 0 14px !important; }
-  .navLabel  { display: none; }
-  .navArrow  { font-size: 1.1rem; }
+@media (max-width: 480px) {
+  .navDock { bottom: 16px; }
+  .navPill { height: 50px; padding: 0 1.1rem; }
 }
 
 /* ── Page content ─────────────────────────────────────────────────────────── */
@@ -70,9 +112,8 @@
 
 /* ── Mobile ───────────────────────────────────────────────────────────────── */
 @media (max-width: 480px) {
-  .floatingControls {
+  .settingsDock {
     top: 12px;
     right: 12px;
-    gap: 8px;
   }
 }

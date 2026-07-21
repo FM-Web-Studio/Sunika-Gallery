@@ -1,0 +1,48 @@
+/* Fixed, full-viewport decorative layer. Sits above the page canvas but below
+   all content (.pageContent is z-index:2). Content scrolls over it. */
+.canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.leaf {
+  position: absolute;
+  color: var(--accent-1);
+  opacity: 0.05;
+  will-change: transform;
+  animation: drift 26s var(--ease-out) infinite alternate;
+}
+
+[data-theme="dark"] .leaf {
+  opacity: 0.06;
+}
+
+/* ── Placement — corners & edges, varied scale + rotation ─────────────────── */
+.leafA { top: -3%;   left: -3%;  font-size: 20rem; transform: rotate(-18deg); animation-delay: 0s;    }
+.leafB { top: 30%;   right: -5%; font-size: 16rem; transform: rotate(24deg);  animation-delay: -6s;  }
+.leafC { bottom: -6%; left: 12%; font-size: 22rem; transform: rotate(8deg);   animation-delay: -12s; opacity: 0.04; }
+.leafD { top: 8%;    right: 22%; font-size: 9rem;  transform: rotate(-8deg);  animation-delay: -3s;  opacity: 0.045; }
+.leafE { bottom: 10%; right: 6%; font-size: 13rem; transform: rotate(-20deg); animation-delay: -9s;  }
+.leafF { top: 52%;   left: 4%;   font-size: 10rem; transform: rotate(14deg);  animation-delay: -15s; opacity: 0.04; }
+
+/* Gentle, slow float — barely perceptible, adds life without distraction. */
+@keyframes drift {
+  from { translate: 0 0;      rotate: 0deg;   }
+  to   { translate: 0 -22px;  rotate: 3deg;   }
+}
+
+@media (max-width: 768px) {
+  /* Fewer, smaller motifs on small screens so they never crowd the content. */
+  .leafB, .leafD, .leafF { display: none; }
+  .leafA { font-size: 13rem; }
+  .leafC { font-size: 14rem; }
+  .leafE { font-size: 9rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leaf { animation: none; }
+}

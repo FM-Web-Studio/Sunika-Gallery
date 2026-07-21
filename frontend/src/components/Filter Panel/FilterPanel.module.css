@@ -97,7 +97,7 @@
 
 .option {
   padding: 0.45rem 1rem;
-  background: var(--background-2);
+  background: transparent;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   color: var(--secondary-text-color);
@@ -105,23 +105,27 @@
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
   white-space: nowrap;
 }
 
-.option:hover {
-  border-color: var(--accent-1);
+.option:hover:not(:disabled) {
+  border-color: var(--border-color-hover);
+  background: var(--background-2);
   color: var(--primary-text-color);
+  box-shadow: none;
 }
 
-.optionActive {
-  background: var(--accent-1);
-  border-color: var(--accent-1);
-  color: #fff;
+.optionActive,
+.optionActive:hover:not(:disabled) {
+  background: var(--primary-text-color);
+  border-color: var(--primary-text-color);
+  color: var(--background-1);
   font-weight: 600;
 }
-
-.optionActive:hover { color: #fff; }
 
 /* ── Footer ────────────────────────────────────────────────────────────────── */
 .footer {
@@ -143,26 +147,32 @@
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
 }
 
-.clearBtn:hover { border-color: var(--accent-1); color: var(--accent-1); }
+.clearBtn:hover:not(:disabled) { background: transparent; border-color: var(--accent-1); color: var(--accent-1); box-shadow: none; }
 
 .doneBtn {
   flex: 2;
   padding: 0.7rem;
-  background: var(--accent-1);
-  border: none;
+  background: var(--primary-text-color);
+  border: 1px solid var(--primary-text-color);
   border-radius: var(--radius-full);
-  color: #fff;
+  color: var(--background-1);
   font-size: var(--font-size-sm);
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   transition: opacity var(--transition-fast);
 }
 
-.doneBtn:hover { opacity: 0.88; }
+.doneBtn:hover:not(:disabled) { background: var(--primary-text-color); opacity: 0.9; box-shadow: none; }
 
 /* ── Animations ────────────────────────────────────────────────────────────── */
 @keyframes fadeIn {

@@ -33,9 +33,11 @@ const FilterPanel = ({
     document.addEventListener('keydown', onKey);
     const scrollY = window.scrollY;
     document.body.style.overflow = 'hidden';
+    window.__lenis?.stop();
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
+      window.__lenis?.start();
       window.scrollTo(0, scrollY);
     };
   }, [open, onClose]);
@@ -60,7 +62,7 @@ const FilterPanel = ({
   return createPortal(
     <div className={styles.root}>
       <div className={styles.backdrop} onClick={onClose} aria-hidden="true" />
-      <div className={styles.sheet} role="dialog" aria-modal="true" aria-label="Filters">
+      <div className={styles.sheet} role="dialog" aria-modal="true" aria-label="Filters" data-lenis-prevent>
         <div className={styles.handle} />
         <div className={styles.header}>
           <h2 className={styles.title}>Filters</h2>

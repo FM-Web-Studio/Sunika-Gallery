@@ -1,88 +1,172 @@
 .page {
-  padding: var(--spacing-3xl) var(--spacing-xl) var(--spacing-2xl);
-  max-width: 1400px;
+  padding: var(--spacing-4xl) var(--spacing-xl) var(--spacing-4xl);
+  max-width: 1360px;
   margin: 0 auto;
 }
 
+/* ── Editorial header ─────────────────────────────────────────────────────── */
 .header {
-  text-align: center;
-  margin-bottom: var(--spacing-2xl);
+  max-width: 720px;
+  margin: 0 0 var(--spacing-2xl);
 }
 
-.heading { margin: 0 0 var(--spacing-xs); }
+.overline {
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-1);
+  margin-bottom: var(--spacing-md);
+}
+
+.heading {
+  margin: 0 0 var(--spacing-md);
+}
 
 .subtitle {
   margin: 0;
-  color: var(--tertiary-text-color);
+  color: var(--secondary-text-color);
   font-size: var(--font-size-md);
+  line-height: 1.7;
+  max-width: 52ch;
 }
 
-/* ── Sticky filter bar — left-aligned on all screen sizes ────────────────── */
-.filterBar {
+/* ── Sticky toolbar — category chips + filters ────────────────────────────── */
+.toolbar {
   position: sticky;
-  top: var(--spacing-sm);
+  top: 0;
   z-index: var(--z-sticky);
   display: flex;
-  justify-content: flex-start;
-  margin-bottom: var(--spacing-lg);
-  pointer-events: none;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-2xl);
+  padding: var(--spacing-md) 0;
+  background: linear-gradient(
+    to bottom,
+    var(--background-0) 62%,
+    transparent
+  );
 }
 
-.filterFab {
-  pointer-events: auto;
-  display: inline-flex;
+/* Reserve a lane for the fixed settings cog (top-right) so the sticky Filters
+   button never slides underneath it. Needed until the centred content box gains
+   enough side margin to clear the cog on its own (~1520px). */
+@media (min-width: 769px) and (max-width: 1520px) {
+  .toolbar { padding-right: 84px; }
+}
+
+/* On mobile the toolbar isn't sticky, so it scrolls away instead of colliding
+   with the top-right floating controls. */
+@media (max-width: 768px) {
+  .toolbar { position: static; }
+}
+
+.chips {
+  display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  padding: 0.55rem 1.1rem;
-  background: var(--frosted-background);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  border: 1px solid var(--border-color-hover);
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+
+.chips::-webkit-scrollbar { display: none; }
+
+.chip {
+  flex-shrink: 0;
+  padding: 0.5rem 1.1rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   color: var(--secondary-text-color);
+  font-family: inherit;
   font-size: var(--font-size-sm);
   font-weight: 500;
-  font-family: inherit;
   cursor: pointer;
-  box-shadow: var(--shadow-md);
-  transition: border-color var(--transition-fast), color var(--transition-fast),
-              box-shadow var(--transition-fast), transform var(--transition-fast);
+  white-space: nowrap;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
-.filterFab:hover {
+.chip:hover:not(:disabled) {
+  border-color: var(--border-color-hover);
+  color: var(--primary-text-color);
+  background: var(--background-2);
+  box-shadow: none;
+}
+
+.chipActive,
+.chipActive:hover:not(:disabled) {
+  background: var(--primary-text-color);
+  border-color: var(--primary-text-color);
+  color: var(--background-1);
+}
+
+/* ── Filters button ───────────────────────────────────────────────────────── */
+.filterBtn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 0.5rem 1.1rem;
+  background: var(--background-1);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  color: var(--secondary-text-color);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.filterBtn:hover:not(:disabled) {
+  background: var(--background-1);
   border-color: var(--accent-1);
   color: var(--accent-1);
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
-.filterFabActive {
-  background: var(--accent-1);
+.filterBtnActive,
+.filterBtnActive:hover:not(:disabled) {
   border-color: var(--accent-1);
-  color: #fff;
+  color: var(--accent-1);
+  background: var(--accent-1-background);
 }
-
-.filterFabActive:hover { opacity: 0.88; color: #fff; transform: translateY(-1px); }
 
 .badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.15rem;
-  height: 1.15rem;
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--accent-1);
+  min-width: 1.2rem;
+  height: 1.2rem;
+  background: var(--accent-1);
+  color: var(--background-1);
   border-radius: var(--radius-full);
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 0 0.2rem;
+  padding: 0 0.28rem;
 }
 
 /* ── Grid ─────────────────────────────────────────────────────────────────── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  /* More generous spacing — paintings need room to breathe on the wall */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   column-gap: var(--spacing-2xl);
   row-gap: var(--spacing-3xl);
 }
@@ -90,12 +174,17 @@
 .empty {
   text-align: center;
   color: var(--tertiary-text-color);
-  padding: var(--spacing-3xl) 0;
+  padding: var(--spacing-4xl) 0;
+  font-size: var(--font-size-md);
+}
+
+@media (max-width: 768px) {
+  .filterBtn span { display: none; }
+  .filterBtn { padding: 0.5rem 0.7rem; }
 }
 
 @media (max-width: 480px) {
-  /* Extra top padding clears the 64px floating controls area on small screens */
-  .page { padding: var(--spacing-4xl) var(--spacing-md) var(--spacing-2xl); }
+  .page { padding: var(--spacing-5xl) var(--spacing-md) var(--spacing-3xl); }
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     column-gap: var(--spacing-lg);

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FiX, FiCheck } from 'react-icons/fi';
 import { CATEGORIES, CURRENCY_SYMBOL } from '../../firebase';
 import styles from './ArtworkForm.module.css';
 
@@ -95,10 +96,10 @@ const ArtworkForm = ({ initial, onSubmit, onCancel, submitting }) => {
 
       <div className={styles.actions}>
         <button type="button" className={styles.cancel} onClick={onCancel} disabled={submitting}>
-          Cancel
+          <FiX aria-hidden="true" /> Cancel
         </button>
         <button type="submit" className={styles.submit} disabled={submitting}>
-          {submitting ? 'Saving…' : (isEdit ? 'Save changes' : 'Add artwork')}
+          <FiCheck aria-hidden="true" /> {submitting ? 'Saving…' : (isEdit ? 'Save changes' : 'Add artwork')}
         </button>
       </div>
     </form>

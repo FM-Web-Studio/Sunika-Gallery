@@ -29,12 +29,15 @@ const Modal = ({ open, onClose, children, title, size = 'md' }) => {
     // exactly where they were.
     const scrollY = window.scrollY;
     document.body.style.overflow = 'hidden';
+    // Pause inertial scroll so the page can't glide behind the dialog.
+    window.__lenis?.stop();
 
     const raf = requestAnimationFrame(() => dialogRef.current?.focus());
 
     return () => {
       cancelAnimationFrame(raf);
       document.body.style.overflow = '';
+      window.__lenis?.start();
       window.scrollTo(0, scrollY);
       previousFocusRef.current?.focus();
     };
@@ -92,6 +95,7 @@ const Modal = ({ open, onClose, children, title, size = 'md' }) => {
         aria-labelledby={title ? 'modal-title' : undefined}
         tabIndex={-1}
         onKeyDown={handleKeyDown}
+        data-lenis-prevent
       >
         {/* Close button — only dismiss affordance inside the modal */}
         <button

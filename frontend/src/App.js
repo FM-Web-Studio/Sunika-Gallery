@@ -3,44 +3,58 @@ import { createPortal } from 'react-dom';
 import { Routes, Route, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiArrowLeft } from 'react-icons/fi';
 import { NotFound, Loading, Gallery, Contact, Admin } from './pages';
-import { Settings, ToastProvider, LightWaveButton } from './components';
-import { useTheme, useAnimations } from './hooks';
+import { Settings, ToastProvider, BotanicalBackground } from './components';
+import { useTheme, useAnimations, useSmoothScroll } from './hooks';
 import styles from './App.module.css';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  useEffect(() => {
+    // Jump instantly on navigation — hand off to Lenis when it's active so the
+    // internal scroll position stays in sync and doesn't glide back.
+    if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true });
+    else window.scrollTo(0, 0);
+  }, [pathname]);
   return null;
 };
 
-// Pill that shows where you'll land — arrow direction mirrors navigation intent.
+// Floating page toggle — docked bottom-centre, clear of the top toolbar.
+// A small hint + destination label with a directional arrow.
 const PageNavBubble = () => {
   const navigate     = useNavigate();
   const { pathname } = useLocation();
   const toContact    = pathname === '/';
   const label        = toContact ? 'Contact' : 'Gallery';
+  const hint         = toContact ? 'Get in touch' : 'Back to';
   const ariaLabel    = toContact ? 'Go to Contact' : 'Go to Gallery';
 
   return (
-    <LightWaveButton
-      className={`${styles.navBubble} ${toContact ? styles.navBubbleForward : styles.navBubbleBack}`}
+    <button
+      type="button"
+      className={`${styles.navPill} ${toContact ? styles.navForward : styles.navBack}`}
       onClick={() => navigate(toContact ? '/contact' : '/')}
       aria-label={ariaLabel}
     >
       {!toContact && <FiArrowLeft className={styles.navArrow} aria-hidden="true" />}
-      <span className={styles.navLabel}>{label}</span>
+      <span className={styles.navText}>
+        <span className={styles.navHint}>{hint}</span>
+        <span className={styles.navLabel}>{label}</span>
+      </span>
       {toContact  && <FiArrowRight className={styles.navArrow} aria-hidden="true" />}
-    </LightWaveButton>
+    </button>
   );
 };
 
-// Single portal anchor — both buttons share one fixed position so they
-// are always perfectly aligned regardless of screen size.
+// Two independent docks: settings cog top-right, page toggle bottom-centre.
 const FloatingControls = ({ theme, toggleTheme }) => createPortal(
-  <div className={styles.floatingControls}>
-    <PageNavBubble />
-    <Settings theme={theme} toggleTheme={toggleTheme} />
-  </div>,
+  <>
+    <div className={styles.settingsDock}>
+      <Settings theme={theme} toggleTheme={toggleTheme} />
+    </div>
+    <div className={styles.navDock}>
+      <PageNavBubble />
+    </div>
+  </>,
   document.body
 );
 
@@ -50,6 +64,7 @@ const AppLayout = () => {
 
   return (
     <div className={styles.app}>
+      <BotanicalBackground />
       <FloatingControls theme={theme} toggleTheme={toggleTheme} />
 
       <div key={location.pathname} className={styles.pageContent}>
@@ -79,6 +94,7 @@ const AppContent = () => (
 const App = () => {
   useTheme();
   useAnimations();
+  useSmoothScroll();
   return (
     <ToastProvider>
       <AppContent />
