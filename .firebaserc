@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "sunika-project"
+  },
+  "targets": {
+    "sunika-project": {
+      "hosting": {
+        "gallery": [
+          "sunika-studio-gallery"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

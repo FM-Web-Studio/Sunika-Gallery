@@ -1,0 +1,16 @@
+{
+  "name": "Sunika Gallery",
+  "client": "Sunika",
+  "tagline": "Original artworks, browsable and rated by visitors",
+  "description": "A gallery of original paintings and drawings, each with a price and a sold flag, filterable by category and status, and rated and liked one vote per visitor with the limit enforced in Firestore rules rather than in the browser.",
+
+  "featured": false,
+  "order": 21,
+
+  "sites": [
+    { "label": "Live site", "url": "https://sunika-studio-gallery.web.app" }
+  ],
+
+  "stack": ["React", "Vite", "Firebase", "Firestore", "Cloud Functions", "Vitest"],
+  "tags": ["Gallery", "Illustration", "E-commerce lite"]
+}

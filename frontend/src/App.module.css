@@ -1,0 +1,109 @@
+/* App layout, structural positioning only.
+ * Colors, backgrounds, and visual effects live in styles/Components.css. */
+
+.app {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Fixed top bar ────────────────────────────────────────────────────────
+   Logo on the left, nav links on the right. Transparent while the page is at
+   the top so the hero reads full-bleed, then a frosted background and hairline
+   border fade in once scrolled.
+
+   The Settings cog and the mobile burger are portalled to <body> and fixed to
+   the top-right corner, so the bar reserves room for them on its right edge
+   instead of laying them out. */
+.topBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-fixed);
+
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+  padding-left: clamp(1rem, 4vw, 2.5rem);
+  /* Clear the fixed cog (52px wide at right: 20px) */
+  padding-right: 88px;
+
+  background: transparent;
+  border-bottom: 1px solid transparent;
+
+  /*
+   * backdrop-filter is deliberately NOT in this transition.
+   *
+   * A fixed, full-width blurred bar already makes the browser re-sample the strip
+   * of page moving underneath it every frame. Animating the blur RADIUS on top of
+   * that forces a differently-sized blur to be recomputed on each frame of the
+   * transition, and that quarter-second lands exactly on the first scroll of every
+   * page, which is what the stutter at the top of the page was. The blur now
+   * switches on in one step while only colour and border fade.
+   *
+   * It stays out of the base rule on purpose: while the page is at the top the bar
+   * must be genuinely transparent, so the hero reads crisp and full-bleed rather
+   * than through a permanent frosted strip.
+   *
+   * `transform: translateZ(0)` keeps the bar on its own compositor layer, so the
+   * page scrolling beneath it never repaints the bar itself.
+   */
+  transform: translateZ(0);
+  transition:
+    background-color 0.25s ease,
+    border-color     0.25s ease;
+}
+
+.topBarScrolled {
+  background: var(--frosted-background);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom-color: var(--border-color);
+}
+
+.brandLogo {
+  display: inline-flex;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+.brandLogo:hover,
+.brandLogo:focus { opacity: 0.7; text-decoration: none; }
+.brandLogoImg {
+  height: 46px;
+  width: auto;
+  display: block;
+}
+
+.themeSwitch {
+  /* Settings portals itself to <body>; this wrapper is a no-op placeholder. */
+  display: contents;
+}
+
+/* Below the mobile breakpoint the burger also sits top-right, next to the cog. */
+@media (max-width: 767px) {
+  .topBar { padding-right: 140px; }
+}
+
+@media (max-width: 480px) {
+  .topBar { height: 62px; padding-left: 0.75rem; }
+  .brandLogoImg { height: 38px; }
+}
+
+.pageContent {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  animation: pageEnter 0.22s ease-out both;
+}
+
+@keyframes pageEnter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
