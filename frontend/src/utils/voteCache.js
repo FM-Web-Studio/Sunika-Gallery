@@ -9,7 +9,7 @@
  * rejects a second vote (see firebase/ratings.js, firebase/likes.js), and when a
  * write comes back rejected the cache is corrected from the answer.
  *
- * So: wrong cache → a wasted click and a resync, never a duplicate vote.
+ * So: wrong cache -> a wasted click and a resync, never a duplicate vote.
  */
 
 const KEY = 'sunika.votes';

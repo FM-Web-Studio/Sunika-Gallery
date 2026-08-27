@@ -1,21 +1,11 @@
 /**
- * Editable site copy for the Sunika gallery.
+ * Editable site copy. Every visitor-facing string lives here with its `default`, and
+ * only values an admin changes are stored in Firestore (settings/galleryContent), so
+ * code stays the source of truth for anything untouched.
  *
- * Every visitor-facing heading, tagline and label that used to be hardcoded in
- * a page lives here as a field with a `default`. The default is the exact
- * string the page shipped with, so the site renders identically until an admin
- * edits it. Only values that differ from the default are stored in Firestore
- * (settings/galleryContent). Code stays the single source of truth for
- * anything untouched.
- *
- * `resolveGroup(fields, overrides)` overlays saved overrides onto the defaults.
- *
- * DECORATION BELONGS IN THESE STRINGS, never beside them in the JSX. Several
- * headings used to render their text from a field with a decorative glyph hardcoded
- * next to it, so an admin could edit the words but could not remove or change the
- * glyph. Anything a visitor reads as part of the title is part of the field.
- *
- * The defaults are deliberately plain text. Keep them that way.
+ * DECORATION BELONGS IN THESE STRINGS, never beside them in the JSX, or an admin can
+ * edit the words but not the glyph next to them. The defaults are plain text on
+ * purpose. Keep them that way.
  */
 
 // Brand / footer
@@ -24,15 +14,8 @@ export const BRAND_FIELDS = [
   { key: 'footerTagline', label: 'Footer tagline', type: 'textarea', default: 'Original paintings, drawings and artistic mixes.' },
   { key: 'footerNote',    label: 'Footer note',    type: 'text',     default: 'Made with love' },
 
-  /*
-   * The link across to the portfolio site.
-   *
-   * It is a copy field rather than a constant because the two sites are deployed
-   * separately and from separate repos: hardcoding the portfolio's URL here would
-   * mean a code change and a redeploy of THIS site every time that one moved. Left
-   * blank, the link simply does not render, which is also the right behaviour
-   * before the portfolio is live.
-   */
+  /* The portfolio site. A copy field rather than a constant so moving that site does
+     not need a redeploy of this one. Blank means the link does not render. */
   { key: 'portfolioUrl',   label: 'Portfolio site: URL',   type: 'text', default: '' },
   { key: 'portfolioLabel', label: 'Portfolio site: label', type: 'text', default: 'Portfolio' },
 ];
@@ -56,10 +39,8 @@ export const CONTACT_PAGE_FIELDS = [
   { key: 'socialLabel', label: 'Socials: label',    type: 'text',     default: 'Find me online' },
 ];
 
-// Tabs shown in the admin "Site Copy" editor. `key` matches the group name
-// pages read from the settings/galleryContent document. Contact details and
-// social links are edited separately (Contact / Social Links sections), backed by
-// settings/galleryContact.
+// Tabs in the admin "Site Copy" editor. Contact details and social links are edited
+// separately, backed by settings/contact.
 export const COPY_SCHEMA = [
   { key: 'brand',       label: 'Brand & Footer', fields: BRAND_FIELDS },
   { key: 'gallery',     label: 'Gallery',        fields: GALLERY_FIELDS },

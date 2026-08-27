@@ -11,22 +11,26 @@ deploy: [`Sunika-Portfolio`](https://github.com/FM-Web-Studio/Sunika-Portfolio).
 
 ## One Firebase project, two sites
 
-Both sites live in the Firebase project `sunika-project`. They share the
-Firestore database, the Storage bucket and the admin allowlist. They do **not**
-share data.
+Both sites live in the Firebase project `sunika-project`, sharing the Firestore
+database, the Storage bucket and the admin allowlist.
 
 | | Gallery (this repo) | Portfolio |
 | --- | --- | --- |
-| Hosting target | `gallery` → `sunika-studio-gallery` | `portfolio` → `sunika-studio` |
-| Firebase web app | `…web:a057f926f8e030ea4944cf` | `…web:53e9bbc0cdc7941b4944cf` |
+| Hosting target | `gallery` -> `sunika-studio-gallery` | `portfolio` -> `sunika-studio` |
+| Firebase web app | `...web:a057f926f8e030ea4944cf` | `...web:53e9bbc0cdc7941b4944cf` |
 | Firestore | `artworks` (+ `raters`/`likers`) | `projects`, `education`, `experience`, `profile`, `accomplishments` |
 | Contact inbox | `galleryMessages` | `portfolioMessages` |
 | Editable copy | `settings/galleryContent` | `settings/portfolioContent` |
-| Contact details + socials | `settings/galleryContact` | `settings/portfolioContact` |
 | Storage | `artworks/` | `projects/`, `profile/`, `accomplishments/` |
 
-Every name has exactly one owner, so neither site can overwrite the other's
-content. Collection names are declared in one place, `src/firebase/config.js`.
+**Shared by both:** `settings/contact`, the email, phone, location and social
+links. There is one of Sunika, so there is one set of those, and editing them in
+either admin changes both sites. Everything else has exactly one owner, so neither
+site can overwrite the other's content.
+
+The prefix is the convention: a `gallery` or `portfolio` prefix means one site owns
+it, no prefix means it is shared. Names are declared in one place,
+`src/firebase/config.js`.
 
 ### What this repo does NOT deploy
 
@@ -58,7 +62,7 @@ is in the rules.
 
 ## Requirements on the Firebase project
 
-- **Anonymous sign-in must be enabled** (Authentication → Sign-in method →
+- **Anonymous sign-in must be enabled** (Authentication -> Sign-in method ->
   Anonymous). Ratings and likes are one-per-visitor, and the only way the rules
   can hold that line is a uid the server issued. With it off, every rating and
   like fails. See `src/firebase/auth.js`.
@@ -71,7 +75,7 @@ frontend/src
   pages/Gallery     the grid, the filters and the lightbox. This is "/"
   pages/Contact     enquiry form + contact details
   pages/Admin       artworks, social links, contact details, site copy
-  components        Artwork Card / Lightbox, Star Rating, Filter Panel / Dock, …
+  components        Artwork Card / Lightbox, Star Rating, Filter Panel / Dock, ...
   firebase          one module per collection, over src/firebase/config.js
   content/siteCopy  every visitor-facing string, with its in-code default
 ```

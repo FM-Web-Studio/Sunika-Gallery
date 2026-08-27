@@ -3,14 +3,11 @@ import { db } from './app';
 import { SETTINGS_DOCS } from './config';
 
 /*
- * Editable site copy lives in ONE document:
+ * Editable site copy, one document:
  *
  *   settings/galleryContent -> { brand:{...}, gallery:{...}, contactPage:{...} }
  *
- * The portfolio keeps its own copy in settings/portfolioContent. Same shape,
- * different groups, and neither site reads the other's document.
- *
- * firestore.rules allows public read and admin-only write on settings/{docId}.
+ * The portfolio has its own settings/portfolioContent. Same shape, different groups.
  */
 const contentRef = () => doc(db, 'settings', SETTINGS_DOCS.content);
 

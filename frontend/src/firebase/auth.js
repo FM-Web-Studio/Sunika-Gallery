@@ -26,7 +26,7 @@ export const isAdminEmail = (email) =>
  * is the strongest guarantee available without making people register.
  *
  * REQUIRES: Anonymous sign-in enabled in the Firebase console
- * (Authentication → Sign-in method → Anonymous).
+ * (Authentication -> Sign-in method -> Anonymous).
  *
  * An admin signed in with Google is already a real user, so this returns their
  * uid untouched rather than replacing their session.
@@ -44,7 +44,7 @@ export const ensureVisitor = async () => {
     if (err?.code === 'auth/admin-restricted-operation' || err?.code === 'auth/operation-not-allowed') {
       console.error(
         'Anonymous sign-in is disabled for this Firebase project, so ratings and likes '
-        + 'cannot work. Enable it under Authentication → Sign-in method → Anonymous.',
+        + 'cannot work. Enable it under Authentication -> Sign-in method -> Anonymous.',
       );
       const friendly = new Error('Sign-in for visitors is not enabled on this site yet.');
       friendly.code = 'visitor-auth-disabled';

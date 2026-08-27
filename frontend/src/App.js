@@ -7,14 +7,9 @@ import { useTheme, useAnimations, useMomentumScroll, getLenis } from './hooks';
 import styles from './App.module.css';
 
 /*
- * The gallery grid IS this site's landing page, so "/" is the Gallery and the
- * logo in the top bar is what leads back to it.
- *
- * That is also why Gallery is not repeated in this list: every destination gets
- * exactly one owner in the top bar. A nav item pointing at "/" beside a logo
- * pointing at "/" is two controls doing the same job, which does not make the
- * gallery easier to reach, it just leaves the reader wondering whether the two
- * go to different places.
+ * The gallery grid IS this site's landing page, so "/" is the Gallery and the logo
+ * leads back to it. That is why Gallery is not repeated here: a nav item pointing at
+ * "/" beside a logo pointing at "/" is two controls doing the same job.
  */
 const NAVIGATION_PAGES = [
   { label: 'Contact', to: '/contact' },
@@ -40,15 +35,10 @@ const AppLayout = () => {
   useMomentumScroll();
 
   /*
-   * The top bar is transparent over the header and picks up a frosted background
-   * once the page has scrolled.
-   *
-   * The threshold is read inside a rAF-throttled handler rather than straight from
-   * the scroll event. Lenis emits scroll continuously while it interpolates, so the
-   * raw handler fires many times per frame; reading `window.scrollY` in each one is
-   * a forced layout read in the middle of Lenis's own frame work. Coalescing to one
-   * read per frame removes that. setScrolled with an unchanged boolean is a no-op in
-   * React, so this only ever re-renders on the two real transitions.
+   * Read inside a rAF-throttled handler, not straight from the scroll event: Lenis
+   * emits scroll many times per frame, and reading `window.scrollY` in each one is
+   * a forced layout read in the middle of Lenis's own frame work. setScrolled with
+   * an unchanged boolean is a no-op, so this re-renders only on real transitions.
    */
   const [scrolled, setScrolled] = useState(() => window.scrollY > 8);
 
@@ -100,9 +90,8 @@ const AppLayout = () => {
 const AppContent = () => (
   <>
     <ScrollToTop />
-    {/* Admin sits outside AppLayout, so it needs its own boundary, the layout's
-        Suspense only covers the public Outlet. Every route is lazy now (see
-        pages/index.js), and a lazy element without a boundary above it throws. */}
+    {/* Admin sits outside AppLayout, whose Suspense only covers the public Outlet.
+        Every route is lazy, and a lazy element with no boundary above it throws. */}
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route path="/admin" element={<Admin />} />

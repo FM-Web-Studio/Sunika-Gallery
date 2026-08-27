@@ -13,7 +13,7 @@ const Footer = () => {
   const { copy } = useContent();
   const brand = copy('brand');
 
-  // Contact details + socials come from settings/galleryContact.
+  // Contact details + socials come from settings/contact, shared with the portfolio.
   const [info, setInfo] = useState({ ...DEFAULT_CONTACT, socials: [] });
   useEffect(() => subscribeContact(setInfo, () => {}), []);
 
