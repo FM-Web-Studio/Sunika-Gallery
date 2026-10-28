@@ -1,0 +1,93 @@
+.wrap {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loading);
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-5);
+  padding: var(--gutter);
+  background: var(--wall);
+  text-align: center;
+  animation: fade var(--base) ease both;
+}
+
+.frames {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  height: 64px;
+}
+
+.frames span {
+  position: relative;
+  display: block;
+  width: 30px;
+  height: 40px;
+  border: 5px solid var(--mat);
+  background: var(--teal-bright);
+  box-shadow: var(--shadow-hang);
+  transform-origin: 50% -12px;
+  animation: swing 1.6s var(--ease-out) infinite;
+}
+
+.frames span::before {
+  content: '';
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+}
+
+.frames span:nth-child(2) {
+  width: 38px;
+  height: 50px;
+  background: var(--candy);
+  animation-delay: 0.15s;
+}
+
+.frames span:nth-child(3) {
+  background: var(--gold);
+  animation-delay: 0.3s;
+}
+
+@keyframes swing {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(7deg);
+  }
+  60% {
+    transform: rotate(-4deg);
+  }
+}
+
+.message {
+  font-size: var(--step-1);
+  font-weight: 600;
+}
+
+.verse {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 34ch;
+  animation: fade var(--slow) ease both;
+}
+
+.verse p {
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.verse cite {
+  font-style: normal;
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+}

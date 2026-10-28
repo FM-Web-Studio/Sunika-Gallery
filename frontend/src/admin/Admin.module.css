@@ -1,0 +1,229 @@
+.gate {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: var(--gutter);
+}
+
+.gateCard {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  width: min(420px, 100%);
+  padding: var(--space-7) var(--space-6);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  box-shadow: var(--shadow-panel);
+  text-align: center;
+}
+
+.gateCard h1 {
+  font-size: var(--step-3);
+}
+
+.gateCard p {
+  color: var(--ink-soft);
+}
+
+.google svg {
+  font-size: 1.2rem;
+}
+
+.shell {
+  min-height: 100vh;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--gutter);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--step-1);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.account {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.account :global(.btn) {
+  min-height: 42px;
+  font-size: var(--step--1);
+}
+
+.email {
+  margin-right: var(--space-2);
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+}
+
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.tab {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border: 0;
+  background: none;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.tab::after {
+  content: '';
+  position: absolute;
+  left: 0.6rem;
+  right: 0.6rem;
+  bottom: -1px;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: var(--candy);
+  transform: scaleX(0);
+  transition: transform var(--base) var(--ease-swing);
+}
+
+.tab:hover {
+  color: var(--ink);
+}
+
+.tabOn {
+  color: var(--ink);
+}
+
+.tabOn::after {
+  transform: scaleX(1);
+}
+
+.badge {
+  min-width: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-control);
+  background: var(--candy);
+  color: var(--on-candy);
+  font-size: var(--step--2);
+  line-height: 22px;
+  text-align: center;
+}
+
+.content {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--gutter) var(--space-9);
+  animation: rise var(--base) var(--ease-out) both;
+}
+
+.section {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.sectionHead h1 {
+  font-size: var(--step-3);
+}
+
+.sectionHead p {
+  color: var(--ink-soft);
+}
+
+.card {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.card h2 {
+  font-size: var(--step-1);
+}
+
+.hint {
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.empty {
+  padding: var(--space-7) var(--space-5);
+  border: 2px dashed var(--line-strong);
+  border-radius: var(--radius-panel);
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.saveBar {
+  position: sticky;
+  bottom: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-5);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  box-shadow: var(--shadow-panel), inset 0 0 0 1px var(--line);
+}
+
+.dirty {
+  box-shadow: var(--shadow-panel), inset 0 0 0 2px var(--gold);
+}
+
+.saveBar p {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+@media (max-width: 640px) {
+  .email {
+    display: none;
+  }
+
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+
+  .saveBar {
+    border-radius: var(--radius-panel);
+  }
+}

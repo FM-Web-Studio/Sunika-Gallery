@@ -1,0 +1,57 @@
+.band {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-4) 0;
+  background: var(--candy);
+  color: #FFFFFF;
+  transform: rotate(-1.2deg) scale(1.02);
+  margin: -1.1rem 0 0;
+  z-index: 4;
+  box-shadow: 0 20px 40px -24px rgba(229, 23, 123, 0.7);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: slide 46s linear infinite;
+}
+
+.band:hover .track {
+  animation-play-state: paused;
+}
+
+.row {
+  display: flex;
+  flex: none;
+}
+
+.row li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding-right: var(--space-6);
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-style: italic;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.star {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: #FFE7A3;
+  animation: spin 6s linear infinite;
+}
+
+@keyframes slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

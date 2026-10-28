@@ -1,0 +1,24 @@
+.wrap {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--space-9) var(--gutter);
+}
+
+.wrap h1 {
+  font-size: var(--step-4);
+}
+
+.wrap p {
+  max-width: var(--prose);
+  color: var(--ink-soft);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}

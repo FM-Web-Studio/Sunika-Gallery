@@ -1,0 +1,37 @@
+.wrap {
+  position: relative;
+  display: block;
+  min-height: 120px;
+  background:
+    linear-gradient(110deg, transparent 30%, var(--shimmer) 50%, transparent 70%) 0 0 / 220% 100%,
+    var(--wall-deep);
+  animation: shimmer 1.4s linear infinite;
+}
+
+.loaded {
+  min-height: 0;
+  background: none;
+  animation: none;
+}
+
+.img {
+  width: 100%;
+  height: auto;
+  opacity: 0;
+  transition: opacity var(--slow) ease;
+}
+
+.loaded .img {
+  opacity: 1;
+}
+
+.shield {
+  position: absolute;
+  inset: 0;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -220% 0, 0 0;
+  }
+}

@@ -1,0 +1,164 @@
+.bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-header);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--gutter);
+  transition: background-color var(--base) ease, color var(--base) ease, box-shadow var(--base) ease, padding var(--base) var(--ease-out);
+}
+
+.overHero {
+  color: #FFFFFF;
+  padding-top: var(--space-5);
+}
+
+.solid {
+  background: color-mix(in srgb, var(--wall) 86%, transparent);
+  backdrop-filter: blur(16px) saturate(1.3);
+  box-shadow: 0 1px 0 var(--line);
+  color: var(--ink);
+}
+
+.nav {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.link {
+  position: relative;
+  padding: 0.35rem 0;
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  opacity: 0.78;
+  transition: opacity var(--fast) ease;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--candy);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--base) var(--ease-out);
+}
+
+.link:hover,
+.active {
+  opacity: 1;
+}
+
+.link:hover::after,
+.active::after {
+  transform: scaleX(1);
+}
+
+.brand {
+  display: block;
+  justify-self: center;
+}
+
+.mark {
+  display: block;
+  width: 64px;
+  height: auto;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
+  transition: transform var(--slow) var(--ease-swing), width var(--base) var(--ease-out);
+}
+
+.solid .mark {
+  width: 52px;
+  filter: none;
+}
+
+.brand:hover .mark {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: var(--space-2);
+}
+
+.tool {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: 1.05rem;
+  opacity: 0.8;
+  transition: opacity var(--fast) ease, background-color var(--fast) ease, transform var(--fast) var(--ease-swing);
+}
+
+.tool:hover {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  transform: rotate(-12deg);
+}
+
+.enquire {
+  margin-left: var(--space-2);
+  padding: 0.6rem 1.25rem;
+  border: 1.5px solid currentColor;
+  border-radius: var(--radius-control);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: background-color var(--fast) ease, border-color var(--fast) ease, color var(--fast) ease;
+}
+
+.enquire:hover {
+  border-color: var(--candy);
+  background: var(--candy);
+  color: var(--on-candy);
+}
+
+@media (max-width: 720px) {
+  .bar {
+    grid-template-columns: auto 1fr auto;
+    gap: var(--space-3);
+  }
+
+  .brand {
+    order: -1;
+    justify-self: start;
+  }
+
+  .nav {
+    justify-self: end;
+  }
+
+  .nav {
+    gap: var(--space-3);
+  }
+
+  .enquire,
+  .tool:first-child {
+    display: none;
+  }
+
+  .mark {
+    width: 52px;
+  }
+
+  .solid .mark {
+    width: 44px;
+  }
+}

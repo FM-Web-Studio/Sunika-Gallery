@@ -1,121 +1,52 @@
-import React, { Suspense, useCallback, useMemo, useState, useTransition, useEffect } from 'react';
-import { Routes, Route, useNavigate, Outlet, useLocation, Link } from 'react-router-dom';
-import { NotFound, Loading, Gallery, Contact, Admin } from './pages';
-import { NavigationBar, Settings, ToastProvider, Footer } from './components';
-import { ContentProvider } from './context/ContentContext';
-import { useTheme, useAnimations, useMomentumScroll, getLenis } from './hooks';
+import { lazy, Suspense, useEffect } from 'react';
+import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Loading from './components/Loading';
+import ErrorBoundary from './components/ErrorBoundary';
+import { usePrefs } from './hooks/usePrefs';
+import { useMomentumScroll, scrollToTop } from './hooks/useMomentumScroll';
 import styles from './App.module.css';
 
-/*
- * The gallery grid IS this site's landing page, so "/" is the Gallery and the logo
- * leads back to it. That is why Gallery is not repeated here: a nav item pointing at
- * "/" beside a logo pointing at "/" is two controls doing the same job.
- */
-const NAVIGATION_PAGES = [
-  { label: 'Contact', to: '/contact' },
-];
+const Gallery = lazy(() => import('./pages/Gallery'));
+const Contact = lazy(() => import('./pages/Contact'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const Admin = lazy(() => import('./admin/Admin'));
 
-const ScrollToTop = () => {
+const PublicLayout = () => {
   const { pathname } = useLocation();
-  useEffect(() => {
-    const lenis = getLenis();
-    if (lenis) lenis.scrollTo(0, { immediate: true });
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  return null;
-};
+  const { reduceMotion } = usePrefs();
+  useMomentumScroll(!reduceMotion);
 
-const AppLayout = () => {
-  const navigate  = useNavigate();
-  const location  = useLocation();
-  const { theme, toggleTheme } = useTheme();
-  const [, startTransition] = useTransition();
-
-  // Momentum scrolling on the public site only (never the admin route).
-  useMomentumScroll();
-
-  /*
-   * Read inside a rAF-throttled handler, not straight from the scroll event: Lenis
-   * emits scroll many times per frame, and reading `window.scrollY` in each one is
-   * a forced layout read in the middle of Lenis's own frame work. setScrolled with
-   * an unchanged boolean is a no-op, so this re-renders only on real transitions.
-   */
-  const [scrolled, setScrolled] = useState(() => window.scrollY > 8);
-
-  useEffect(() => {
-    let queued = false;
-    const measure = () => { queued = false; setScrolled(window.scrollY > 8); };
-    const onScroll = () => {
-      if (queued) return;
-      queued = true;
-      requestAnimationFrame(measure);
-    };
-
-    measure();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  const handleNavigate = useCallback((to) => {
-    if (to) startTransition(() => navigate(to));
-  }, [navigate, startTransition]);
-
-  const navigationLinks = useMemo(() => NAVIGATION_PAGES.map(p => ({ ...p })), []);
+  useEffect(() => { scrollToTop(); }, [pathname]);
 
   return (
     <div className={styles.app}>
-      <header className={`${styles.topBar} ${scrolled ? styles.topBarScrolled : ''}`}>
-        <Link to="/" className={styles.brandLogo} aria-label="The Gallery">
-          <img src="/logo-mark.png" alt="Suni Designs" className={styles.brandLogoImg} />
-        </Link>
-
-        <NavigationBar links={navigationLinks} onNavigate={handleNavigate} />
-      </header>
-
-      <div className={styles.themeSwitch}>
-        <Settings theme={theme} toggleTheme={toggleTheme} />
-      </div>
-
-      <div key={location.pathname} className={styles.pageContent}>
-        <Suspense fallback={<Loading />}>
-          <Outlet />
-        </Suspense>
-      </div>
-
+      <a href="#main" className={styles.skip}>Skip to the artwork</a>
+      <Header />
+      <main id="main" className={`${styles.main} ${pathname === '/' ? '' : styles.offset}`}>
+        <ErrorBoundary resetKey={pathname}>
+          <Suspense fallback={<Loading />}>
+            <Outlet />
+          </Suspense>
+        </ErrorBoundary>
+      </main>
       <Footer />
     </div>
   );
 };
 
-const AppContent = () => (
-  <>
-    <ScrollToTop />
-    {/* Admin sits outside AppLayout, whose Suspense only covers the public Outlet.
-        Every route is lazy, and a lazy element with no boundary above it throws. */}
-    <Suspense fallback={<Loading />}>
-      <Routes>
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/" element={<AppLayout />}>
-          <Route index             element={<Gallery />} />
-          <Route path="contact"    element={<Contact />} />
-          <Route path="loading"    element={<Loading />} />
-          <Route path="*"          element={<NotFound />} />
-        </Route>
-      </Routes>
-    </Suspense>
-  </>
+const App = () => (
+  <Suspense fallback={<Loading />}>
+    <Routes>
+      <Route path="/admin" element={<ErrorBoundary><Admin /></ErrorBoundary>} />
+      <Route element={<PublicLayout />}>
+        <Route index element={<Gallery />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
+  </Suspense>
 );
-
-const App = () => {
-  useTheme();
-  useAnimations();
-  return (
-    <ToastProvider>
-      <ContentProvider>
-        <AppContent />
-      </ContentProvider>
-    </ToastProvider>
-  );
-};
 
 export default App;

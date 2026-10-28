@@ -1,0 +1,49 @@
+import { accentFromPixels } from './palette';
+
+const WEB_MAX = 1800;
+
+const scaledSize = (width, height, max = WEB_MAX) => {
+  const scale = Math.min(1, max / Math.max(width, height));
+  return { width: Math.round(width * scale), height: Math.round(height * scale) };
+};
+
+const loadImage = (file) => new Promise((resolve, reject) => {
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+  img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('That image could not be read.')); };
+  img.src = url;
+});
+
+const toBlob = (canvas, type, quality) => new Promise((resolve) => canvas.toBlob(resolve, type, quality));
+
+const sampleAccent = (img) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 48;
+  canvas.height = 48;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, 48, 48);
+  return accentFromPixels(ctx.getImageData(0, 0, 48, 48).data);
+};
+
+export const describeImage = async (file) => {
+  const img = await loadImage(file);
+  return { width: img.naturalWidth, height: img.naturalHeight, accent: sampleAccent(img) };
+};
+
+export const makeWebCopy = async (file, max = WEB_MAX) => {
+  if (file.type === 'image/svg+xml' || file.type === 'image/gif') return null;
+  const img = await loadImage(file);
+  const size = scaledSize(img.naturalWidth, img.naturalHeight, max);
+  const canvas = document.createElement('canvas');
+  canvas.width = size.width;
+  canvas.height = size.height;
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(img, 0, 0, size.width, size.height);
+  let blob = await toBlob(canvas, 'image/webp', 0.84);
+  if (!blob || blob.type !== 'image/webp') blob = await toBlob(canvas, 'image/jpeg', 0.86);
+  if (!blob || blob.size >= file.size) return null;
+  const ext = blob.type === 'image/webp' ? 'webp' : 'jpg';
+  return new File([blob], `${file.name.replace(/[.][^.]+$/, '') || 'image'}.${ext}`, { type: blob.type });
+};
