@@ -6,7 +6,7 @@ import { artworkMeta, artworkSrc, formatPrice } from '../lib/gallery';
 import { accentFor } from '../lib/palette';
 import styles from './Hero.module.css';
 
-const DURATION = 7000;
+const DURATION = 4500;
 
 const Hero = ({ pieces, onOpen, cta }) => {
   const { reduceMotion } = usePrefs();

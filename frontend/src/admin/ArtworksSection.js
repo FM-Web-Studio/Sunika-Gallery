@@ -74,11 +74,16 @@ const ArtworksSection = () => {
     const a = removing;
     setBusyId(a.id);
     try {
-      await deleteArtwork(a);
-      notify('success', `${a.title || 'The artwork'} was deleted, with its images, ratings and hearts.`);
+      const { leftovers } = await deleteArtwork(a);
+      if (leftovers.length) {
+        notify('error', `${a.title || 'The artwork'} was deleted, but its ${leftovers.join(' and ')} could not be removed. Take a screenshot of this message for your developer.`);
+      } else {
+        notify('success', `${a.title || 'The artwork'} was deleted, with its images, ratings and hearts.`);
+      }
       setRemoving(null);
     } catch (err) {
-      notify('error', saveErrorMessage(err));
+      console.error('Delete failed.', err);
+      notify('error', `${a.title || 'The artwork'} was not deleted. ${saveErrorMessage(err)} (${err?.code || err?.message || 'unknown error'})`);
     } finally {
       setBusyId(null);
     }

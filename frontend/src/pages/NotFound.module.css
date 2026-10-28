@@ -47,9 +47,8 @@
 
 .heading {
   font-size: var(--step-5);
-  font-style: italic;
   font-weight: 500;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.015em;
 }
 
 .body {

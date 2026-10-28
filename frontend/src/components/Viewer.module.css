@@ -85,7 +85,6 @@
   place-items: center;
   color: #fff;
   font-family: var(--font-display);
-  font-style: italic;
   font-weight: 600;
 }
 
@@ -206,6 +205,17 @@
   margin-top: var(--space-2);
 }
 
+.policy {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+.policy a {
+  font-weight: 700;
+  color: var(--candy);
+  text-underline-offset: 3px;
+}
+
 .rating {
   margin-top: var(--space-3);
   padding-top: var(--space-5);
@@ -214,9 +224,13 @@
 
 @media (max-width: 900px) {
   .room {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
+    display: block;
     overflow-y: auto;
+  }
+
+  .stage,
+  .card {
+    z-index: auto;
   }
 
   .stage {
@@ -239,5 +253,34 @@
 
   .close {
     position: fixed;
+  }
+
+  .nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    justify-content: space-between;
+    padding: var(--space-3) var(--gutter) max(var(--space-3), env(safe-area-inset-bottom));
+    background: rgba(12, 5, 7, 0.82);
+    backdrop-filter: blur(14px);
+    transform: none;
+  }
+
+  .nav .round {
+    width: 56px;
+    height: 56px;
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .count {
+    font-size: var(--step-0);
+    color: #FFFFFF;
+  }
+
+  .cardInner {
+    padding-bottom: calc(var(--space-8) + 80px);
   }
 }

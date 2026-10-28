@@ -1,4 +1,4 @@
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL, deleteObject, listAll } from 'firebase/storage';
 import { storage } from './app';
 import { makeWebCopy, describeImage } from '../lib/webImage';
 
@@ -39,3 +39,18 @@ const removeImage = async (path) => {
 };
 
 export const removeImages = (paths = []) => Promise.all([...new Set(paths.filter(Boolean))].map(removeImage));
+
+const listFolder = async (folder) => {
+  const { items, prefixes } = await listAll(ref(storage, folder));
+  const nested = await Promise.all(prefixes.map((p) => listFolder(p.fullPath)));
+  return [...items.map((i) => i.fullPath), ...nested.flat()];
+};
+
+export const clearFolder = async (folder, keep = []) => {
+  try {
+    const paths = await listFolder(folder);
+    await removeImages(paths.filter((p) => !keep.includes(p)));
+  } catch (err) {
+    console.warn(`Could not tidy ${folder}`, err);
+  }
+};

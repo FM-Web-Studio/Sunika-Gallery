@@ -4,7 +4,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './app';
 import { ARTWORK_VOTES, CATEGORIES, COLLECTIONS, STORAGE_FOLDERS } from './config';
-import { uploadWithWebCopy, removeImages, pathFromUrl } from './files';
+import { uploadWithWebCopy, removeImages, pathFromUrl, clearFolder } from './files';
 import { sortByOrder } from '../lib/ordering';
 
 const COL = COLLECTIONS.artworks;
@@ -77,7 +77,9 @@ export const updateArtwork = async (artwork, data, file) => {
     await removeImages([upload.path, upload.webPath]);
     throw err;
   }
-  await removeImages(oldPaths.filter((p) => p !== upload.path && p !== upload.webPath));
+  const keep = [upload.path, upload.webPath].filter(Boolean);
+  await removeImages(oldPaths.filter((p) => !keep.includes(p)));
+  await clearFolder(folderFor(artwork.id), keep);
 };
 
 export const setArtworkSold = (id, sold) =>
@@ -102,7 +104,15 @@ const deleteVotes = async (id) => {
 };
 
 export const deleteArtwork = async (artwork) => {
-  await deleteVotes(artwork.id);
+  const leftovers = [];
+  try {
+    await deleteVotes(artwork.id);
+  } catch (err) {
+    console.error('Ratings and hearts could not be deleted.', err);
+    leftovers.push('ratings and hearts');
+  }
   await deleteDoc(artworkRef(artwork.id));
   await removeImages(imagePathsOf(artwork));
+  await clearFolder(folderFor(artwork.id));
+  return { leftovers };
 };

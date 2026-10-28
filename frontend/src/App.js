@@ -11,6 +11,7 @@ import styles from './App.module.css';
 const Gallery = lazy(() => import('./pages/Gallery'));
 const Contact = lazy(() => import('./pages/Contact'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const Policy = lazy(() => import('./pages/Policy'));
 const Admin = lazy(() => import('./admin/Admin'));
 
 const PublicLayout = () => {
@@ -43,6 +44,7 @@ const App = () => (
       <Route element={<PublicLayout />}>
         <Route index element={<Gallery />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="policy" element={<Policy />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

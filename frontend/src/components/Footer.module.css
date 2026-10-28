@@ -1,19 +1,19 @@
 .footer {
-  --ink: #FBF4F6;
-  --ink-soft: #CDB9BF;
-  --ink-faint: #9A858B;
-  --line: rgba(251, 244, 246, 0.14);
-  --surface: transparent;
-  --teal-wash: rgba(110, 212, 194, 0.14);
-  --teal: #6ED4C2;
-  --candy-wash: rgba(255, 79, 160, 0.16);
   margin-top: var(--space-9);
   padding: var(--space-9) var(--gutter) var(--space-5);
+  background:
+    radial-gradient(60% 80% at 85% 0%, color-mix(in srgb, var(--candy) 14%, transparent), transparent 60%),
+    radial-gradient(50% 70% at 10% 20%, color-mix(in srgb, var(--tangerine) 12%, transparent), transparent 60%),
+    var(--wall-deep);
+  box-shadow: inset 0 1px 0 var(--line);
+  color: var(--ink);
+}
+
+:root[data-theme='dark'] .footer {
   background:
     radial-gradient(60% 80% at 85% 0%, rgba(229, 23, 123, 0.28), transparent 60%),
     radial-gradient(50% 70% at 10% 20%, rgba(247, 147, 30, 0.16), transparent 60%),
     #160A0D;
-  color: var(--ink);
 }
 
 .cta {
@@ -28,10 +28,9 @@
   max-width: 16ch;
   font-family: var(--font-display);
   font-size: var(--step-5);
-  font-style: italic;
   font-weight: 500;
-  line-height: 0.98;
-  letter-spacing: -0.03em;
+  line-height: 1;
+  letter-spacing: -0.015em;
 }
 
 .ctaBtn {

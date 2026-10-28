@@ -28,6 +28,18 @@
 .shield {
   position: absolute;
   inset: 0;
+  background-repeat: repeat;
+  background-size: 280px 190px;
+  background-position: center;
+  opacity: 0;
+  transition: opacity var(--slow) ease;
+  pointer-events: auto;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.loaded .shield {
+  opacity: 0.5;
 }
 
 @keyframes shimmer {

@@ -4,20 +4,45 @@
   min-height: 640px;
   max-height: 1100px;
   overflow: hidden;
-  background: var(--viewer);
-  color: #FFFFFF;
+  --hero-bg: var(--viewer);
+  --hero-ink: #FFFFFF;
+  --hero-soft: rgba(255, 255, 255, 0.82);
+  --hero-chip: rgba(255, 255, 255, 0.12);
+  --hero-track: rgba(255, 255, 255, 0.28);
+  --hero-fill: #FFFFFF;
+  --hero-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  --veil: 12, 5, 7;
+  --glow-filter: blur(70px) saturate(1.6) brightness(0.7);
+  --glow-opacity: 1;
+  --art-shadow: 0 50px 90px -30px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  background: var(--hero-bg);
+  color: var(--hero-ink);
   isolation: isolate;
 }
 
+:global(:root:not([data-theme='dark'])) .hero {
+  --hero-bg: #FBF7F8;
+  --hero-ink: var(--ink);
+  --hero-soft: var(--ink-soft);
+  --hero-chip: rgba(34, 9, 15, 0.06);
+  --hero-track: rgba(34, 9, 15, 0.16);
+  --hero-fill: var(--ink);
+  --hero-shadow: none;
+  --veil: 251, 247, 248;
+  --glow-filter: blur(70px) saturate(1.5) brightness(1.1);
+  --glow-opacity: 0.55;
+  --art-shadow: 0 40px 70px -30px rgba(34, 9, 15, 0.45), 0 0 0 1px rgba(34, 9, 15, 0.06);
+}
+
 .empty {
-  background: radial-gradient(80% 70% at 70% 40%, color-mix(in srgb, var(--candy) 35%, transparent), transparent 70%), var(--viewer);
+  background: radial-gradient(80% 70% at 70% 40%, color-mix(in srgb, var(--candy) 35%, transparent), transparent 70%), var(--hero-bg);
 }
 
 .slide {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 1400ms var(--ease-cinema);
+  transition: opacity 1000ms var(--ease-cinema);
 }
 
 .on {
@@ -31,13 +56,14 @@
   width: 120%;
   height: 120%;
   object-fit: cover;
-  filter: blur(70px) saturate(1.6) brightness(0.7);
+  filter: var(--glow-filter);
+  opacity: var(--glow-opacity);
   transform: scale(1.15);
   pointer-events: none;
 }
 
 .on .glow {
-  animation: drift 14s ease-out both;
+  animation: drift 9s ease-out both;
 }
 
 @keyframes drift {
@@ -63,7 +89,7 @@
   padding: clamp(10px, 1.2vw, 18px);
   border: 0;
   background: #FFFFFF;
-  box-shadow: 0 50px 90px -30px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: var(--art-shadow);
   cursor: zoom-in;
   transform: translateY(24px) scale(0.97);
   opacity: 0;
@@ -90,8 +116,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(12, 5, 7, 0.78) 0%, rgba(12, 5, 7, 0.35) 45%, transparent 70%),
-    linear-gradient(0deg, rgba(12, 5, 7, 0.6), transparent 35%);
+    linear-gradient(90deg, rgba(var(--veil), 0.82) 0%, rgba(var(--veil), 0.4) 45%, transparent 70%),
+    linear-gradient(0deg, rgba(var(--veil), 0.6), transparent 35%);
   pointer-events: none;
 }
 
@@ -128,7 +154,7 @@
   gap: 0.6rem;
   padding: 0.4rem 0.9rem 0.4rem 0.7rem;
   border-radius: var(--radius-control);
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--hero-chip);
   backdrop-filter: blur(10px);
   font-size: var(--step--1);
   font-weight: 600;
@@ -150,16 +176,15 @@
 
 .title {
   font-size: var(--step-5);
-  font-style: italic;
   font-weight: 500;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  text-shadow: var(--hero-shadow);
 }
 
 .meta {
   font-size: var(--step-1);
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--hero-soft);
 }
 
 .cta {
@@ -189,14 +214,14 @@
   inset: 10px 0;
   overflow: hidden;
   border-radius: 2px;
-  background: rgba(255, 255, 255, 0.28);
+  background: var(--hero-track);
 }
 
 .bar span::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: #FFFFFF;
+  background: var(--hero-fill);
   transform: scaleX(0);
   transform-origin: left;
 }
@@ -227,7 +252,7 @@
   font-size: var(--step--1);
   font-weight: 600;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--hero-soft);
   transform: translateX(-50%);
 }
 
@@ -255,7 +280,7 @@
   }
 
   .veil {
-    background: linear-gradient(0deg, rgba(12, 5, 7, 0.88) 0%, rgba(12, 5, 7, 0.5) 40%, transparent 65%);
+    background: linear-gradient(0deg, rgba(var(--veil), 0.92) 0%, rgba(var(--veil), 0.55) 40%, transparent 65%);
   }
 
   .caption {

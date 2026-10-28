@@ -25,6 +25,7 @@ const Footer = () => {
           <nav className={styles.links} aria-label="Footer">
             <Link to="/">Collection</Link>
             <Link to="/contact">Contact</Link>
+            <Link to="/policy">Sales policy</Link>
             {brand.portfolioUrl && (
               <a href={brand.portfolioUrl} target="_blank" rel="noopener noreferrer">{brand.portfolioLabel}</a>
             )}

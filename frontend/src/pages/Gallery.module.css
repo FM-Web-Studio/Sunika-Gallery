@@ -15,8 +15,8 @@
 .heading {
   font-size: var(--step-5);
   font-weight: 500;
-  line-height: 0.92;
-  letter-spacing: -0.04em;
+  line-height: 1;
+  letter-spacing: -0.015em;
 }
 
 .introSide {
@@ -65,8 +65,7 @@
 
 .collectionTitle {
   font-size: var(--step-4);
-  font-style: italic;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.015em;
 }
 
 .count {

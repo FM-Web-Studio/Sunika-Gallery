@@ -35,7 +35,7 @@ const Header = () => {
     };
   }, []);
 
-  const overHero = pathname === '/' && !scrolled;
+  const overHero = theme === 'dark' && pathname === '/' && !scrolled;
 
   return (
     <header className={`${styles.bar} ${overHero ? styles.overHero : styles.solid}`}>

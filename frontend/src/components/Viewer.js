@@ -109,6 +109,10 @@ const Viewer = ({ artwork, position, total, onPrev, onNext, onClose, copy }) => 
             <LikeButton artwork={artwork} />
           </div>
 
+          <p className={styles.policy}>
+            {copy.policyNote} <Link to="/policy">{copy.policyLink}</Link>
+          </p>
+
           <div className={styles.rating}>
             <Stars artwork={artwork} prompt={copy.rateLabel} />
           </div>
