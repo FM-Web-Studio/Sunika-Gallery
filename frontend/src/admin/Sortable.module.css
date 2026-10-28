@@ -1,0 +1,39 @@
+.handle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  border-radius: 10px;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.handle:active {
+  cursor: grabbing;
+}
+
+.handle:focus-visible {
+  outline-offset: 4px;
+}
+
+.grip {
+  flex: none;
+  width: 10px;
+  height: 16px;
+  margin-left: var(--space-2);
+  fill: var(--ink-faint);
+  transition: fill var(--fast) ease;
+}
+
+.handle:hover .grip {
+  fill: var(--candy);
+}
+
+.dragging {
+  position: relative;
+  z-index: 3;
+  box-shadow: var(--shadow-lift), inset 0 0 0 2px var(--candy);
+  opacity: 0.96;
+}

@@ -9,10 +9,3 @@ export const byOrderThenNewest = (a, b) => {
 
 export const sortByOrder = (list = []) => [...list].sort(byOrderThenNewest);
 
-export const moveItem = (list, from, to) => {
-  if (to < 0 || to >= list.length || from === to) return list;
-  const next = [...list];
-  const [item] = next.splice(from, 1);
-  next.splice(to, 0, item);
-  return next;
-};

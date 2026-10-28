@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { FiArrowUp, FiArrowDown, FiEdit2, FiTrash2, FiPlus } from 'react-icons/fi';
+import { FiEdit2, FiTrash2, FiPlus } from 'react-icons/fi';
 import Modal from '../components/Modal';
 import { useToast } from '../components/Toast';
 import {
   subscribeArtworks, createArtwork, updateArtwork, deleteArtwork, setArtworkSold, reorderArtworks,
 } from '../firebase/artworks';
 import { artworkMeta, artworkSrc, formatPrice } from '../lib/gallery';
-import { moveItem } from '../lib/ordering';
 import { saveErrorMessage } from '../lib/uploads';
 import ArtworkForm from './ArtworkForm';
+import { SortableList, Grip } from './Sortable';
 import admin from './Admin.module.css';
 import styles from './ArtworksSection.module.css';
 
@@ -48,9 +48,7 @@ const ArtworksSection = () => {
     }
   };
 
-  const move = async (index, dir) => {
-    const next = moveItem(artworks, index, index + dir);
-    if (next === artworks) return;
+  const reorder = async (next) => {
     setArtworks(next);
     try {
       await reorderArtworks(next.map((a) => a.id));
@@ -96,7 +94,7 @@ const ArtworksSection = () => {
       <div className={admin.sectionHead}>
         <div>
           <h1>Artworks</h1>
-          <p>{artworks.length} on the wall, {sold} sold. The order here is the order visitors see.</p>
+          <p>{artworks.length} on the wall, {sold} sold. Drag a piece to change the order visitors see.</p>
         </div>
         <button type="button" className="btn btn-primary" onClick={() => setEditing('new')}>
           <FiPlus aria-hidden="true" /> Add artwork
@@ -107,27 +105,24 @@ const ArtworksSection = () => {
         <p className={admin.empty}>The wall is empty. Add your first artwork to start the gallery.</p>
       )}
 
-      <ol className={styles.list}>
-        {artworks.map((a, i) => (
-          <li key={a.id} className={styles.row}>
-            <div className={styles.thumb}>
-              {artworkSrc(a) && <img src={artworkSrc(a)} alt="" loading="lazy" />}
-            </div>
-            <div className={styles.info}>
-              <p className={`${styles.title} art-title`}>{a.title || 'Untitled'}</p>
-              <p className={styles.meta}>{[artworkMeta(a), formatPrice(a.price)].filter(Boolean).join(', ')}</p>
+      <SortableList items={artworks} getId={(a) => a.id} onReorder={reorder} className={styles.list} itemClassName={styles.row}>
+        {(a, i, handle) => (
+          <>
+            <div {...handle} aria-label={`Drag ${a.title || 'Untitled'} to reorder, position ${i + 1} of ${artworks.length}`}>
+              <Grip />
+              <div className={styles.thumb}>
+                {artworkSrc(a) && <img src={artworkSrc(a)} alt="" loading="lazy" draggable="false" />}
+              </div>
+              <div className={styles.info}>
+                <p className={`${styles.title} art-title`}>{a.title || 'Untitled'}</p>
+                <p className={styles.meta}>{[artworkMeta(a), formatPrice(a.price)].filter(Boolean).join(', ')}</p>
+              </div>
             </div>
             <label className={styles.soldSwitch}>
               <input type="checkbox" checked={!!a.sold} onChange={() => toggleSold(a)} disabled={busyId === a.id} />
               <span>Sold</span>
             </label>
             <div className={styles.actions}>
-              <button type="button" className="icon-btn" onClick={() => move(i, -1)} disabled={i === 0} aria-label={`Move ${a.title} up`}>
-                <FiArrowUp aria-hidden="true" />
-              </button>
-              <button type="button" className="icon-btn" onClick={() => move(i, 1)} disabled={i === artworks.length - 1} aria-label={`Move ${a.title} down`}>
-                <FiArrowDown aria-hidden="true" />
-              </button>
               <button type="button" className="icon-btn" onClick={() => setEditing(a)} aria-label={`Edit ${a.title}`}>
                 <FiEdit2 aria-hidden="true" />
               </button>
@@ -135,9 +130,9 @@ const ArtworksSection = () => {
                 <FiTrash2 aria-hidden="true" />
               </button>
             </div>
-          </li>
-        ))}
-      </ol>
+          </>
+        )}
+      </SortableList>
 
       <Modal open={!!editing} onClose={closeForm} title={editing === 'new' ? 'Add artwork' : 'Edit artwork'} size="lg">
         {editing && (

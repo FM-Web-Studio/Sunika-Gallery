@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sortByOrder, byOrderThenNewest, moveItem } from './ordering';
+import { sortByOrder, byOrderThenNewest } from './ordering';
 
 const doc = (id, order, seconds) => ({
   id,
@@ -38,15 +38,3 @@ describe('sortByOrder', () => {
   });
 });
 
-describe('moveItem', () => {
-  it('moves an item up and down', () => {
-    expect(moveItem(['a', 'b', 'c'], 2, 0)).toEqual(['c', 'a', 'b']);
-    expect(moveItem(['a', 'b', 'c'], 0, 1)).toEqual(['b', 'a', 'c']);
-  });
-
-  it('returns the same list when the move goes off either end', () => {
-    const list = ['a', 'b'];
-    expect(moveItem(list, 0, -1)).toBe(list);
-    expect(moveItem(list, 1, 2)).toBe(list);
-  });
-});
