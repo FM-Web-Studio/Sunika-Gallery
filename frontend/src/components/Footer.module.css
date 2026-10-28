@@ -1,0 +1,121 @@
+.footer {
+  --ink: #FBF4F6;
+  --ink-soft: #CDB9BF;
+  --ink-faint: #9A858B;
+  --line: rgba(251, 244, 246, 0.14);
+  --surface: transparent;
+  --teal-wash: rgba(110, 212, 194, 0.14);
+  --teal: #6ED4C2;
+  --candy-wash: rgba(255, 79, 160, 0.16);
+  margin-top: var(--space-9);
+  padding: var(--space-9) var(--gutter) var(--space-5);
+  background:
+    radial-gradient(60% 80% at 85% 0%, rgba(229, 23, 123, 0.28), transparent 60%),
+    radial-gradient(50% 70% at 10% 20%, rgba(247, 147, 30, 0.16), transparent 60%),
+    #160A0D;
+  color: var(--ink);
+}
+
+.cta {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-6);
+  max-width: var(--page-max);
+  margin: 0 auto var(--space-9);
+}
+
+.ctaLine {
+  max-width: 16ch;
+  font-family: var(--font-display);
+  font-size: var(--step-5);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+.ctaBtn {
+  min-height: 58px;
+  padding: 0 2rem;
+  font-size: var(--step-1);
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-6);
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding-top: var(--space-7);
+  border-top: 1px solid var(--line);
+}
+
+.lead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  max-width: 44ch;
+}
+
+.wordmark {
+  flex: none;
+  width: 104px;
+  height: auto;
+  transition: transform var(--slow) var(--ease-swing);
+}
+
+.wordmark:hover {
+  transform: rotate(-6deg) scale(1.06);
+}
+
+.lead p {
+  color: var(--ink-soft);
+}
+
+.side {
+  display: grid;
+  align-content: start;
+  justify-items: end;
+  gap: var(--space-4);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2) var(--space-5);
+}
+
+.links a {
+  font-weight: 600;
+  text-decoration: none;
+  background: linear-gradient(var(--candy), var(--candy)) 0 100% / 0 2px no-repeat;
+  transition: background-size var(--base) var(--ease-out);
+}
+
+.links a:hover {
+  background-size: 100% 2px;
+}
+
+.small {
+  max-width: var(--page-max);
+  margin: var(--space-7) auto 0;
+  font-size: var(--step--2);
+  color: var(--ink-faint);
+}
+
+@media (max-width: 720px) {
+  .lead {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .side {
+    justify-items: start;
+  }
+
+  .links {
+    justify-content: flex-start;
+  }
+}

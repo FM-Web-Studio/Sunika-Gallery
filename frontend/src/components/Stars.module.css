@@ -1,0 +1,52 @@
+.wrap {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.prompt {
+  font-weight: 600;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: color-mix(in srgb, var(--ink-faint) 45%, transparent);
+  font-size: 1.45rem;
+  transition: transform var(--fast) var(--ease-swing), color var(--fast) ease;
+}
+
+.star:disabled {
+  cursor: default;
+}
+
+.star:hover:not(:disabled) {
+  transform: scale(1.18) rotate(-8deg);
+}
+
+.on {
+  color: var(--gold);
+}
+
+.word {
+  margin-left: var(--space-3);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.summary {
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+}

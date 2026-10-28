@@ -5,13 +5,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# This repo deploys ONE thing: the gallery hosting target.
-#
-# Firestore rules, Storage rules and the Cloud Functions are project-wide, and the
-# gallery shares its Firebase project with the portfolio, so they have a single
-# owner: the Sunika-Portfolio repo. Deploying them from here as well would mean two
-# repos racing to define the same rules, and whichever pushed last would win,
-# silently reverting the other site's rules. See README.md.
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -25,14 +18,16 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: |
-          cd frontend
-          npm install
+        working-directory: frontend
+        run: npm ci
+
+      - name: Test
+        working-directory: frontend
+        run: npx vitest run
 
       - name: Build
-        run: |
-          cd frontend
-          npm run build
+        working-directory: frontend
+        run: npm run build
         env:
           FIREBASE_API_KEY:             ${{ secrets.FIREBASE_API_KEY }}
           FIREBASE_AUTH_DOMAIN:         ${{ secrets.FIREBASE_AUTH_DOMAIN }}

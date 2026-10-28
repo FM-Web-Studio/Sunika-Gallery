@@ -1,97 +1,108 @@
 import {
-  collection, doc, setDoc, updateDoc, deleteDoc,
-  query, onSnapshot, serverTimestamp,
+  collection, doc, setDoc, updateDoc, deleteDoc, getDocs,
+  onSnapshot, serverTimestamp, writeBatch,
 } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { db, storage } from './app';
-import { CATEGORIES, COLLECTIONS, STORAGE_FOLDERS } from './config';
-import { sortByOrder } from '../utils/ordering';
+import { db } from './app';
+import { ARTWORK_VOTES, CATEGORIES, COLLECTIONS, STORAGE_FOLDERS } from './config';
+import { uploadWithWebCopy, removeImages, pathFromUrl } from './files';
+import { sortByOrder } from '../lib/ordering';
 
 const COL = COLLECTIONS.artworks;
+const artworkRef = (id) => doc(db, COL, id);
+const folderFor = (id) => `${STORAGE_FOLDERS.artworks}/${id}`;
 
-const uploadImage = async (file, artworkId) => {
-  const path = `${STORAGE_FOLDERS.artworks}/${artworkId}/${Date.now()}_${file.name}`;
-  const storageRef = ref(storage, path);
-  await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(storageRef);
-  return { url, path };
-};
+const imagePathsOf = (artwork = {}) => [
+  artwork.imagePath || pathFromUrl(artwork.imageUrl),
+  artwork.webPath || pathFromUrl(artwork.webUrl),
+].filter(Boolean);
 
-const removeImage = async (path) => {
-  if (!path) return;
-  try { await deleteObject(ref(storage, path)); } catch { /* already gone */ }
-};
+const imageFields = (upload) => ({
+  imageUrl: upload.url,
+  imagePath: upload.path,
+  webUrl: upload.webUrl,
+  webPath: upload.webPath,
+  ...(upload.accent ? { accent: upload.accent } : {}),
+  ...(upload.width ? { width: upload.width, height: upload.height } : {}),
+});
 
-const mapDoc = (d) => ({ id: d.id, ...d.data() });
+const editableFields = (data) => ({
+  title: (data.title ?? '').trim(),
+  category: CATEGORIES.includes(data.category) ? data.category : CATEGORIES[0],
+  description: (data.description ?? '').trim(),
+  price: Math.max(0, Math.round(Number(data.price) || 0)),
+  dimensions: (data.dimensions ?? '').trim(),
+  sold: !!data.sold,
+});
 
-/*
- * Sorted in JS, deliberately, this used to be orderBy('order', 'asc'), which was a
- * trap on two counts.
- *
- * Firestore excludes any document missing the ordered field from an orderBy query, so
- * an artwork created without `order` (imported, or written from the console) would
- * simply not appear in the gallery, with no error anywhere to explain it. And the work
- * was wasted regardless: the Gallery page re-sorts client-side in every branch of its
- * sort switch, including the default, so the server's order was always thrown away.
- */
 export const subscribeArtworks = (cb, onError) =>
   onSnapshot(
-    query(collection(db, COL)),
-    (snap) => cb(sortByOrder(snap.docs.map(mapDoc))),
+    collection(db, COL),
+    (snap) => cb(sortByOrder(snap.docs.map((d) => ({ id: d.id, ...d.data() })))),
     onError,
   );
 
-export const createArtwork = async (data, imageFile) => {
-  const docRef = doc(collection(db, COL));
-  let imageUrl = '', imagePath = '';
-  if (imageFile) ({ url: imageUrl, path: imagePath } = await uploadImage(imageFile, docRef.id));
-
-  await setDoc(docRef, {
-    title:       data.title       ?? '',
-    category:    data.category    ?? CATEGORIES[0],
-    description: data.description ?? '',
-    price:       Number(data.price) || 0,
-    dimensions:  data.dimensions  ?? '',
-    sold:        !!data.sold,
-    imageUrl,
-    imagePath,
-    order:       data.order ?? Date.now(),
-    ratingSum:   0,
-    ratingCount: 0,
-    likeCount:   0,
-    createdAt:   serverTimestamp(),
-    updatedAt:   serverTimestamp(),
-  });
-  return docRef.id;
+export const createArtwork = async (data, file, order) => {
+  const ref = doc(collection(db, COL));
+  const upload = await uploadWithWebCopy(folderFor(ref.id), file);
+  try {
+    await setDoc(ref, {
+      ...editableFields(data),
+      ...imageFields(upload),
+      order: typeof order === 'number' ? order : Date.now(),
+      ratingSum: 0,
+      ratingCount: 0,
+      likeCount: 0,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+  } catch (err) {
+    await removeImages([upload.path, upload.webPath]);
+    throw err;
+  }
+  return ref.id;
 };
 
-// `data` should contain only editable fields. Pass `currentImagePath` so the
-// old Storage object can be cleaned up when a new image replaces it.
-export const updateArtwork = async (id, data, newImageFile, currentImagePath) => {
-  const patch = {
-    title:       data.title,
-    category:    data.category,
-    description: data.description,
-    price:       Number(data.price) || 0,
-    dimensions:  data.dimensions,
-    sold:        !!data.sold,
-    updatedAt:   serverTimestamp(),
-  };
-  if (typeof data.order === 'number') patch.order = data.order;
-
-  if (newImageFile) {
-    await removeImage(currentImagePath);
-    const { url, path } = await uploadImage(newImageFile, id);
-    patch.imageUrl = url;
-    patch.imagePath = path;
+export const updateArtwork = async (artwork, data, file) => {
+  const patch = { ...editableFields(data), updatedAt: serverTimestamp() };
+  if (!file) {
+    await updateDoc(artworkRef(artwork.id), patch);
+    return;
   }
-  await updateDoc(doc(db, COL, id), patch);
+
+  const oldPaths = imagePathsOf(artwork);
+  const upload = await uploadWithWebCopy(folderFor(artwork.id), file);
+  try {
+    await updateDoc(artworkRef(artwork.id), { ...patch, ...imageFields(upload) });
+  } catch (err) {
+    await removeImages([upload.path, upload.webPath]);
+    throw err;
+  }
+  await removeImages(oldPaths.filter((p) => p !== upload.path && p !== upload.webPath));
 };
 
 export const setArtworkSold = (id, sold) =>
-  updateDoc(doc(db, COL, id), { sold: !!sold, updatedAt: serverTimestamp() });
+  updateDoc(artworkRef(id), { sold: !!sold, updatedAt: serverTimestamp() });
 
-export const deleteArtwork = async (id, imagePath) => {
-  await removeImage(imagePath);
-  await deleteDoc(doc(db, COL, id));
+export const reorderArtworks = async (ids) => {
+  const batch = writeBatch(db);
+  ids.forEach((id, i) => batch.update(artworkRef(id), { order: i }));
+  await batch.commit();
+};
+
+const deleteVotes = async (id) => {
+  const snaps = await Promise.all(
+    Object.values(ARTWORK_VOTES).map((sub) => getDocs(collection(db, COL, id, sub))),
+  );
+  const refs = snaps.flatMap((s) => s.docs.map((d) => d.ref));
+  for (let i = 0; i < refs.length; i += 400) {
+    const batch = writeBatch(db);
+    refs.slice(i, i + 400).forEach((r) => batch.delete(r));
+    await batch.commit();
+  }
+};
+
+export const deleteArtwork = async (artwork) => {
+  await deleteVotes(artwork.id);
+  await deleteDoc(artworkRef(artwork.id));
+  await removeImages(imagePathsOf(artwork));
 };

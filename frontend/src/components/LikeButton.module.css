@@ -1,0 +1,94 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 46px;
+  padding: 0 0.6rem 0 0.9rem;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  background: transparent;
+  font-weight: 600;
+  transition: border-color var(--fast) ease, background-color var(--fast) ease, transform var(--fast) var(--ease-out);
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--candy);
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.btn:disabled {
+  cursor: progress;
+}
+
+.liked {
+  border-color: var(--candy);
+  background: var(--candy-wash);
+}
+
+.heart {
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: var(--candy);
+  font-size: 1.15rem;
+}
+
+.pop {
+  animation: pop 520ms var(--ease-swing) both;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.4);
+  }
+  55% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.burst {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  pointer-events: none;
+}
+
+.burst i {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  margin: -3px;
+  border-radius: 50%;
+  background: var(--candy);
+  animation: fly 620ms var(--ease-out) both;
+}
+
+.burst i:nth-child(even) {
+  background: var(--gold);
+}
+
+@keyframes fly {
+  from {
+    opacity: 1;
+    transform: rotate(var(--a)) translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: rotate(var(--a)) translateY(-22px) scale(0.4);
+  }
+}
+
+.count {
+  min-width: 2ch;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}

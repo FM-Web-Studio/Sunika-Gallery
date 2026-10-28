@@ -1,0 +1,32 @@
+.social {
+  display: grid;
+  grid-template-columns: 0.8fr 1fr 1.4fr auto;
+  align-items: end;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--line);
+}
+
+.remove {
+  margin-bottom: 3px;
+}
+
+.remove:hover:not(:disabled) {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+@media (max-width: 720px) {
+  .social {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .social > label:nth-of-type(3) {
+    grid-column: 1 / -1;
+  }
+
+  .remove {
+    justify-self: end;
+    grid-column: 2;
+  }
+}

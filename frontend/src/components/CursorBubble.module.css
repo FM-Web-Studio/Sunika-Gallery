@@ -1,0 +1,30 @@
+.anchor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.bubble {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  border-radius: 50%;
+  background: var(--candy);
+  color: var(--on-candy);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-style: italic;
+  font-weight: 600;
+  box-shadow: 0 16px 30px -12px var(--candy);
+  transform: scale(0);
+  transition: transform 380ms var(--ease-swing);
+}
+
+.on {
+  transform: scale(1);
+}

@@ -3,7 +3,7 @@
 .env.*
 !.env.example
 
-# Firebase service account key (used by the seed script)
+# Firebase service account key
 serviceAccount.json
 
 # Firebase local state
@@ -29,5 +29,3 @@ Thumbs.db
 *.suo
 *.user
 
-# One-off migration backups (contain exported Firestore data)
-frontend/scripts/backup-*/
