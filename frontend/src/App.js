@@ -12,6 +12,8 @@ const Gallery = lazy(() => import('./pages/Gallery'));
 const Contact = lazy(() => import('./pages/Contact'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Policy = lazy(() => import('./pages/Policy'));
+const Privacy = lazy(() => import('./pages/Legal').then((m) => ({ default: m.Privacy })));
+const Terms = lazy(() => import('./pages/Legal').then((m) => ({ default: m.Terms })));
 const Admin = lazy(() => import('./admin/Admin'));
 
 const PublicLayout = () => {
@@ -45,6 +47,8 @@ const App = () => (
         <Route index element={<Gallery />} />
         <Route path="contact" element={<Contact />} />
         <Route path="policy" element={<Policy />} />
+        <Route path="privacy" element={<Privacy />} />
+        <Route path="terms" element={<Terms />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

@@ -115,6 +115,9 @@ const Viewer = ({ artwork, position, total, onPrev, onNext, onClose, copy }) => 
 
           <div className={styles.rating}>
             <Stars artwork={artwork} prompt={copy.rateLabel} />
+            <p className={`${styles.policy} ${styles.votes}`}>
+              {copy.votesNote} <Link to="/privacy">Privacy policy</Link>
+            </p>
           </div>
         </div>
       </aside>

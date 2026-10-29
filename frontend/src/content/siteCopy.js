@@ -22,8 +22,9 @@ const VIEWER_FIELDS = [
   { key: 'enquire', label: 'Ask button', type: 'text', default: 'Ask about this piece' },
   { key: 'soldNote', label: 'Note on sold pieces', type: 'textarea', default: 'This piece has found a home. Ask about something similar or a commission of your own.' },
   { key: 'rateLabel', label: 'Rating prompt', type: 'text', default: 'How does it make you feel?' },
-  { key: 'policyNote', label: 'Policy note', type: 'text', default: 'All sales are final.' },
+  { key: 'policyNote', label: 'Policy note', type: 'text', default: 'Every piece is an original, and a sale is only agreed in writing.' },
   { key: 'policyLink', label: 'Policy link', type: 'text', default: 'Read the sales policy' },
+  { key: 'votesNote', label: 'Note under the rating (the privacy link follows it)', type: 'text', default: 'Hearts and ratings are anonymous. The first one gives this browser a random ID, nothing more.' },
 ];
 
 const CONTACT_FIELDS = [
@@ -33,13 +34,14 @@ const CONTACT_FIELDS = [
   { key: 'detailsHeading', label: 'Details title', type: 'text', default: 'Other ways to reach me' },
   { key: 'pieceMessage', label: 'Prefilled message, {title} fills in', type: 'textarea', default: 'Hi Sunika, I would love to know more about "{title}".' },
   { key: 'sent', label: 'After sending', type: 'text', default: 'Thank you, your message is on its way.' },
+  { key: 'privacyNote', label: 'Privacy note under the form (the policy link follows it)', type: 'text', default: 'I use what you send only to reply, and it is deleted after 12 months.' },
 ];
 
 const POLICY_FIELDS = [
   { key: 'heading', label: 'Page title', type: 'text', default: 'Sales policy' },
   { key: 'intro', label: 'Introduction', type: 'textarea', default: 'Every piece in this gallery is an original, made by hand. Please read this before you buy, so we both know what to expect.' },
-  { key: 'finalTitle', label: 'Sales are final: title', type: 'text', default: 'All sales are final' },
-  { key: 'finalBody', label: 'Sales are final: text', type: 'textarea', default: 'Because every artwork is one of a kind, all sales are final. Once a sale is confirmed and paid, I do not offer refunds or exchanges, including if you change your mind.' },
+  { key: 'finalTitle', label: 'Change of mind: title', type: 'text', default: 'No returns for a change of mind' },
+  { key: 'finalBody', label: 'Change of mind: text', type: 'textarea', default: 'Because every artwork is one of a kind, I do not take returns or exchanges if you simply change your mind, to the extent the law allows. If we agree a sale by email or message, the law gives you 7 days after the piece arrives to cancel. The terms of use explain how that works.' },
   { key: 'rightsTitle', label: 'Damage: title', type: 'text', default: 'If something is wrong' },
   { key: 'rightsBody', label: 'Damage: text', type: 'textarea', default: 'If a piece arrives damaged or is not what was described, contact me as soon as possible with photos and we will find a fair solution. This policy does not affect your rights under the Consumer Protection Act.' },
   { key: 'coloursTitle', label: 'Colours: title', type: 'text', default: 'Colours on screen' },
@@ -47,7 +49,7 @@ const POLICY_FIELDS = [
   { key: 'deliveryTitle', label: 'Delivery: title', type: 'text', default: 'Collection and delivery' },
   { key: 'deliveryBody', label: 'Delivery: text', type: 'textarea', default: 'Collection or delivery is arranged with you before payment. Any delivery cost is quoted upfront and paid by the buyer.' },
   { key: 'commissionsTitle', label: 'Commissions: title', type: 'text', default: 'Commissions' },
-  { key: 'commissionsBody', label: 'Commissions: text', type: 'textarea', default: 'Commissions start once the agreed deposit is paid. Because the work is made just for you, the deposit cannot be refunded once I have started.' },
+  { key: 'commissionsBody', label: 'Commissions: text', type: 'textarea', default: 'Commissions start once the agreed deposit is paid. Because the work is made just for you, the deposit is not refundable once I have started, to the extent the law allows.' },
   { key: 'copyrightTitle', label: 'Copyright: title', type: 'text', default: 'Copyright' },
   { key: 'copyrightBody', label: 'Copyright: text', type: 'textarea', default: 'Buying an artwork gives you the artwork itself, not the right to reproduce it. Prints, copies and commercial use need my written permission.' },
   { key: 'questions', label: 'Closing line', type: 'text', default: 'Questions about any of this? Ask me before you buy.' },

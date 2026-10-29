@@ -222,6 +222,10 @@
   border-top: 1px solid var(--line);
 }
 
+.votes {
+  margin-top: var(--space-3);
+}
+
 @media (max-width: 900px) {
   .room {
     display: block;

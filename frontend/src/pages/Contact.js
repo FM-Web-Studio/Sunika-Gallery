@@ -29,7 +29,7 @@ const Contact = () => {
       <div className={styles.layout}>
         <section className={styles.formCard} aria-labelledby="contact-form-title">
           <h2 id="contact-form-title" className={styles.cardTitle}>{t.formHeading}</h2>
-          <ContactForm key={piece} initialMessage={initialMessage} sentText={t.sent} />
+          <ContactForm key={piece} initialMessage={initialMessage} sentText={t.sent} privacyNote={t.privacyNote} />
         </section>
 
         {(details.length > 0 || contact.socials.length > 0) && (

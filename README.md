@@ -62,16 +62,20 @@ npm run build    # writes frontend/build
 and mirrored as GitHub Actions secrets. The values end up in the client bundle and
 are not secret; the rules do the real enforcement.
 
+`FIREBASE_APPCHECK_SITE_KEY` (a reCAPTCHA v3 site key) turns on Firebase App Check.
+Leave it unset and App Check stays off. For local work with enforcement on, also set
+`FIREBASE_APPCHECK_DEBUG_TOKEN` to a debug token registered in the console.
+
 ```
 frontend/src
   admin/       the admin: artworks, messages, contact details, wording
   components/  header, footer, artwork frame, viewer, stars, hearts, forms, modal, toasts
-  content/     siteCopy.js, every visitor-facing string with its default
+  content/     siteCopy.js, every visitor-facing string with its default; legal.js, privacy and terms
   context/     SiteContext, wording and contact details for the whole app
   firebase/    data access, one module per concern
   hooks/       theme and motion preferences, momentum scroll, auth
   lib/         small pure helpers, unit tested
-  pages/       Gallery, Contact, NotFound
+  pages/       Gallery, Contact, Policy (sales), Legal (privacy and terms), NotFound
   styles/      tokens.css (colours, type, spacing) and base.css
 ```
 

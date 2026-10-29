@@ -73,6 +73,17 @@
   font-weight: 600;
 }
 
+.full {
+  margin-top: var(--space-5);
+  color: var(--ink-soft);
+}
+
+.full a {
+  font-weight: 700;
+  color: var(--candy-strong);
+  text-underline-offset: 3px;
+}
+
 @media (max-width: 720px) {
   .sections {
     grid-template-columns: 1fr;

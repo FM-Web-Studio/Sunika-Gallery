@@ -1,18 +1,16 @@
 import {
-  collection, addDoc, deleteDoc, doc, onSnapshot, orderBy, query, serverTimestamp, updateDoc,
+  collection, addDoc, deleteDoc, doc, onSnapshot, orderBy, query, serverTimestamp, updateDoc, Timestamp,
 } from 'firebase/firestore';
 import { db } from './app';
 import { COLLECTIONS } from './config';
+import { messageFields } from '../lib/message';
 
 const inbox = () => collection(db, COLLECTIONS.messages);
 
-export const submitMessage = ({ name, email, message }) =>
-  addDoc(inbox(), {
-    name: name.trim(),
-    email: email.trim(),
-    message: message.trim(),
-    createdAt: serverTimestamp(),
-  });
+export const submitMessage = (form) => {
+  const { expireAt, ...fields } = messageFields(form);
+  return addDoc(inbox(), { ...fields, createdAt: serverTimestamp(), expireAt: Timestamp.fromDate(expireAt) });
+};
 
 export const subscribeMessages = (cb, onError) =>
   onSnapshot(

@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useSite } from '../context/SiteContext';
+import { usePageMeta } from '../hooks/usePageMeta';
 import styles from './Policy.module.css';
 
 const Policy = () => {
   const t = useSite().copy('policy');
+  usePageMeta({ title: t.heading, description: t.intro });
 
   const sections = [
     [t.finalTitle, t.finalBody],
@@ -29,6 +31,10 @@ const Policy = () => {
           </section>
         ))}
       </div>
+
+      <p className={styles.full}>
+        This is the short version. The <Link to="/terms">terms of use</Link> and <Link to="/privacy">privacy policy</Link> set out the details.
+      </p>
 
       <p className={styles.questions}>
         {t.questions} <Link to="/contact" className="btn btn-candy">Contact me</Link>

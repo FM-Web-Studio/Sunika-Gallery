@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FiSend, FiCheck } from 'react-icons/fi';
 import { submitMessage } from '../firebase/messages';
+import { MESSAGE_LIMITS } from '../lib/message';
 import { cooldownLeft, markSent } from '../lib/storage';
 import { useToast } from './Toast';
 import styles from './ContactForm.module.css';
@@ -19,7 +21,7 @@ const validate = ({ name, email, message }) => {
   return errors;
 };
 
-const ContactForm = ({ initialMessage = '', sentText }) => {
+const ContactForm = ({ initialMessage = '', sentText, privacyNote }) => {
   const { notify } = useToast();
   const [form, setForm] = useState({ ...EMPTY, message: initialMessage });
   const [errors, setErrors] = useState({});
@@ -78,19 +80,19 @@ const ContactForm = ({ initialMessage = '', sentText }) => {
       <div className={styles.pair}>
         <label className="field">
           <span>Your name</span>
-          <input className="input" value={form.name} onChange={set('name')} autoComplete="name" aria-invalid={!!errors.name} />
+          <input className="input" value={form.name} onChange={set('name')} autoComplete="name" maxLength={MESSAGE_LIMITS.name} aria-invalid={!!errors.name} />
           {errors.name && <em className={styles.error}>{errors.name}</em>}
         </label>
         <label className="field">
           <span>Your email</span>
-          <input className="input" type="email" value={form.email} onChange={set('email')} autoComplete="email" aria-invalid={!!errors.email} />
+          <input className="input" type="email" value={form.email} onChange={set('email')} autoComplete="email" maxLength={MESSAGE_LIMITS.email} aria-invalid={!!errors.email} />
           {errors.email && <em className={styles.error}>{errors.email}</em>}
         </label>
       </div>
 
       <label className="field">
         <span>Message</span>
-        <textarea className="input" rows={6} value={form.message} onChange={set('message')} aria-invalid={!!errors.message} />
+        <textarea className="input" rows={6} value={form.message} onChange={set('message')} maxLength={MESSAGE_LIMITS.message} aria-invalid={!!errors.message} />
         {errors.message && <em className={styles.error}>{errors.message}</em>}
       </label>
 
@@ -98,6 +100,10 @@ const ContactForm = ({ initialMessage = '', sentText }) => {
         Leave this empty
         <input tabIndex={-1} autoComplete="off" value={form.website} onChange={set('website')} />
       </label>
+
+      <p className={styles.privacy}>
+        {privacyNote} <Link to="/privacy">Privacy policy</Link>
+      </p>
 
       <button type="submit" className={`btn btn-candy ${styles.submit}`} disabled={state === 'sending'}>
         <FiSend aria-hidden="true" />

@@ -57,3 +57,14 @@
     grid-template-columns: 1fr;
   }
 }
+
+.privacy {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+.privacy a {
+  font-weight: 700;
+  color: var(--candy);
+  text-underline-offset: 3px;
+}
