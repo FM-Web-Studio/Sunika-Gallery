@@ -160,7 +160,7 @@ export const termsOfUse = ({ name, email, location, phone }) => ({
     {
       heading: 'Cancelling and returns',
       blocks: [
-        'Because every piece is one of a kind, I do not take returns or exchanges if you simply change your mind, to the extent the law allows. The law does give you these rights, and nothing in these terms takes them away:',
+        'All sales are final. Because every piece is one of a kind, I do not give refunds, returns or exchanges if you change your mind. The only exceptions are these rights the law gives you, which nothing in these terms takes away:',
         [
           'If we agree the sale at a distance, for example by email or message, and you are buying as a consumer, you may cancel within 7 days after you receive the piece, without giving a reason, under section 44 of the Electronic Communications and Transactions Act, 2002. You pay only the direct cost of returning the piece, which must come back in the condition you received it, and I refund what you paid within 30 days of your cancellation. This right does not apply to commissions made to your own specifications.',
           'If a piece arrives damaged or is not what was described, tell me as soon as you can, with photos. Your rights under the Consumer Protection Act, 2008, apply, and we will put it right.',

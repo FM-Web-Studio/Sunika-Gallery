@@ -40,8 +40,8 @@ const CONTACT_FIELDS = [
 const POLICY_FIELDS = [
   { key: 'heading', label: 'Page title', type: 'text', default: 'Sales policy' },
   { key: 'intro', label: 'Introduction', type: 'textarea', default: 'Every piece in this gallery is an original, made by hand. Please read this before you buy, so we both know what to expect.' },
-  { key: 'finalTitle', label: 'Change of mind: title', type: 'text', default: 'No returns for a change of mind' },
-  { key: 'finalBody', label: 'Change of mind: text', type: 'textarea', default: 'Because every artwork is one of a kind, I do not take returns or exchanges if you simply change your mind, to the extent the law allows. If we agree a sale by email or message, the law gives you 7 days after the piece arrives to cancel. The terms of use explain how that works.' },
+  { key: 'finalTitle', label: 'Change of mind: title', type: 'text', default: 'All sales are final' },
+  { key: 'finalBody', label: 'Change of mind: text', type: 'textarea', default: 'Every artwork is one of a kind, so I do not give refunds, returns or exchanges if you change your mind. The only exceptions are the ones the law requires: if we agree the sale by email or message, you may cancel within 7 days after the piece arrives, and if a piece arrives damaged or is not what was described, it will be put right. The terms of use explain both.' },
   { key: 'rightsTitle', label: 'Damage: title', type: 'text', default: 'If something is wrong' },
   { key: 'rightsBody', label: 'Damage: text', type: 'textarea', default: 'If a piece arrives damaged or is not what was described, contact me as soon as possible with photos and we will find a fair solution. This policy does not affect your rights under the Consumer Protection Act.' },
   { key: 'coloursTitle', label: 'Colours: title', type: 'text', default: 'Colours on screen' },
