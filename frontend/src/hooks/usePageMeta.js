@@ -1,25 +1,37 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { SITE_URL } from '../content/legal';
+import { SITE_URL, titleFor, PAGE_META } from '../content/seo';
 
-// Gives a page its own title and canonical address, and puts the site defaults back on the way out.
-export const usePageMeta = ({ title, description }) => {
+const headTag = (selector, create) => {
+  let el = document.head.querySelector(selector);
+  if (!el) {
+    el = create();
+    document.head.appendChild(el);
+  }
+  return el;
+};
+
+// The build writes each page's head (see content/seo.js); this keeps the title,
+// description and canonical link right after moving between pages in the app.
+export const usePageMeta = ({ title, noindex = false } = {}) => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const previousTitle = document.title;
-    const meta = document.head.querySelector('meta[name="description"]');
-    const previousDescription = meta?.content;
-    const canonical = Object.assign(document.createElement('link'), { rel: 'canonical', href: SITE_URL + pathname });
+    document.title = titleFor(title);
+    const description = PAGE_META.find((p) => p.path === pathname)?.description;
+    if (description) {
+      headTag('meta[name="description"]', () => Object.assign(document.createElement('meta'), { name: 'description' })).content = description;
+    }
 
-    document.title = `${title} | Sunika Gallery`;
-    if (meta && description) meta.content = description;
-    document.head.appendChild(canonical);
+    if (!noindex) {
+      const canonical = headTag('link[rel="canonical"]', () => Object.assign(document.createElement('link'), { rel: 'canonical' }));
+      canonical.href = SITE_URL + pathname;
+      return undefined;
+    }
 
-    return () => {
-      document.title = previousTitle;
-      if (meta && previousDescription) meta.content = previousDescription;
-      canonical.remove();
-    };
-  }, [title, description, pathname]);
+    document.head.querySelector('link[rel="canonical"]')?.remove();
+    const robots = headTag('meta[name="robots"]', () => Object.assign(document.createElement('meta'), { name: 'robots' }));
+    robots.content = 'noindex';
+    return () => robots.remove();
+  }, [title, noindex, pathname]);
 };

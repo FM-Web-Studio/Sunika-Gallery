@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -6,15 +6,9 @@ import Loading from './components/Loading';
 import ErrorBoundary from './components/ErrorBoundary';
 import { usePrefs } from './hooks/usePrefs';
 import { useMomentumScroll, scrollToTop } from './hooks/useMomentumScroll';
+import { Gallery, Contact, NotFound, Policy, Privacy, Terms, Admin } from './pages';
 import styles from './App.module.css';
 
-const Gallery = lazy(() => import('./pages/Gallery'));
-const Contact = lazy(() => import('./pages/Contact'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-const Policy = lazy(() => import('./pages/Policy'));
-const Privacy = lazy(() => import('./pages/Legal').then((m) => ({ default: m.Privacy })));
-const Terms = lazy(() => import('./pages/Legal').then((m) => ({ default: m.Terms })));
-const Admin = lazy(() => import('./admin/Admin'));
 
 const PublicLayout = () => {
   const { pathname } = useLocation();

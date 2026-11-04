@@ -47,5 +47,15 @@ jobs:
           echo '${{ secrets.SERVICE_ACCOUNT }}' > "$RUNNER_TEMP/firebase-sa.json"
           echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-sa.json" >> "$GITHUB_ENV"
 
+      # The contact form posts to the sendMessage function, deployed from the portfolio repo.
+      - name: Check the contact form function is deployed
+        run: |
+          # An empty call is treated as a bot and answered with a quiet success, so nothing is saved.
+          status=$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'Content-Type: application/json'             -d '{"data":{}}' https://europe-west1-sunika-project.cloudfunctions.net/sendMessage)
+          if [ "$status" != "200" ]; then
+            echo "::error::sendMessage answered $status. Deploy functions from the Sunika-Portfolio repo first, then run this workflow again."
+            exit 1
+          fi
+
       - name: Deploy to Firebase Hosting
         run: firebase deploy --only hosting:gallery --project sunika-project

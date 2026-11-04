@@ -4,7 +4,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
-const app = initializeApp({
+export const app = initializeApp({
   apiKey: import.meta.env.FIREBASE_API_KEY,
   authDomain: import.meta.env.FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.FIREBASE_PROJECT_ID,

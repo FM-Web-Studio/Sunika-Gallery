@@ -68,16 +68,29 @@ Leave it unset and App Check stays off. For local work with enforcement on, also
 
 ```
 frontend/src
-  admin/       the admin: artworks, messages, contact details, wording
-  components/  header, footer, artwork frame, viewer, stars, hearts, forms, modal, toasts
-  content/     siteCopy.js, every visitor-facing string with its default; legal.js, privacy and terms
+  components/  shared UI, one folder each: Viewer/Viewer.js, Viewer.module.css and an index.js barrel
+  content/     siteCopy.js, every visitor-facing string with its default; legal.js, privacy and terms;
+               seo.js, each page's title, description and link preview
   context/     SiteContext, wording and contact details for the whole app
   firebase/    data access, one module per concern
-  hooks/       theme and motion preferences, momentum scroll, auth
+  hooks/       theme and motion preferences, momentum scroll, auth, page meta
   lib/         small pure helpers, unit tested
-  pages/       Gallery, Contact, Policy (sales), Legal (privacy and terms), NotFound
+  pages/       one folder per page, lazy loaded through pages/index.js
+    Admin/     the admin: sections/ (artworks, messages, contact details, wording), parts/ (form, sorting)
   styles/      tokens.css (colours, type, spacing) and base.css
 ```
+
+Import a component through its folder (`../components/Modal`), not the file inside it.
+
+## Link previews and search
+
+Link preview bots (WhatsApp, LinkedIn, Facebook, Slack) do not run JavaScript, so the
+build writes one HTML file per page with its title, description and preview image
+already in the head, plus `sitemap.xml` and `robots.txt`. All of it comes from
+`src/content/seo.js`; add a page there and a matching rewrite in `firebase.json`.
+The preview image is `frontend/public/og/share.jpg` (1200 x 630). A changed image
+needs a new file name, or apps keep showing the cached one. A shared `?piece=` link
+shows the gallery's preview, not the piece itself: that would need a server.
 
 Animations respect the visitor's reduced motion setting, and the lightning button
 in the header turns them off for anyone who prefers a still page.
@@ -85,10 +98,11 @@ in the header turns them off for anyone who prefers a still page.
 ## Deploys
 
 Every push to `main` installs, runs the tests, builds and deploys the gallery
-hosting target.
+hosting target. The contact form posts to the `sendMessage` function, which checks
+for spam and is deployed from the portfolio repo; the workflow stops if it is not live.
 
 ## Requirements on the Firebase project
 
 - Anonymous sign-in enabled. Ratings and hearts are one per visitor, and the rules
   can only hold that line with a uid the server issued.
-- The Blaze plan, for the contact form email function.
+- The Blaze plan, for the contact form functions.
