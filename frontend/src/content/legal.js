@@ -4,7 +4,7 @@
 
 import { SITE_URL } from './seo';
 
-export const LEGAL_UPDATED = '4 November 2026';
+export const LEGAL_UPDATED = '5 November 2026';
 
 export const LEGAL_FALLBACK = {
   name: 'Sunika Lombard',
@@ -32,7 +32,7 @@ export const privacyPolicy = ({ name, email, location, recaptcha }) => ({
         [
           'Messages. When you use the Contact page: your name, your email address, your message (which may name the piece you asked about), and the time it was sent.',
           'Spam checks. To stop the form being used for spam, the site also keeps short one-way codes made from your network (IP) address and your email address, so it can count how many messages arrive from one place. The codes cannot be turned back into the originals, and they are deleted after 24 hours.',
-          'Hearts and ratings. The first time you leave a heart or a star rating, Firebase gives your browser a random, anonymous ID. With it I store which piece you hearted or rated, the number of stars, and when. The ID is not linked to your name, email or any account, and nothing is created for visitors who only look around.',
+          'Hearts and ratings. The first time you leave a heart or a star rating, Firebase gives your browser a random, anonymous ID. With it I store which piece you hearted or rated, the number of stars, and when. The ID is not linked to your name, email or any account, and nothing is created for visitors who only look around. To stop the counts being stuffed, a short one-way code made from your network (IP) address is also kept with each piece you vote on, for 12 months, and a count of votes from that network for 24 hours. The codes cannot be turned back into your address.',
           'Buying a piece. If we agree a sale, I keep the details needed to complete it, such as your name, contact details, a delivery address if the piece is sent to you, and a record of the sale. We exchange these by email or message, not through this site.',
           'Visits. The site is served by Google Firebase Hosting, which, like every web host, receives your IP address, browser details and the page requested in order to deliver it. I do not run analytics, advertising or tracking scripts, and I do not build a profile of you.',
         ],

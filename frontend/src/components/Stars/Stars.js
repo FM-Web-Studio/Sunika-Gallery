@@ -32,7 +32,7 @@ const Stars = ({ artwork, prompt }) => {
         notify('info', err.message);
       } else {
         setMine(0);
-        notify('error', err.code === 'visitor-auth-disabled' ? err.message : 'Your rating did not save. Try again in a moment.');
+        notify('error', ['visitor-auth-disabled', 'vote-limit'].includes(err.code) ? err.message : 'Your rating did not save. Try again in a moment.');
       }
     } finally {
       setBusy(false);

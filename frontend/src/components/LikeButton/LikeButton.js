@@ -26,7 +26,7 @@ const LikeButton = ({ artwork }) => {
       setLiked(await toggleLike(artwork.id));
     } catch (err) {
       setLiked(!next);
-      notify('error', err.code === 'visitor-auth-disabled' ? err.message : 'That heart did not stick. Try again in a moment.');
+      notify('error', ['visitor-auth-disabled', 'vote-limit'].includes(err.code) ? err.message : 'That heart did not stick. Try again in a moment.');
     } finally {
       setBusy(false);
     }

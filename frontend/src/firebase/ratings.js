@@ -1,10 +1,10 @@
-import { doc, getDoc, increment, serverTimestamp, writeBatch } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from './app';
+import vote, { voteError } from './vote';
 import { ARTWORK_VOTES, COLLECTIONS } from './config';
 import { ensureVisitor } from './auth';
 import { cachedRating, cacheRating } from '../lib/voteCache';
 
-const artworkRef = (id) => doc(db, COLLECTIONS.artworks, id);
 const raterRef = (artworkId, uid) => doc(db, COLLECTIONS.artworks, artworkId, ARTWORK_VOTES.raters, uid);
 
 export const averageRating = ({ ratingSum = 0, ratingCount = 0 } = {}) =>
@@ -27,11 +27,19 @@ export const rateArtwork = async (artworkId, value) => {
     throw err;
   }
 
-  const batch = writeBatch(db);
-  batch.set(ref, { value: v, createdAt: serverTimestamp() });
-  batch.update(artworkRef(artworkId), { ratingSum: increment(v), ratingCount: increment(1) });
-  await batch.commit();
+  let result;
+  try {
+    ({ data: result } = await vote({ artworkId, kind: 'rate', value: v }));
+  } catch (err) {
+    throw voteError(err);
+  }
+  if (result.alreadyRated) {
+    cacheRating(artworkId, result.value);
+    const err = new Error('You have already rated this piece.');
+    err.code = 'already-rated';
+    throw err;
+  }
 
-  cacheRating(artworkId, v);
-  return v;
+  cacheRating(artworkId, result.value);
+  return result.value;
 };

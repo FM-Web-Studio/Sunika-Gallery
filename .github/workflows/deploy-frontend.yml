@@ -58,16 +58,19 @@ jobs:
           echo '${{ secrets.SERVICE_ACCOUNT }}' > "$RUNNER_TEMP/firebase-sa.json"
           echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-sa.json" >> "$GITHUB_ENV"
 
-      # The contact form posts to the sendMessage function, deployed from the portfolio repo.
-      - name: Check the contact form function is deployed
+      # The contact form posts to sendMessage, and hearts and ratings go through voteArtwork, both
+      # deployed from the Sunika-Portfolio repo. Both must be live first or those features break.
+      - name: Check the site's functions are deployed
         run: |
           # This call carries no App Check token, so a live function refuses it with 401 and saves
           # nothing. 404 means it is not deployed; 5xx means it is broken.
-          status=$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'Content-Type: application/json'             -d '{"data":{}}' https://europe-west1-sunika-project.cloudfunctions.net/sendMessage)
-          if [ "$status" != "401" ] && [ "$status" != "200" ]; then
-            echo "::error::sendMessage answered $status. Deploy functions from the Sunika-Portfolio repo first, then run this workflow again."
-            exit 1
-          fi
+          for fn in sendMessage voteArtwork; do
+            status=$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'Content-Type: application/json'               -d '{"data":{}}' https://europe-west1-sunika-project.cloudfunctions.net/$fn)
+            if [ "$status" != "401" ] && [ "$status" != "200" ]; then
+              echo "::error::$fn answered $status. Deploy functions from the Sunika-Portfolio repo first, then run this workflow again."
+              exit 1
+            fi
+          done
 
       - name: Deploy to Firebase Hosting
         run: firebase deploy --only hosting:gallery --project sunika-project
