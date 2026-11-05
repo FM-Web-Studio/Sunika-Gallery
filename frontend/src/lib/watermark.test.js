@@ -14,8 +14,13 @@ describe('watermark', () => {
     expect(svg).not.toContain('<art>');
   });
 
+  it('stamps the mark twice per tile, staggered, so no strip of the image is left clean', () => {
+    expect(watermarkSvg('A', 'b').match(/<text/g)).toHaveLength(4);
+    expect(watermarkSvg('A', 'b').match(/rotate\(-28\)/g)).toHaveLength(2);
+  });
+
   it('leaves out the second line when there is none', () => {
-    expect(watermarkSvg('A').match(/<text/g)).toHaveLength(1);
+    expect(watermarkSvg('A').match(/<text/g)).toHaveLength(2);
   });
 
   it('returns a CSS url that is stable for the same text', () => {

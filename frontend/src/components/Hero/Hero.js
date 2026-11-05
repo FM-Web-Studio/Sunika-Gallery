@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FiArrowDown } from 'react-icons/fi';
 import ArtImage from '../ArtImage';
 import { usePrefs } from '../../hooks/usePrefs';
+import { useOnScreen } from '../../hooks/useOnScreen';
 import { artworkMeta, artworkSrc, formatPrice } from '../../lib/gallery';
 import { accentFor } from '../../lib/palette';
 import styles from './Hero.module.css';
@@ -13,9 +14,10 @@ const Hero = ({ pieces, onOpen, cta }) => {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const timer = useRef(null);
+  const [heroRef, onScreen] = useOnScreen();
 
   const count = pieces.length;
-  const playing = count > 1 && !paused && !reduceMotion;
+  const playing = count > 1 && !paused && !reduceMotion && onScreen;
 
   useEffect(() => { if (index >= count) setIndex(0); }, [count, index]);
 
@@ -31,13 +33,14 @@ const Hero = ({ pieces, onOpen, cta }) => {
     return () => document.removeEventListener('visibilitychange', onVisibility);
   }, []);
 
-  if (!count) return <section className={`${styles.hero} ${styles.empty}`} aria-hidden="true" />;
+  if (!count) return <section ref={heroRef} className={`${styles.hero} ${styles.empty}`} aria-hidden="true" />;
 
   const current = pieces[Math.min(index, count - 1)];
 
   return (
     <section
-      className={styles.hero}
+      ref={heroRef}
+      className={`${styles.hero} ${onScreen ? '' : styles.idle}`}
       style={{ '--accent': accentFor(current) }}
       aria-roledescription="carousel"
       aria-label="Featured works"

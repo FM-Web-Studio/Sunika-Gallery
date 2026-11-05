@@ -5,7 +5,9 @@ import Footer from './components/Footer';
 import Loading from './components/Loading';
 import ErrorBoundary from './components/ErrorBoundary';
 import { usePrefs } from './hooks/usePrefs';
-import { useMomentumScroll, scrollToTop } from './hooks/useMomentumScroll';
+import { scrollToTop } from './hooks/scroll';
+import { useInteractions } from './hooks/useInteractions';
+import { useIntro } from './hooks/useIntro';
 import { Gallery, Contact, NotFound, Policy, Privacy, Terms, Admin } from './pages';
 import styles from './App.module.css';
 
@@ -13,7 +15,8 @@ import styles from './App.module.css';
 const PublicLayout = () => {
   const { pathname } = useLocation();
   const { reduceMotion } = usePrefs();
-  useMomentumScroll(!reduceMotion);
+  useInteractions(!reduceMotion);
+  useIntro(pathname !== '/');
 
   useEffect(() => { scrollToTop(); }, [pathname]);
 

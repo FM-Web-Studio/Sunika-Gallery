@@ -6,10 +6,6 @@
 }
 
 .stage {
-  --rx: 0deg;
-  --ry: 0deg;
-  --gx: 50%;
-  --gy: 30%;
   position: relative;
   display: grid;
   place-items: center;
@@ -28,7 +24,7 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(90% 70% at var(--gx) var(--gy), color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%),
+    radial-gradient(90% 70% at var(--gx, 50%) var(--gy, 30%), color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%),
     color-mix(in srgb, var(--accent) 11%, var(--wall-deep));
   transition: background-color var(--base) ease, filter var(--base) ease;
 }
@@ -41,9 +37,23 @@
   padding: clamp(6px, 2.4%, 12px);
   background: #FFFFFF;
   box-shadow: var(--shadow-hang);
-  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transform:
+    rotateX(calc(var(--ny, 0) * -8deg))
+    rotateY(calc(var(--nx, 0) * 10deg))
+    translate3d(0, calc(var(--h, 0) * -6px), calc(var(--h, 0) * 18px));
   transform-style: preserve-3d;
-  transition: transform 500ms var(--ease-out), box-shadow var(--base) ease;
+  transition: transform 760ms var(--ease-swing), box-shadow var(--base) ease;
+}
+
+.sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0.28) 50%, rgba(255, 255, 255, 0) 62%);
+  background-size: 260% 100%;
+  background-position: calc(50% + var(--nx, 0) * -40%) 0;
+  mix-blend-mode: soft-light;
+  opacity: var(--h, 0);
 }
 
 .piece > span {
@@ -69,13 +79,28 @@
 
   .stage:hover .wash {
     background:
-      radial-gradient(90% 70% at var(--gx) var(--gy), color-mix(in srgb, var(--accent) 55%, transparent), transparent 75%),
+      radial-gradient(90% 70% at var(--gx, 50%) var(--gy, 30%), color-mix(in srgb, var(--accent) 55%, transparent), transparent 75%),
       color-mix(in srgb, var(--accent) 24%, var(--wall-deep));
   }
 
   .stage:hover .piece {
-    box-shadow: var(--shadow-lift);
-    transition: transform 120ms linear, box-shadow var(--base) ease;
+    box-shadow:
+      0 2px 4px rgba(34, 9, 15, 0.06),
+      calc(var(--nx, 0) * -22px) calc(40px + var(--ny, 0) * -16px) 70px -30px rgba(34, 9, 15, 0.5);
+  }
+
+  :root[data-theme='dark'] .stage:hover .piece {
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      calc(var(--nx, 0) * -22px) calc(40px + var(--ny, 0) * -16px) 70px -30px rgba(0, 0, 0, 0.9);
+  }
+
+  .stage:global(.is-tilting) .piece {
+    transition: box-shadow var(--base) ease;
+  }
+
+  .stage:global(.is-tilting) .sticker {
+    translate: calc(var(--nx, 0) * 6px) calc(var(--ny, 0) * 6px);
   }
 
   .stage:hover .sticker {
@@ -103,6 +128,7 @@
   font-weight: 600;
   box-shadow: 0 8px 16px -6px rgba(158, 21, 32, 0.6), inset 0 -3px 0 rgba(0, 0, 0, 0.15);
   transform: rotate(-14deg);
+  transition: translate 500ms var(--ease-out);
 }
 
 @keyframes wobble {
@@ -178,4 +204,27 @@
 .likes svg {
   color: var(--candy);
   font-size: 0.85em;
+}
+
+@keyframes settle {
+  0% {
+    opacity: 0;
+    transform: perspective(1400px) rotateX(12deg) translateY(56px) scale(0.96);
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  :global(html[data-motion='full']) .card {
+    transform-origin: 50% 100%;
+    animation: settle linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
 }

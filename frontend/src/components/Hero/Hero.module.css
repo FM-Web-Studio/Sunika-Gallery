@@ -133,7 +133,7 @@
 }
 
 .caption > * {
-  animation: rise 900ms var(--ease-out) both;
+  animation: rise 900ms var(--ease-out) backwards;
 }
 
 .caption > :nth-child(2) {
@@ -311,4 +311,19 @@
   .scroll {
     display: none;
   }
+}
+
+:global(html[data-intro='playing']) .art {
+  transform: translateY(40px) scale(0.94);
+  opacity: 0;
+  transition: none;
+}
+
+:global(html[data-intro='playing']) .caption > * {
+  animation-play-state: paused;
+}
+
+.idle *,
+.idle *::after {
+  animation-play-state: paused !important;
 }

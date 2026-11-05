@@ -73,7 +73,7 @@ frontend/src
                seo.js, each page's title, description and link preview
   context/     SiteContext, wording and contact details for the whole app
   firebase/    data access, one module per concern
-  hooks/       theme and motion preferences, momentum scroll, auth, page meta
+  hooks/       theme and motion preferences, on-screen checks, intro, interactions, auth, page meta
   lib/         small pure helpers, unit tested
   pages/       one folder per page, lazy loaded through pages/index.js
     Admin/     the admin: sections/ (artworks, messages, contact details, wording), parts/ (form, sorting)
@@ -91,6 +91,25 @@ already in the head, plus `sitemap.xml` and `robots.txt`. All of it comes from
 The preview image is `frontend/public/og/share.jpg` (1200 x 630). A changed image
 needs a new file name, or apps keep showing the cached one. A shared `?piece=` link
 shows the gallery's preview, not the piece itself: that would need a server.
+
+The opening animation is the portfolio's, in the gallery's colours. It lives in
+`frontend/index.html` so it shows before the app has loaded, and `src/hooks/useIntro.js`
+lifts it once the first featured image has loaded (at least 2.3 s, at most 5 s, or
+straight away on a click, key or scroll). It plays at most once every 12 hours per
+browser (`sunika.intro` in localStorage) and never on `/admin`. Its logo is
+`public/intro-wordmark.webp`, the same file as the portfolio's.
+
+"Throw some paint" (`components/PaintSplat`, shapes in `lib/splat.js`) is a small canvas
+visitors click to splash paint on. It only draws while a splash is landing, so it costs
+nothing when idle. Cards and buttons share one spring driven tilt and pull (`src/hooks/useInteractions.js`).
+Under the hero, the wave ribbon (`components/WaveRibbon`, curve maths in `lib/wave.js`)
+carries the words set in Wording along a pink wave, with a stitched teal ribbon flowing
+the other way behind it. Both only slide sideways, so the browser moves them cheaply,
+and they pause when off screen.
+
+The watermark (`lib/watermark.js`) is tiled over every picture on screen. It is a layer
+in the page, not part of the image file, so it deters casual copying but a determined
+person who finds the file address gets a clean copy.
 
 Animations respect the visitor's reduced motion setting, and the lightning button
 in the header turns them off for anyone who prefers a still page.
