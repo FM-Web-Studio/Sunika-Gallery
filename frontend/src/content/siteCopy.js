@@ -9,10 +9,14 @@ const BRAND_FIELDS = [
 
 const GALLERY_FIELDS = [
   { key: 'heroCta', label: 'Hero button', type: 'text', default: 'View this piece' },
-  { key: 'marquee', label: 'Moving ribbon, separate items with commas', type: 'text', default: 'Original paintings, Drawings, Mosaics, Made by hand, One of a kind, Sculpture and beadwork' },
+  { key: 'marquee', label: 'Wave ribbon: words, separate them with commas', type: 'text', default: 'Original paintings, Drawings, Mosaics, Made by hand, One of a kind, Sculpture and beadwork' },
   { key: 'heading', label: 'Introduction title', type: 'text', default: 'Original work by Sunika' },
   { key: 'intro', label: 'Introduction', type: 'textarea', default: 'Paintings, drawings and mixed pieces, each one made by hand and waiting for the right wall. Take your time, leave a heart on the ones you love, and ask about any piece that speaks to you.' },
   { key: 'stats', label: 'Count line, {total} and {available} fill in', type: 'text', default: '{total} works in the collection, {available} available now' },
+  { key: 'playTitle', label: 'Paint play: title', type: 'text', default: 'Throw some paint' },
+  { key: 'playIntro', label: 'Paint play: introduction', type: 'textarea', default: 'Every painting starts with a little mess. Pick a colour, click or tap the canvas, and see what you make.' },
+  { key: 'playHint', label: 'Paint play: hint on the canvas', type: 'text', default: 'Click or tap to throw paint' },
+  { key: 'playClear', label: 'Paint play: clear button', type: 'text', default: 'Clean the canvas' },
   { key: 'collectionHeading', label: 'Collection title', type: 'text', default: 'The collection' },
   { key: 'empty', label: 'When a filter shows nothing', type: 'text', default: 'Nothing matches that filter right now. Try another one.' },
   { key: 'error', label: 'When the gallery cannot load', type: 'text', default: 'The gallery could not load. Check your connection and refresh the page.' },

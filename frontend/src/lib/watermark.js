@@ -2,13 +2,21 @@ const escapeXml = (s = '') => s.replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': 
 
 const cache = new Map();
 
+export const TILE_W = 300;
+export const TILE_H = 210;
+
+const stamp = (x, y, main, sub) => `<g transform="translate(${x} ${y}) rotate(-28)">`
+  + `<text y="0" font-size="26" font-weight="700" fill="rgba(255,255,255,0.92)">${main}</text>`
+  + (sub ? `<text y="22" font-size="12" font-weight="600" letter-spacing="1.6" fill="rgba(255,255,255,0.85)">${sub}</text>` : '')
+  + '</g>';
+
 export const watermarkSvg = (line, subline = '') => {
   const main = escapeXml(line);
   const sub = escapeXml(subline);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="280" height="190" viewBox="0 0 280 190">`
-    + '<g transform="rotate(-28 140 95)" font-family="Georgia, \'Times New Roman\', serif" text-anchor="middle" paint-order="stroke" stroke="rgba(20,6,10,0.45)" stroke-width="2.4" stroke-linejoin="round">'
-    + `<text x="140" y="94" font-size="24" font-style="italic" font-weight="600" fill="rgba(255,255,255,0.78)">${main}</text>`
-    + (sub ? `<text x="140" y="118" font-size="11" letter-spacing="1.5" fill="rgba(255,255,255,0.7)">${sub}</text>` : '')
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${TILE_W}" height="${TILE_H}" viewBox="0 0 ${TILE_W} ${TILE_H}">`
+    + '<g font-family="Arial, Helvetica, sans-serif" text-anchor="middle" paint-order="stroke" stroke="rgba(20,6,10,0.6)" stroke-width="3" stroke-linejoin="round">'
+    + stamp(TILE_W * 0.25, TILE_H * 0.3, main, sub)
+    + stamp(TILE_W * 0.75, TILE_H * 0.8, main, sub)
     + '</g></svg>';
 };
 

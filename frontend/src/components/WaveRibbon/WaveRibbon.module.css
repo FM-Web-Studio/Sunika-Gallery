@@ -1,0 +1,114 @@
+.ribbon {
+  position: relative;
+  z-index: 4;
+  height: 180px;
+  margin: -40px 0 -12px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.scale {
+  position: absolute;
+  inset: 0;
+  transform-origin: left top;
+}
+
+.track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.half {
+  display: block;
+  flex: none;
+  overflow: visible;
+}
+
+.front {
+  animation: flow-left var(--front-s, 40s) linear infinite;
+}
+
+.back {
+  animation: flow-right var(--back-s, 56s) linear infinite;
+}
+
+.idle .track {
+  animation-play-state: paused;
+}
+
+.band,
+.shade,
+.shine,
+.backBand,
+.stitch {
+  fill: none;
+  stroke-linejoin: round;
+}
+
+.shade {
+  stroke: rgba(34, 9, 15, 0.16);
+  stroke-width: 74;
+}
+
+.band {
+  stroke: var(--candy);
+  stroke-width: 72;
+}
+
+.shine {
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 2;
+}
+
+.words {
+  fill: #FFFFFF;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.backBand {
+  stroke: var(--teal-bright);
+  stroke-width: 34;
+}
+
+.stitch {
+  stroke: var(--gold);
+  stroke-width: 2.5;
+  stroke-dasharray: 10 9;
+  stroke-linecap: round;
+}
+
+@keyframes flow-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(calc(var(--period) * -1), 0, 0);
+  }
+}
+
+@keyframes flow-right {
+  from {
+    transform: translate3d(calc(var(--period) * -1), 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (max-width: 720px) {
+  .ribbon {
+    height: 130px;
+    margin: -28px 0 -8px;
+  }
+
+  .scale {
+    transform: scale(0.72);
+  }
+}

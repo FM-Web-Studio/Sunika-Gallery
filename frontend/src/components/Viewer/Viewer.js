@@ -5,7 +5,6 @@ import { FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import ArtImage from '../ArtImage';
 import Stars from '../Stars';
 import LikeButton from '../LikeButton';
-import { pauseScroll, resumeScroll } from '../../hooks/useMomentumScroll';
 import { artworkMeta, artworkSrc, formatPrice } from '../../lib/gallery';
 import { accentFor } from '../../lib/palette';
 import styles from './Viewer.module.css';
@@ -27,12 +26,10 @@ const Viewer = ({ artwork, position, total, onPrev, onNext, onClose, copy }) => 
     };
     document.addEventListener('keydown', onKey);
     document.documentElement.style.overflow = 'hidden';
-    pauseScroll();
     panel.current?.focus();
     return () => {
       document.removeEventListener('keydown', onKey);
       document.documentElement.style.overflow = '';
-      resumeScroll();
       previous?.focus?.();
     };
   }, [open]);
@@ -60,7 +57,6 @@ const Viewer = ({ artwork, position, total, onPrev, onNext, onClose, copy }) => 
       aria-modal="true"
       aria-label={title}
       tabIndex={-1}
-      data-lenis-prevent
     >
       <button type="button" className={`${styles.round} ${styles.close}`} onClick={onClose} aria-label="Close">
         <FiX aria-hidden="true" />

@@ -1,0 +1,136 @@
+.play {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--space-8) var(--gutter) var(--space-9);
+}
+
+.text {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: var(--space-4) var(--space-8);
+  margin-bottom: var(--space-6);
+}
+
+.title {
+  font-size: var(--step-4);
+}
+
+.lede {
+  max-width: 46ch;
+  font-size: var(--step-1);
+  color: var(--ink-soft);
+}
+
+.frame {
+  --paper: #F6F1EC;
+  --paper-light: #FFFFFF;
+  --paper-edge: rgba(34, 9, 15, 0.06);
+  position: relative;
+  padding: clamp(10px, 1.4vw, 18px);
+  background: var(--mat-frame, #FFFFFF);
+  box-shadow: var(--shadow-hang);
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  background:
+    radial-gradient(120% 90% at 30% 20%, var(--paper-light), var(--paper) 70%),
+    var(--paper);
+  box-shadow: inset 0 0 0 1px var(--paper-edge);
+  transition: background-color var(--base) ease;
+  cursor: crosshair;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root[data-theme='dark'] .frame {
+  --mat-frame: var(--surface-raised);
+  --paper: #1A0D11;
+  --paper-light: #2A161C;
+  --paper-edge: rgba(251, 244, 246, 0.08);
+}
+
+:root[data-theme='dark'] .hint {
+  background: rgba(251, 244, 246, 0.9);
+  color: #22090F;
+}
+
+.canvas:focus-visible {
+  outline-offset: 6px;
+}
+
+.hint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-control);
+  background: rgba(34, 9, 15, 0.82);
+  color: #FFFFFF;
+  font-size: var(--step--1);
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: opacity var(--base) ease;
+}
+
+.hintGone {
+  opacity: 0;
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.swatch {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 3px solid var(--wall);
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: 0 0 0 1.5px var(--line-strong);
+  transition: transform var(--fast) var(--ease-swing), box-shadow var(--fast) ease;
+}
+
+.mix {
+  background: conic-gradient(#E5177B, #F7931E, #F2A81D, #4FB9A6, #2D8BD6, #8E5BD8, #E5177B);
+}
+
+.swatch:hover {
+  transform: translateY(-2px);
+}
+
+.on {
+  box-shadow: 0 0 0 2.5px var(--ink);
+  transform: scale(1.1);
+}
+
+.on:hover {
+  transform: scale(1.1) translateY(-2px);
+}
+
+@media (max-width: 900px) {
+  .text {
+    grid-template-columns: 1fr;
+  }
+
+  .canvas {
+    aspect-ratio: 4 / 3;
+  }
+}

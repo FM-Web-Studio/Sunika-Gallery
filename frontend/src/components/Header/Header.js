@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { FiMoon, FiSun, FiZap, FiZapOff } from 'react-icons/fi';
 import { usePrefs } from '../../hooks/usePrefs';
@@ -17,10 +17,21 @@ const Header = () => {
   const brand = copy('brand');
   const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const progressRef = useRef(null);
 
   useEffect(() => {
     let queued = false;
-    const measure = () => { queued = false; setScrolled(window.scrollY > window.innerHeight * 0.6); };
+    let room = 0;
+    const measure = () => {
+      queued = false;
+      setScrolled(window.scrollY > window.innerHeight * 0.6);
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(${room > 0 ? Math.min(1, window.scrollY / room) : 0})`;
+    };
+    const size = new ResizeObserver(() => {
+      room = document.documentElement.scrollHeight - window.innerHeight;
+      measure();
+    });
+    size.observe(document.body);
     const onScroll = () => {
       if (queued) return;
       queued = true;
@@ -32,6 +43,7 @@ const Header = () => {
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
+      size.disconnect();
     };
   }, []);
 
@@ -73,6 +85,7 @@ const Header = () => {
         </button>
         <Link to="/contact" className={styles.enquire}>Enquire</Link>
       </div>
+      <span ref={progressRef} className={styles.progress} aria-hidden="true" />
     </header>
   );
 };

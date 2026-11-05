@@ -27,12 +27,14 @@ const CursorBubble = () => {
       pos.x += (target.x - pos.x) * ease;
       pos.y += (target.y - pos.y) * ease;
       if (el.current) el.current.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
-      frame = requestAnimationFrame(loop);
+      const settled = Math.abs(target.x - pos.x) < 0.3 && Math.abs(target.y - pos.y) < 0.3;
+      frame = settled ? 0 : requestAnimationFrame(loop);
     };
 
     const onMove = (e) => {
       target.x = e.clientX;
       target.y = e.clientY;
+      if (!frame) frame = requestAnimationFrame(loop);
       const hit = e.target.closest?.('[data-cursor]');
       setLabel(hit ? hit.dataset.cursor : '');
     };

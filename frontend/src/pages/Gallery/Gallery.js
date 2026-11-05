@@ -3,13 +3,15 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ArtworkCard from '../../components/ArtworkCard';
 import CursorBubble from '../../components/CursorBubble';
 import Hero from '../../components/Hero';
-import Marquee from '../../components/Marquee';
+import WaveRibbon from '../../components/WaveRibbon';
+import PaintSplat from '../../components/PaintSplat';
 import Viewer from '../../components/Viewer';
 import { subscribeArtworks } from '../../firebase/artworks';
 import { CATEGORIES } from '../../firebase/config';
-import { ALL, SORTS, STATUSES, fillTemplate, filterArtworks, galleryStats } from '../../lib/gallery';
+import { ALL, SORTS, STATUSES, artworkSrc, fillTemplate, filterArtworks, galleryStats } from '../../lib/gallery';
 import { useSite } from '../../context/SiteContext';
 import { usePageMeta } from '../../hooks/usePageMeta';
+import { liftIntro } from '../../hooks/useIntro';
 import styles from './Gallery.module.css';
 
 const CATEGORY_FILTERS = [ALL, ...CATEGORIES];
@@ -56,6 +58,23 @@ const Gallery = () => {
   const shown = useMemo(() => filterArtworks(artworks, { category, status, sort }), [artworks, category, status, sort]);
   const featured = useMemo(() => featuredFrom(artworks), [artworks]);
   const stats = galleryStats(artworks);
+  const firstSrc = artworkSrc(featured[0]);
+
+  useEffect(() => {
+    if (loading) return undefined;
+    if (!firstSrc) return liftIntro();
+    let undo;
+    const img = new Image();
+    const done = () => { undo = liftIntro(); };
+    img.onload = done;
+    img.onerror = done;
+    img.src = firstSrc;
+    return () => {
+      img.onload = null;
+      img.onerror = null;
+      undo?.();
+    };
+  }, [loading, firstSrc]);
 
   const navList = shown.some((a) => a.id === pieceId) ? shown : artworks;
   const index = navList.findIndex((a) => a.id === pieceId);
@@ -79,7 +98,7 @@ const Gallery = () => {
   return (
     <div className={styles.page}>
       <Hero pieces={featured} onOpen={open} cta={t.heroCta} />
-      <Marquee text={t.marquee} />
+      <WaveRibbon text={t.marquee} />
 
       <section className={styles.intro}>
         <h1 className={styles.heading}>{t.heading}</h1>
@@ -88,6 +107,8 @@ const Gallery = () => {
           {!loading && !failed && stats.total > 0 && <p className={styles.stats}>{fillTemplate(t.stats, stats)}</p>}
         </div>
       </section>
+
+      <PaintSplat copy={t} />
 
       <section id="collection" className={styles.collection} aria-labelledby="collection-title">
         <div className={styles.collectionHead}>
