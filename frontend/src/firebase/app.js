@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
@@ -14,14 +14,17 @@ export const app = initializeApp({
   measurementId: import.meta.env.FIREBASE_MEASUREMENT_ID,
 });
 
-// App Check stays off until a reCAPTCHA v3 site key is set, and must start before Firestore, Storage or Auth.
+// App Check (reCAPTCHA Enterprise, part of Google Cloud Fraud Defense) stays off until a site key is set,
+// and must start before Firestore, Storage or Auth. Classic reCAPTCHA v3 can no longer be registered.
 export const appCheckOn = !!import.meta.env.FIREBASE_APPCHECK_SITE_KEY;
 
 if (appCheckOn) {
-  const debugToken = import.meta.env.DEV && import.meta.env.FIREBASE_APPCHECK_DEBUG_TOKEN;
-  if (debugToken) self.FIREBASE_APPCHECK_DEBUG_TOKEN = debugToken;
+  // FIREBASE_APPCHECK_DEBUG_TOKEN (local dev only): empty or false = off, true = print a new debug
+  // token in the browser console to register in App Check, anything else = that registered token.
+  const debugToken = String(import.meta.env.FIREBASE_APPCHECK_DEBUG_TOKEN ?? '').trim();
+  if (import.meta.env.DEV && debugToken && debugToken !== 'false') self.FIREBASE_APPCHECK_DEBUG_TOKEN = debugToken === 'true' ? true : debugToken;
   initializeAppCheck(app, {
-    provider: new ReCaptchaV3Provider(import.meta.env.FIREBASE_APPCHECK_SITE_KEY),
+    provider: new ReCaptchaEnterpriseProvider(import.meta.env.FIREBASE_APPCHECK_SITE_KEY),
     isTokenAutoRefreshEnabled: true,
   });
 }
